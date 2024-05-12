@@ -7,12 +7,8 @@ const Auth = () => {
     const location = useLocation();
     const isLogin = location.pathname === LOGIN_ROUTE;
     return (
-        <div
-            className="flex justify-items-center items-center"
-            style={{ height: window.innerHeight - 70 }}>
-            <form
-                className="max-w-sm mx-auto border border-gray-300 rounded-lg p-5"
-                style={{ width: 600, height: "fit-content" }}>
+        <div className="mt-8">
+            <form className="max-w-sm mx-auto border border-gray-300 rounded-lg p-5">
                 {isLogin ? (
                     <>
                         <div className="mb-5">

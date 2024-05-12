@@ -8,7 +8,7 @@ const NavBar = observer(() => {
     const { user } = useContext(Context);
 
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900">
+        <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg mt-5 border">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <NavLink
                     href="https://flowbite.com/"
@@ -97,7 +97,7 @@ const NavBar = observer(() => {
                         </svg>
                     </button>
                 </div>
-                <div className="flex md:order-3 items-center space-x-6 rtl:space-x-reverse">
+                <div className="flex md:order-3 items-center space-x-6 rtl:space-x-reverse mr-5">
                     {user.isAuth ? (
                         user.userData.role === "ADMIN" ? (
                             <>
