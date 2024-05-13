@@ -2,7 +2,7 @@ import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import CollectionPage from "./pages/CollectionPage";
 import ItemPage from "./pages/ItemPage";
-import Main from "./pages/Main";
+import MainPage from "./pages/MainPage";
 import UserPage from "./pages/UserPage";
 import {
     ADMIN_ROUTE,
@@ -25,7 +25,7 @@ export const authRoutes = [
 export const publicRoutes = [
     {
         path: MAIN_ROUTE,
-        Component: <Main />,
+        Component: <MainPage />,
     },
     {
         path: LOGIN_ROUTE,

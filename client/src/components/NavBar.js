@@ -1,14 +1,21 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "..";
-import { LOGIN_ROUTE, MAIN_ROUTE, REGISTARTION_ROUTE } from "../utils/consts";
+import {
+    ADMIN_ROUTE,
+    LOGIN_ROUTE,
+    MAIN_ROUTE,
+    REGISTARTION_ROUTE,
+    USER_ROUTE,
+} from "../utils/consts";
 import { observer } from "mobx-react-lite";
 
 const NavBar = observer(() => {
     const { user } = useContext(Context);
+    const navigate = useNavigate();
 
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg mt-5 border">
+        <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg  border">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <NavLink
                     href="https://flowbite.com/"
@@ -103,11 +110,12 @@ const NavBar = observer(() => {
                             <>
                                 <button
                                     type="button"
-                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    onClick={() => navigate(ADMIN_ROUTE)}>
                                     Admin panel
                                 </button>
                                 <span className="text-sm  text-gray-500 dark:text-white hover:underline">
-                                    (555) 412-1234
+                                    {user.userData?.email}
                                 </span>
                                 <NavLink
                                     to={MAIN_ROUTE}
@@ -118,7 +126,7 @@ const NavBar = observer(() => {
                         ) : (
                             <>
                                 <span className="text-sm  text-gray-500 dark:text-white hover:underline">
-                                    (555) 412-1234
+                                    {user.userData?.email}
                                 </span>
                                 <NavLink
                                     to={MAIN_ROUTE}
@@ -171,12 +179,12 @@ const NavBar = observer(() => {
                     </div>
                     <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
-                            <a
-                                href="#"
+                            <NavLink
+                                to={USER_ROUTE + "/" + user.userData.id}
                                 className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
                                 aria-current="page">
                                 Home
-                            </a>
+                            </NavLink>
                         </li>
                         <li>
                             <a

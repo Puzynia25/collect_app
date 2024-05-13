@@ -1,103 +1,25 @@
-import { useContext, useState } from "react";
-import ContentWrapper from "../components/ContentWrapper";
+import { useContext } from "react";
+import Tags from "../components/Tags";
 import { Context } from "..";
 import CategoryBar from "../components/CategoryBar";
-import Badge from "../components/Badge";
+import ContentWrapper from "../components/ContentWrapper";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ITEM_ROUTE } from "../utils/consts";
-import CreateItem from "../components/modals/CreateItem";
-import { observer } from "mobx-react-lite";
+import { COLLECTION_ROUTE, ITEM_ROUTE } from "../utils/consts";
 
-const CollectionPage = observer(() => {
-    const { user, collection, item } = useContext(Context);
-    const [onShowModal, setOnShowModal] = useState(false);
-
-    const onShow = () => {
-        setOnShowModal(true);
-    };
-    const onHide = () => {
-        setOnShowModal(false);
-    };
+const MainPage = () => {
+    const { item, collection } = useContext(Context);
     const navigate = useNavigate();
 
-    const customFields = [];
-
-    const collectionData = collection.collections.filter(
-        (el) => el.id === collection.collection.id
-    );
-    console.log(collectionData, "collectionData"); //??
-
-    let show = false;
-
     return (
-        <div className=" bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
+        <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
+            {/* <!-- sticky sidebar --> */}
             <CategoryBar />
+
             <ContentWrapper>
+                {/* <!-- content --> */}
+                <h1 className="font-bold text-xl md:text-2xl my-4">Recently Added</h1>
                 <div>
-                    <Badge category={"Vinyl"} />
-
-                    <div className="flex  mt-9">
-                        <img
-                            className="h-40 object-cover rounded-lg"
-                            src="https://i.discogs.com/eI4OnxVfgq-Vw71JUjOa7cFkOz-phqwgKjAfDSWqUU4/rs:fit/g:sm/q:90/h:600/w:594/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTgzMDcy/MjMtMTQ1OTA0MjE3/MS0yMjI4LmpwZWc.jpeg"
-                            alt=""
-                        />
-                        <div className="max-w-lg ml-9 place-content-center">
-                            <p className="inline-block text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                                Collection:
-                            </p>
-                            <h2 className="ml-2 inline-block font-bold text-xl md:text-2xl ">
-                                "{collectionData}"
-                            </h2>
-
-                            <p className="mt-4 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                Author:{" "}
-                                <span className="text-sm text-gray-500 dark:text-gray-400">
-                                    {user.userData.name}
-                                </span>
-                            </p>
-
-                            <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
-                                Here are the biggest enterprise technology acquisitions of 2021 so
-                                far, in reverse chronological order.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex w-full mt-9">
-                        <div className="ms-2">
-                            <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                                My items:
-                            </h2>
-                            <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
-                                A list of all the items in this collection including its name,
-                                category and description.
-                            </p>
-                        </div>
-                        <button
-                            type="button"
-                            className="ml-auto flex justify-between place-items-center gap-2 place-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={() => onShow()}>
-                            <svg
-                                className="w-[15px] h-[15px] text-white dark:text-gray-800"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                viewBox="0 0 24 24">
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="3"
-                                    d="M5 12h14m-7 7V5"
-                                />
-                            </svg>
-                            Add item
-                        </button>
-                    </div>
-
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-24 md:mt-4">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-9">
                         <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -106,7 +28,7 @@ const CollectionPage = observer(() => {
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         <div className="flex items-center">
-                                            Category
+                                            Author
                                             <a href="#">
                                                 <svg
                                                     className="w-3 h-3 ms-1.5"
@@ -122,7 +44,7 @@ const CollectionPage = observer(() => {
 
                                     <th scope="col" className="px-6 py-3">
                                         <div className="flex items-center">
-                                            ???
+                                            Collection
                                             <a href="#">
                                                 <svg
                                                     className="w-3 h-3 ms-1.5"
@@ -163,7 +85,7 @@ const CollectionPage = observer(() => {
                                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th
                                                 scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer hover:underline">
+                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 <NavLink
                                                     to={ITEM_ROUTE + "/" + item.id}
                                                     className="hover:underline">
@@ -197,11 +119,75 @@ const CollectionPage = observer(() => {
                         </table>
                     </div>
                 </div>
-            </ContentWrapper>
 
-            <CreateItem show={onShowModal} onHide={() => onHide()} />
+                {/* 5 the biggest collections */}
+                <h2 className="font-bold text-xl md:text-2xl mt-24">The biggest collections</h2>
+                <div className="flex flex-row gap-3 flex-nowrap w-full overflow-auto">
+                    {collection.collections.map((col) => {
+                        return (
+                            <div
+                                key={col.id}
+                                className=" min-w-[280px] bg-white border border-gray-200 rounded-3xl mt-2 md:mt-9 dark:bg-gray-800 dark:border-gray-700"
+                                onClick={(e) => {
+                                    return (
+                                        navigate(COLLECTION_ROUTE + "/" + col.id),
+                                        collection.setCollection(col),
+                                        console.log(col, "col")
+                                    );
+                                }}>
+                                <a href="#">
+                                    <img
+                                        className="rounded-t-3xl p-10 h-80 object-cover mx-auto"
+                                        src={col.img}
+                                        alt={col.name}
+                                    />
+                                </a>
+                                <div className="pb-5 px-5">
+                                    <a href="#">
+                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                            {col.name}
+                                        </h5>
+                                    </a>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                        {col.description}
+                                    </p>
+                                    <a href="#">
+                                        <h5 className="mb-3 font-semibold text-gray-900 dark:text-gray-400">
+                                            Category:{" "}
+                                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                                                {col.category}
+                                            </span>
+                                        </h5>
+                                    </a>
+                                    <a
+                                        href="#"
+                                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Read more
+                                        <svg
+                                            className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 14 10">
+                                            <path
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M1 5h12m0 0L9 1m4 4L9 9"
+                                            />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <Tags />
+            </ContentWrapper>
         </div>
     );
-});
+};
 
-export default CollectionPage;
+export default MainPage;

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { authRoutes, publicRoutes } from "../routes";
-import Main from "../pages/Main";
+import Main from "../pages/MainPage";
 import { useContext } from "react";
 import { Context } from "..";
 

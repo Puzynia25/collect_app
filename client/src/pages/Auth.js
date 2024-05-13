@@ -8,7 +8,7 @@ const Auth = () => {
     const isLogin = location.pathname === LOGIN_ROUTE;
     return (
         <div className="mt-8">
-            <form className="max-w-sm mx-auto border border-gray-300 rounded-lg p-5">
+            <form className="max-w-sm mx-auto border border-gray-300 rounded-3xl p-5">
                 {isLogin ? (
                     <>
                         <div className="mb-5">

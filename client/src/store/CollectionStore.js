@@ -2,7 +2,9 @@ import { makeAutoObservable } from "mobx";
 
 export default class CollectionStore {
     constructor() {
-        this._category = ["Books", "Signs", "Vinyl", "Other"];
+        // this._category = ["Books", "Signs", "Vinyl", "Other"];
+        this._category = "";
+        this._collection = {};
         this._collections = [
             {
                 id: 6,
@@ -50,20 +52,39 @@ export default class CollectionStore {
                 category: "Signs",
             },
         ];
+        this._selectedCategory = "";
         makeAutoObservable(this);
     }
 
     setCategory(value) {
         this._category = value;
     }
+
+    setSelectedCategory(category) {
+        this._selectedCategory = category;
+    }
+
     setCollections(collections) {
         this._collections = collections;
+    }
+
+    setCollection(collection) {
+        this._collection = collection;
     }
 
     get category() {
         return this._category;
     }
+
     get collections() {
         return this._collections;
+    }
+
+    get collection() {
+        return this._collection;
+    }
+
+    get selectedCategory() {
+        return this._selectedCategory;
     }
 }

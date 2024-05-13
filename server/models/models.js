@@ -1,4 +1,3 @@
-const categoriesList = require("../categoriesList");
 const sequelize = require("../db");
 const { DataTypes } = require("sequelize");
 
@@ -10,11 +9,15 @@ const User = sequelize.define("user", {
     role: { type: DataTypes.STRING, defaultValue: "USER" },
 });
 
+const Category = sequelize.define("category", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, unique: true, allowNull: false },
+});
+
 const Collection = sequelize.define("collection", {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, allowNull: false },
     img: { type: DataTypes.STRING, allowNull: true, defaultValue: "" },
-    category: { type: DataTypes.ENUM(...categoriesList), allowNull: false },
 });
 
 const Item = sequelize.define("item", {
@@ -35,10 +38,13 @@ Collection.belongsTo(User);
 User.hasMany(Like);
 Like.belongsTo(User);
 
+Category.hasMany(Collection);
+Collection.belongsTo(Category);
+
 Collection.hasMany(Item);
 Item.belongsTo(Collection);
 
 Item.hasMany(Like);
 Like.belongsTo(Item);
 
-module.exports = { User, Collection, Item, Like };
+module.exports = { User, Category, Collection, Item, Like };
