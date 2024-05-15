@@ -33,17 +33,20 @@ class CollectionController {
     }
 
     async getAll(req, res) {
-        let { category, limit, page } = req.query;
+        let { categoryId, limit, page } = req.query;
         page = page || 1;
         limit = limit || 10;
         let offset = page * limit - limit;
         let collections;
-        if (!category) {
+        if (!categoryId) {
             collections = await Collection.findAndCountAll({ limit, offset });
         } else {
-            collections = await Collection.findAndCountAll({ where: { category }, limit, offset });
+            collections = await Collection.findAndCountAll({
+                where: { categoryId },
+                limit,
+                offset,
+            });
         }
-
         return res.json(collections);
     }
 

@@ -5,8 +5,14 @@ export const createCollection = async (collection) => {
     return data;
 };
 
-export const fetchCollectionsList = async () => {
-    const { data } = await $host.get("api/collection");
+export const fetchAllCollections = async (categoryId, page, limit = 5) => {
+    const { data } = await $host.get("api/collection", {
+        params: {
+            categoryId,
+            page,
+            limit,
+        },
+    });
     return data;
 };
 
@@ -15,7 +21,7 @@ export const fetchOneCollection = async (id) => {
     return data;
 };
 
-export const fetchCategoriesList = async () => {
+export const fetchAllCategories = async () => {
     const { data } = await $host.get("api/category");
     return data;
 };

@@ -25,7 +25,7 @@ const CommentsContainer = () => {
 
     return (
         <>
-            <div className="mt-24 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 ml-auto">
+            <div className="mt-24 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700 ml-auto">
                 <div className="flex items-center justify-between mb-4">
                     <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
                         Latest Comments

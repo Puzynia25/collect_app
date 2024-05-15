@@ -2,8 +2,9 @@ import { useContext } from "react";
 import { Context } from "..";
 import { NavLink } from "react-router-dom";
 import { LOGIN_ROUTE } from "../utils/consts";
+import { observer } from "mobx-react-lite";
 
-const Admin = () => {
+const Admin = observer(() => {
     const { user } = useContext(Context);
 
     return (
@@ -11,7 +12,7 @@ const Admin = () => {
             <main className="w-full min-h-screen">
                 <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border w-full">
                     <div>Users</div>
-                    <div className="my-2 md:my-24 relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div className="mb-8 md:mt-24 relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -224,6 +225,6 @@ const Admin = () => {
             </main>
         </div>
     );
-};
+});
 
 export default Admin;

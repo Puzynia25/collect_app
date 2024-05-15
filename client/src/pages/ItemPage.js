@@ -5,8 +5,9 @@ import CategoryBar from "../components/CategoryBar";
 import CommentsContainer from "../components/CommentsContainer";
 import Badge from "../components/Badge";
 import CreateItem from "../components/modals/CreateItem";
+import { observer } from "mobx-react-lite";
 
-const ItemPage = () => {
+const ItemPage = observer(() => {
     // const { item } = useContext(Context);
     const item = {
         id: 1,
@@ -90,6 +91,6 @@ const ItemPage = () => {
             <CreateItem />
         </div>
     );
-};
+});
 
 export default ItemPage;

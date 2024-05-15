@@ -5,16 +5,6 @@ const CreateCollection = ({ show, onHide }) => {
     const { collection } = useContext(Context);
     return (
         <>
-            {/*
-            <button
-                data-modal-target="crud-modal"
-                data-modal-toggle="crud-modal"
-                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                type="button">
-                Toggle modal
-            </button> */}
-
-            {/* <!-- Main modal --> */}
             <div
                 tabIndex="-1"
                 aria-hidden="true"
@@ -78,7 +68,7 @@ const CreateCollection = ({ show, onHide }) => {
                                     <select
                                         id="category"
                                         className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        {collection.categoriesList.map((category) => {
+                                        {collection.allCategories.map((category) => {
                                             return (
                                                 <option key={category.id} value={category.name}>
                                                     {category.name}

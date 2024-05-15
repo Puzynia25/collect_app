@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE, MAIN_ROUTE, USER_ROUTE } from "../utils/consts";
 import { login, registration } from "../http/userAPI";
 import { observer } from "mobx-react-lite";
+
 const Auth = observer(() => {
     const { user } = useContext(Context);
     const location = useLocation();
