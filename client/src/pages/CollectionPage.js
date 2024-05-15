@@ -1,16 +1,22 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ContentWrapper from "../components/ContentWrapper";
 import { Context } from "..";
 import CategoryBar from "../components/CategoryBar";
 import Badge from "../components/Badge";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { ITEM_ROUTE } from "../utils/consts";
 import CreateItem from "../components/modals/CreateItem";
 import { observer } from "mobx-react-lite";
+import { fetchOneCollection } from "../http/collectionAPI";
 
 const CollectionPage = observer(() => {
     const { user, collection, item } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
+    const [selectedCollection, setSelectedCollection] = useState({});
+    const params = useParams();
+
+    const navigate = useNavigate();
+    const customFields = [];
 
     const onShow = () => {
         setOnShowModal(true);
@@ -18,16 +24,10 @@ const CollectionPage = observer(() => {
     const onHide = () => {
         setOnShowModal(false);
     };
-    const navigate = useNavigate();
 
-    const customFields = [];
-
-    const collectionData = collection.collections.filter(
-        (el) => el.id === collection.collection.id
-    );
-    console.log(collectionData, "collectionData"); //??
-
-    let show = false;
+    useEffect(() => {
+        fetchOneCollection(params.id).then((data) => setSelectedCollection(data));
+    }, []);
 
     return (
         <div className=" bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
@@ -36,10 +36,10 @@ const CollectionPage = observer(() => {
                 <div>
                     <Badge category={"Vinyl"} />
 
-                    <div className="flex  mt-9">
+                    <div className="flex mt-9">
                         <img
                             className="h-40 object-cover rounded-lg"
-                            src="https://i.discogs.com/eI4OnxVfgq-Vw71JUjOa7cFkOz-phqwgKjAfDSWqUU4/rs:fit/g:sm/q:90/h:600/w:594/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTgzMDcy/MjMtMTQ1OTA0MjE3/MS0yMjI4LmpwZWc.jpeg"
+                            src={process.env.REACT_APP_API_URL + selectedCollection.img}
                             alt=""
                         />
                         <div className="max-w-lg ml-9 place-content-center">
@@ -47,7 +47,7 @@ const CollectionPage = observer(() => {
                                 Collection:
                             </p>
                             <h2 className="ml-2 inline-block font-bold text-xl md:text-2xl ">
-                                "{collectionData}"
+                                "{selectedCollection.name}"
                             </h2>
 
                             <p className="mt-4 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -58,8 +58,7 @@ const CollectionPage = observer(() => {
                             </p>
 
                             <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
-                                Here are the biggest enterprise technology acquisitions of 2021 so
-                                far, in reverse chronological order.
+                                {selectedCollection.description}
                             </p>
                         </div>
                     </div>
@@ -97,7 +96,7 @@ const CollectionPage = observer(() => {
                         </button>
                     </div>
 
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-24 md:mt-4">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-4 md:mb-24 md:mt-9">
                         <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -164,11 +163,11 @@ const CollectionPage = observer(() => {
                                             <th
                                                 scope="row"
                                                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer hover:underline">
-                                                <NavLink
-                                                    to={ITEM_ROUTE + "/" + item.id}
+                                                <a
+                                                    href={ITEM_ROUTE + "/" + item.id}
                                                     className="hover:underline">
                                                     {item.name}
-                                                </NavLink>
+                                                </a>
                                             </th>
                                             <td className="px-6 py-4">Silver</td>
                                             <td className="px-6 py-4">Laptop</td>

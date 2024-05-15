@@ -1,4 +1,8 @@
+import { useContext } from "react";
+import { Context } from "../..";
+
 const CreateCollection = ({ show, onHide }) => {
+    const { collection } = useContext(Context);
     return (
         <>
             {/*
@@ -64,22 +68,8 @@ const CreateCollection = ({ show, onHide }) => {
                                         required=""
                                     />
                                 </div>
-                                <div className="col-span-2 sm:col-span-1">
-                                    <label
-                                        htmlFor="price"
-                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Price
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="price"
-                                        id="price"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="$2999"
-                                        required=""
-                                    />
-                                </div>
-                                <div className="col-span-2 sm:col-span-1">
+
+                                <div className="col-span-2">
                                     <label
                                         htmlFor="category"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -87,12 +77,27 @@ const CreateCollection = ({ show, onHide }) => {
                                     </label>
                                     <select
                                         id="category"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        <option value="TV">Books</option>
-                                        <option value="PC">PC</option>
-                                        <option value="GA">Gaming/Console</option>
-                                        <option value="PH">Phones</option>
+                                        className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        {collection.categoriesList.map((category) => {
+                                            return (
+                                                <option key={category.id} value={category.name}>
+                                                    {category.name}
+                                                </option>
+                                            );
+                                        })}
                                     </select>
+                                </div>
+                                <div className="col-span-2">
+                                    <label
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        htmlFor="file_input">
+                                        Upload cover
+                                    </label>
+                                    <input
+                                        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="file_input"
+                                        type="file"
+                                    />
                                 </div>
                                 <div className="col-span-2">
                                     <label

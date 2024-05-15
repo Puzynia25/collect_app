@@ -6,6 +6,7 @@ const User = sequelize.define("user", {
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, unique: true },
     password: { type: DataTypes.STRING },
+    status: { type: DataTypes.STRING, defaultValue: "active" },
     role: { type: DataTypes.STRING, defaultValue: "USER" },
 });
 
@@ -17,6 +18,7 @@ const Category = sequelize.define("category", {
 const Collection = sequelize.define("collection", {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, allowNull: false },
+    description: { type: DataTypes.STRING, allowNull: true, defaultValue: "" },
     img: { type: DataTypes.STRING, allowNull: true, defaultValue: "" },
 });
 

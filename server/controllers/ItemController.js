@@ -30,22 +30,22 @@ class ItemController {
         return res.json(items);
     }
 
-    async delete(req, res, next) {
-        const { id } = req.body;
-        const deletedUser = await Item.destroy({ where: { id } });
+    // async delete(req, res, next) {
+    //     const { id } = req.body;
+    //     const deletedUser = await Item.destroy({ where: { id } });
 
-        if (deletedUser === 0) {
-            return next(ApiError.badRequest("User not found"));
-        }
+    //     if (deletedUser === 0) {
+    //         return next(ApiError.badRequest("User not found"));
+    //     }
 
-        return res.status(204).send();
-    }
+    //     return res.status(204).send();
+    // }
 
-    async update(req, res, next) {
-        const { ids, status } = req.body;
-        await Item.update({ status }, { where: { id: ids } });
-        return res.status(204).send();
-    }
+    // async update(req, res, next) {
+    //     const { ids, status } = req.body;
+    //     await Item.update({ status }, { where: { id: ids } });
+    //     return res.status(204).send();
+    // }
 }
 
 module.exports = new ItemController();

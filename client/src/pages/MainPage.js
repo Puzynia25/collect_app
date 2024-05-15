@@ -1,20 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Tags from "../components/Tags";
 import { Context } from "..";
 import CategoryBar from "../components/CategoryBar";
 import ContentWrapper from "../components/ContentWrapper";
 import { NavLink, useNavigate } from "react-router-dom";
 import { COLLECTION_ROUTE, ITEM_ROUTE } from "../utils/consts";
+import { fetchCategoriesList, fetchCollectionsList } from "../http/collectionAPI";
+import { observer } from "mobx-react-lite";
 
-const MainPage = () => {
+const MainPage = observer(() => {
     const { item, collection } = useContext(Context);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchCategoriesList().then((data) => collection.setCategoriesList(data));
+        fetchCollectionsList().then((data) => collection.setCollectionsList(data.rows));
+    }, []);
 
     return (
         <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
             {/* <!-- sticky sidebar --> */}
             <CategoryBar />
-
             <ContentWrapper>
                 {/* <!-- content --> */}
                 <h1 className="font-bold text-xl md:text-2xl my-4">Recently Added</h1>
@@ -123,19 +129,13 @@ const MainPage = () => {
                 {/* 5 the biggest collections */}
                 <h2 className="font-bold text-xl md:text-2xl mt-24">The biggest collections</h2>
                 <div className="flex flex-row gap-3 flex-nowrap w-full overflow-auto">
-                    {collection.collections.map((col) => {
+                    {collection.collectionsList.map((col) => {
                         return (
                             <div
                                 key={col.id}
                                 className=" min-w-[280px] bg-white border border-gray-200 rounded-3xl mt-2 md:mt-9 dark:bg-gray-800 dark:border-gray-700"
-                                onClick={(e) => {
-                                    return (
-                                        navigate(COLLECTION_ROUTE + "/" + col.id),
-                                        collection.setCollection(col),
-                                        console.log(col, "col")
-                                    );
-                                }}>
-                                <a href="#">
+                                onClick={() => navigate(COLLECTION_ROUTE + "/" + col.id)}>
+                                <a href={process.env.REACT_APP_API_URL + col.img}>
                                     <img
                                         className="rounded-t-3xl p-10 h-80 object-cover mx-auto"
                                         src={col.img}
@@ -155,12 +155,12 @@ const MainPage = () => {
                                         <h5 className="mb-3 font-semibold text-gray-900 dark:text-gray-400">
                                             Category:{" "}
                                             <span className="text-sm text-gray-500 dark:text-gray-400">
-                                                {col.category}
+                                                {col.categoryId}
                                             </span>
                                         </h5>
                                     </a>
                                     <a
-                                        href="#"
+                                        href={COLLECTION_ROUTE + "/" + col.id}
                                         className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         Read more
                                         <svg
@@ -188,6 +188,6 @@ const MainPage = () => {
             </ContentWrapper>
         </div>
     );
-};
+});
 
 export default MainPage;

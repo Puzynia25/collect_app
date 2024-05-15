@@ -14,13 +14,18 @@ const NavBar = observer(() => {
     const { user } = useContext(Context);
     const navigate = useNavigate();
 
+    const logOut = () => {
+        localStorage.removeItem("token");
+        user.setUserData({});
+        user.setIsAuth(false);
+        navigate(MAIN_ROUTE);
+    };
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg  border">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <NavLink
-                    href="https://flowbite.com/"
-                    className="nav-link active flex items-center space-x-3 rtl:space-x-reverse"
-                    to={MAIN_ROUTE}>
+                <a
+                    className="ms-2 nav-link active flex items-center space-x-3 rtl:space-x-reverse"
+                    href={MAIN_ROUTE}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -32,7 +37,7 @@ const NavBar = observer(() => {
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                         Collections
                     </span>
-                </NavLink>
+                </a>
 
                 <div className="flex md:order-2">
                     <button
@@ -114,37 +119,37 @@ const NavBar = observer(() => {
                                     onClick={() => navigate(ADMIN_ROUTE)}>
                                     Admin panel
                                 </button>
-                                <span className="text-sm  text-gray-500 dark:text-white hover:underline">
+                                <span className="text-sm text-gray-500 dark:text-white hover:underline">
                                     {user.userData?.email}
                                 </span>
-                                <NavLink
-                                    to={MAIN_ROUTE}
-                                    className="text-sm  text-blue-600 dark:text-blue-500 hover:underline">
+                                <a
+                                    className="cursor-pointer text-sm text-blue-600 dark:text-blue-500 hover:underline"
+                                    onClick={logOut}>
                                     Log out
-                                </NavLink>
+                                </a>
                             </>
                         ) : (
                             <>
                                 <span className="text-sm  text-gray-500 dark:text-white hover:underline">
                                     {user.userData?.email}
                                 </span>
-                                <NavLink
-                                    to={MAIN_ROUTE}
-                                    className="text-sm  text-blue-600 dark:text-blue-500 hover:underline">
+                                <a
+                                    className="cursor-pointer text-sm text-blue-600 dark:text-blue-500 hover:underline"
+                                    onClick={logOut}>
                                     Log out
-                                </NavLink>
+                                </a>
                             </>
                         )
                     ) : (
                         <>
                             <NavLink
                                 to={LOGIN_ROUTE}
-                                className="text-sm  text-blue-600 dark:text-blue-500 hover:underline">
+                                className="text-sm text-blue-600 dark:text-blue-500 hover:underline">
                                 Login
                             </NavLink>
                             <NavLink
                                 to={REGISTARTION_ROUTE}
-                                className="text-sm  text-blue-600 dark:text-blue-500 hover:underline">
+                                className="text-sm text-blue-600 dark:text-blue-500 hover:underline">
                                 Sign up
                             </NavLink>
                         </>
@@ -179,12 +184,12 @@ const NavBar = observer(() => {
                     </div>
                     <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
-                            <NavLink
-                                to={USER_ROUTE + "/" + user.userData.id}
+                            <a
+                                href={navigate(USER_ROUTE + "/" + user.userData.id)}
                                 className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
                                 aria-current="page">
                                 Home
-                            </NavLink>
+                            </a>
                         </li>
                         <li>
                             <a

@@ -1,7 +1,9 @@
 const Router = require("express");
-const CollectionController = require("../controllers/CollectionController");
+const CategoryController = require("../controllers/CategoryController");
 const router = new Router();
 
-router.post("/", CollectionController.createCategory);
+router.post("/", CategoryController.createCategory);
+router.get("/", CategoryController.getAll);
+router.get("/:id", CategoryController.getOne);
 
 module.exports = router;

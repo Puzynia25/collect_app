@@ -1,23 +1,28 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ContentWrapper from "../components/ContentWrapper";
 import { Context } from "..";
 import CategoryBar from "../components/CategoryBar";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { COLLECTION_ROUTE } from "../utils/consts";
 import CreateCollection from "../components/modals/CreateCollection";
 import { observer } from "mobx-react-lite";
+import { fetchCollectionsList } from "../http/collectionAPI";
 
 const UserPage = observer(() => {
-    const { collection, item } = useContext(Context);
+    const { collection, user } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
     const navigate = useNavigate();
 
     const customFields = [];
 
-    const collectionData = collection.collections.filter(
-        (el) => el.id === collection.collection.id
-    );
-    console.log(collectionData, "collectionData"); //??
+    useEffect(() => {
+        //загрузка коллекции юзера
+        fetchCollectionsList().then((data) => collection.setCollectionsList(data));
+        const userCollections = collection.collectionsList?.filter(
+            (el) => el.userId === user.userData.id
+        );
+        collection.setUserCollectionsList(userCollections);
+    }, []);
 
     const onShow = () => {
         setOnShowModal(true);
@@ -66,7 +71,7 @@ const UserPage = observer(() => {
                         </button>
                     </div>
 
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-24 md:mt-9 ">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-24 md:mt-9">
                         <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -113,38 +118,39 @@ const UserPage = observer(() => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {collection.collections.map((collection) => {
+                                {collection.userCollectionsList.map((el) => {
                                     return (
                                         <tr
-                                            key={collection.id}
+                                            key={el.id}
                                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 h-14 w-14">
                                                         <img
                                                             className="h-14 w-14 rounded-lg object-cover"
-                                                            src={collection.img}
+                                                            src={
+                                                                process.env.REACT_APP_API_URL +
+                                                                el.img
+                                                            }
                                                             alt=""
                                                         />
                                                     </div>
 
                                                     <div className="ml-4">
-                                                        <NavLink
-                                                            to={
-                                                                COLLECTION_ROUTE +
-                                                                "/" +
-                                                                collection.id
-                                                            }
-                                                            className="text-sm font-medium text-gray-900 hover:underline">
-                                                            {collection.name}
-                                                        </NavLink>
+                                                        {/* prettier-ignore */}
+                                                        <a
+                                                            href={COLLECTION_ROUTE}
+                                                            className="text-sm font-medium text-gray-900 hover:underline"
+                                                            >
+                                                            {el.name}
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>
 
                                             <td className="px-6 py-4">books</td>
                                             <td className="px-6 py-4  max-w-md">
-                                                {collection.description}
+                                                {el.description}
                                             </td>
                                             <td className="px-3 py-4 text-right">
                                                 <a

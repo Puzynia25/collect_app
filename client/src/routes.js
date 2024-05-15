@@ -20,6 +20,10 @@ export const authRoutes = [
         path: ADMIN_ROUTE,
         Component: <Admin />,
     },
+    {
+        path: USER_ROUTE + "/:id",
+        Component: <UserPage />,
+    },
 ];
 
 export const publicRoutes = [
@@ -42,9 +46,5 @@ export const publicRoutes = [
     {
         path: ITEM_ROUTE + "/:id",
         Component: <ItemPage />,
-    },
-    {
-        path: USER_ROUTE + "/:id",
-        Component: <UserPage />,
     },
 ];
