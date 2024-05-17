@@ -5,7 +5,7 @@ import CategoryBar from "../components/CategoryBar";
 import Badge from "../components/Badge";
 import { useNavigate, useParams } from "react-router-dom";
 import { ITEM_ROUTE } from "../utils/consts";
-import CreateItem from "../components/modals/CreateItem";
+
 import { observer } from "mobx-react-lite";
 import { fetchAllCategories, fetchOneCollection } from "../http/collectionAPI";
 import ItemList from "../components/ItemList";
@@ -13,18 +13,11 @@ import { fetchAllItems } from "../http/itemAPI";
 
 const CollectionPage = observer(() => {
     const { user, item, collection } = useContext(Context);
-    const [onShowModal, setOnShowModal] = useState(false);
+
     const { id } = useParams();
 
     const navigate = useNavigate();
     const customFields = [];
-
-    const onShow = () => {
-        setOnShowModal(true);
-    };
-    const onHide = () => {
-        setOnShowModal(false);
-    };
 
     useEffect(() => {
         fetchOneCollection(id).then((data) => collection.setOneCollection(data));
@@ -65,44 +58,9 @@ const CollectionPage = observer(() => {
                         </div>
                     </div>
 
-                    <div className="flex w-full mt-12">
-                        <div className="ms-2">
-                            <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                                My items:
-                            </h2>
-                            <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
-                                A list of all the items in this collection including its name,
-                                category and description.
-                            </p>
-                        </div>
-                        <button
-                            type="button"
-                            className="ml-auto flex justify-between place-items-center gap-2 place-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={() => onShow()}>
-                            <svg
-                                className="w-[15px] h-[15px] text-white dark:text-gray-800"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                viewBox="0 0 24 24">
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="3"
-                                    d="M5 12h14m-7 7V5"
-                                />
-                            </svg>
-                            Add item
-                        </button>
-                    </div>
                     <ItemList />
                 </div>
             </div>
-
-            <CreateItem show={onShowModal} onHide={() => onHide()} />
         </div>
     );
 });
