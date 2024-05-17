@@ -7,13 +7,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ITEM_ROUTE } from "../utils/consts";
 import CreateItem from "../components/modals/CreateItem";
 import { observer } from "mobx-react-lite";
-import { fetchOneCollection } from "../http/collectionAPI";
+import { fetchAllCategories, fetchOneCollection } from "../http/collectionAPI";
 import ItemList from "../components/ItemList";
+import { fetchAllItems } from "../http/itemAPI";
 
 const CollectionPage = observer(() => {
-    const { user, item } = useContext(Context);
+    const { user, item, collection } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
-    const [collection, setCollection] = useState({});
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -27,20 +27,21 @@ const CollectionPage = observer(() => {
     };
 
     useEffect(() => {
-        fetchOneCollection(id).then((data) => setCollection(data));
+        fetchOneCollection(id).then((data) => collection.setOneCollection(data));
+        fetchAllItems(id).then((data) => item.setItems(data.rows));
+        fetchAllCategories().then((data) => collection.setAllCategories(data));
     }, []);
 
     return (
-        <div className=" bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
-            <CategoryBar />
-            <ContentWrapper>
-                <div>
-                    <Badge category={"Vinyl"} />
+        <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
+            <div className="w-full min-h-screen p-4 md:p-8 md:rounded-3xl md:shadow-lg border">
+                <div className="px-2">
+                    <Badge category={collection.oneCollection.category?.name} />
 
-                    <div className="flex mt-9">
+                    <div className="flex mt-7">
                         <img
-                            className="h-40 object-cover rounded-lg"
-                            src={process.env.REACT_APP_API_URL + collection.img}
+                            className="h-80 object-cover rounded-lg"
+                            src={process.env.REACT_APP_API_URL + collection.oneCollection.img}
                             alt=""
                         />
                         <div className="max-w-lg ml-9 place-content-center">
@@ -48,7 +49,7 @@ const CollectionPage = observer(() => {
                                 Collection:
                             </p>
                             <h2 className="ml-2 inline-block font-bold text-xl md:text-2xl ">
-                                "{collection.name}"
+                                "{collection.oneCollection.name}"
                             </h2>
 
                             <p className="mt-4 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -58,13 +59,13 @@ const CollectionPage = observer(() => {
                                 </span>
                             </p>
 
-                            <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
-                                {collection.description}
+                            <p className="mt-6 text-sm text-gray-900 dark:text-gray-400">
+                                {collection.oneCollection.description}
                             </p>
                         </div>
                     </div>
 
-                    <div className="flex w-full mt-9">
+                    <div className="flex w-full mt-12">
                         <div className="ms-2">
                             <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
                                 My items:
@@ -99,7 +100,7 @@ const CollectionPage = observer(() => {
                     </div>
                     <ItemList />
                 </div>
-            </ContentWrapper>
+            </div>
 
             <CreateItem show={onShowModal} onHide={() => onHide()} />
         </div>

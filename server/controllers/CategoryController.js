@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const { Category } = require("../models/models");
+const { Category, Collection } = require("../models/models");
 
 class CategoryController {
     async createCategory(req, res, next) {
@@ -22,7 +22,9 @@ class CategoryController {
     }
 
     async getAll(req, res) {
-        const categoriesList = await Category.findAll();
+        const categoriesList = await Category.findAll({
+            include: { model: Collection },
+        });
         return res.json(categoriesList);
     }
 }

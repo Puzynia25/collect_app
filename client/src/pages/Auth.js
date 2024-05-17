@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "..";
-import { useLocation, useNavigate } from "react-router-dom";
-import { LOGIN_ROUTE, MAIN_ROUTE, USER_ROUTE } from "../utils/consts";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { LOGIN_ROUTE, MAIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { login, registration } from "../http/userAPI";
 import { observer } from "mobx-react-lite";
 
@@ -79,6 +79,15 @@ const Auth = observer(() => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
+                        </div>
+                        <div className="my-4" style={{ fontSize: "small" }}>
+                            <p className="inline-block">Don't have an account? </p>
+
+                            <a
+                                href={REGISTARTION_ROUTE}
+                                className="ms-2 text-sm text-blue-600 dark:text-blue-500 hover:underline">
+                                sign up
+                            </a>
                         </div>
                         <button
                             type="submit"

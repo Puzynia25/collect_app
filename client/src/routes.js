@@ -20,16 +20,16 @@ export const authRoutes = [
         path: ADMIN_ROUTE,
         Component: <Admin />,
     },
-    {
-        path: USER_ROUTE + "/:id",
-        Component: <UserPage />,
-    },
 ];
 
 export const publicRoutes = [
     {
         path: MAIN_ROUTE,
         Component: <MainPage />,
+    },
+    {
+        path: USER_ROUTE + "/:id",
+        Component: <UserPage />,
     },
     {
         path: LOGIN_ROUTE,

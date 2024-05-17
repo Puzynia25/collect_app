@@ -5,14 +5,16 @@ export const createCollection = async (collection) => {
     return data;
 };
 
-export const fetchAllCollections = async (categoryId, page, limit = 5) => {
+export const fetchAllCollections = async (categoryId, userId, page, limit = 5) => {
     const { data } = await $host.get("api/collection", {
         params: {
             categoryId,
+            userId,
             page,
             limit,
         },
     });
+
     return data;
 };
 

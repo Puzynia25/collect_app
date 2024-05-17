@@ -19,7 +19,7 @@ const Collection = sequelize.define("collection", {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: true, defaultValue: "" },
-    img: { type: DataTypes.STRING, allowNull: true, defaultValue: "" },
+    img: { type: DataTypes.STRING, allowNull: false },
 });
 
 const Item = sequelize.define("item", {

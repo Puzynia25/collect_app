@@ -1,10 +1,22 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "..";
 import { COLLECTION_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
+import Badge from "./Badge";
 
 const CollectionList = observer(({ onShow }) => {
     const { collection } = useContext(Context);
+    const [collectionsByCategory, setCollectionsByCategory] = useState(collection.allCollections);
+
+    useEffect(() => {
+        if (collection.selectedCategory.name !== "All") {
+            setCollectionsByCategory(
+                collection.allCollections.filter(
+                    (el) => el.categoryId === collection.selectedCategory.id
+                )
+            );
+        } else setCollectionsByCategory(collection.allCollections);
+    }, [collection.selectedCategory]);
 
     return (
         <>
@@ -91,65 +103,80 @@ const CollectionList = observer(({ onShow }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {collection.userCollectionList.map((el) => {
-                                return (
-                                    <tr
-                                        key={el.id}
-                                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-14 w-14">
-                                                    <img
-                                                        className="h-14 w-14 rounded-lg object-cover"
-                                                        src={process.env.REACT_APP_API_URL + el.img}
-                                                        alt=""
-                                                    />
-                                                </div>
+                            {collectionsByCategory.length > 0 ? (
+                                collectionsByCategory.map((el) => {
+                                    return (
+                                        <tr
+                                            key={el.id}
+                                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center">
+                                                    <div className="flex-shrink-0 h-14 w-14">
+                                                        <img
+                                                            className="h-14 w-14 rounded-lg object-cover"
+                                                            src={
+                                                                process.env.REACT_APP_API_URL +
+                                                                el.img
+                                                            }
+                                                            alt=""
+                                                        />
+                                                    </div>
 
-                                                <div className="ml-4">
-                                                    {/* prettier-ignore */}
-                                                    <a
+                                                    <div className="ml-4">
+                                                        {/* prettier-ignore */}
+                                                        <a
                                                             href={COLLECTION_ROUTE + '/' + el.id}
                                                             className="text-sm font-medium text-gray-900 hover:underline"
                                                             >
                                                             {el.name}
                                                         </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
 
-                                        <td className="px-6 py-4">books</td>
-                                        <td className="px-6 py-4  max-w-md">{el.description}</td>
-                                        <td className="px-3 py-4 text-right">
-                                            <a
-                                                href="#"
-                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                                Edit
-                                            </a>
-                                        </td>
-                                        <td className="px-6 py-4 text-right content-center">
-                                            <button>
-                                                <svg
-                                                    className="w-6 h-6 text-gray-800 dark:text-white"
-                                                    aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24">
-                                                    <path
-                                                        stroke="currentColor"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth="1.3"
-                                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
+                                            <td className="px-6 py-4">
+                                                <Badge category={el.category.name} />
+                                            </td>
+                                            <td className="px-6 py-4  max-w-sm">
+                                                {el.description}
+                                            </td>
+                                            <td className="px-3 py-4 text-right">
+                                                <a
+                                                    href="#"
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                            <td className="px-6 py-4 text-right content-center">
+                                                <button>
+                                                    <svg
+                                                        className="w-6 h-6 text-gray-800 dark:text-white"
+                                                        aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="1.3"
+                                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            ) : (
+                                <tr className="w-full">
+                                    <td className="p-5">
+                                        There is no any collection in this category...
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

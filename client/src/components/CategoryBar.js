@@ -1,9 +1,22 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "..";
 import { observer } from "mobx-react-lite";
+import { fetchAllCategories } from "../http/collectionAPI";
 
 const CategoryBar = observer(() => {
     const { collection } = useContext(Context);
+
+    useEffect(() => {
+        fetchAllCategories()
+            .then((data) => collection.setAllCategories(data))
+            .then(() => {
+                collection.allCategories.forEach((el) => {
+                    if (el.name === "All") {
+                        collection.setSelectedCategory(el);
+                    }
+                });
+            });
+    }, []);
 
     return (
         <aside className="hidden md:w-1/3 lg:w-1/4 md:block">

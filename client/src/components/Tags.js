@@ -1,21 +1,23 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "..";
 import { observer } from "mobx-react-lite";
+import { fetchAllItems } from "../http/itemAPI";
 
 const Tags = observer(() => {
     const { item } = useContext(Context);
+
     return (
         <div>
             <h2 className="flex flex-row flex-nowrap items-center mt-24">
-                <span className="flex-grow block border-t border-black"></span>
+                <span className="flex-grow block border-t border-black" />
                 <span className="flex-none block mx-4 px-4 py-2.5 text-md rounded-3xl leading-none font-medium bg-black text-white">
                     Popular Tags
                 </span>
-                <span className="flex-grow block border-t border-black"></span>
+                <span className="flex-grow block border-t border-black" />
             </h2>
 
             <div className="flex justify-center flex-wrap gap-2 p-4 max-w-sm mx-auto m-4 text-sm">
-                {item.items[0].tags.map((el, i) => {
+                {/* {item.items[0].tags.map((el, i) => {
                     return (
                         <button
                             key={i}
@@ -23,7 +25,7 @@ const Tags = observer(() => {
                             {el}
                         </button>
                     );
-                })}
+                })} */}
                 <button className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 hover:bg-gray-300">
                     Travel
                 </button>

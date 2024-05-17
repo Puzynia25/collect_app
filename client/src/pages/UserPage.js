@@ -1,26 +1,24 @@
 import { useContext, useEffect, useState } from "react";
-import ContentWrapper from "../components/ContentWrapper";
 import { Context } from "..";
-import CategoryBar from "../components/CategoryBar";
 import { useParams } from "react-router-dom";
-import CreateCollection from "../components/modals/CreateCollection";
 import { observer } from "mobx-react-lite";
-import { fetchAllCollections } from "../http/collectionAPI";
+import { fetchAllCategories, fetchAllCollections } from "../http/collectionAPI";
+import ContentWrapper from "../components/ContentWrapper";
+import CategoryBar from "../components/CategoryBar";
+import CreateCollection from "../components/modals/CreateCollection";
 import CollectionList from "../components/CollectionList";
 
 const UserPage = observer(() => {
     const { collection, user } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
+    const { id } = useParams();
 
     // const customFields = [];
 
     useEffect(() => {
-        //загрузка коллекции юзера
-        fetchAllCollections().then((data) => collection.setAllCollections(data.rows));
-        const userCollections = collection.allCollections.filter(
-            (el) => el.userId === user.userData.id
-        );
-        collection.setUserCollectionList(userCollections);
+        //загрузка всех коллекций юзера
+        fetchAllCollections(null, id).then((data) => collection.setAllCollections(data.rows));
+        fetchAllCategories().then((data) => collection.setAllCategories(data));
     }, []);
 
     const onShow = () => {

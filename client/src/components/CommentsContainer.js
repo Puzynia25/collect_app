@@ -1,4 +1,6 @@
-const CommentsContainer = () => {
+import { observer } from "mobx-react-lite";
+
+const CommentsContainer = observer(() => {
     const comments = [
         {
             id: 1,
@@ -27,16 +29,16 @@ const CommentsContainer = () => {
         <>
             <div className="mt-24 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700 ml-auto">
                 <div className="flex items-center justify-between mb-4">
-                    <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                    <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">
                         Latest Comments
                     </h5>
-                    <a
+                    {/* <a
                         href="#"
                         className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
                         View all
-                    </a>
+                    </a> */}
                 </div>
-                <div className="flow-root">
+                <div className="pl-2 flow-root">
                     <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                         {comments.map((comment) => {
                             return (
@@ -136,6 +138,6 @@ const CommentsContainer = () => {
             </div>
         </>
     );
-};
+});
 
 export default CommentsContainer;
