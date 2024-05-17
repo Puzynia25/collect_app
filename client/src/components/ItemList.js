@@ -40,8 +40,8 @@ const ItemList = observer(() => {
     }, [collection.selectedCategory]);
 
     return (
-        <>
-            <div className="flex w-full mt-12">
+        <div className="px-2">
+            <div className="flex w-full mt-7">
                 <div className="ms-2">
                     <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
                         My items:
@@ -232,7 +232,7 @@ const ItemList = observer(() => {
             </div>
 
             <CreateItem show={onShowModal} onHide={() => onHide()} />
-        </>
+        </div>
     );
 });
 
