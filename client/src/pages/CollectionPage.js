@@ -30,6 +30,7 @@ const CollectionPage = observer(() => {
         <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
             <CollectionBar />
             <ContentWrapper>
+                <Badge category={collection.oneCollection.category?.name} />
                 <ItemList />
             </ContentWrapper>
         </div>

@@ -68,7 +68,7 @@ class UserController {
         const deletedUser = await User.destroy({ where: { id } });
 
         if (deletedUser === 0) {
-            return next(ApiError.badRequest("User not found"));
+            return next(ApiError.badRequest("User is not found"));
         }
 
         return res.status(204).send();

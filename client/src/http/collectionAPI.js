@@ -23,14 +23,21 @@ export const fetchOneCollection = async (id) => {
     return data;
 };
 
+export const removeOneCollection = async (id) => {
+    const { data } = await $authHost.delete("api/collection/" + id, {
+        data: { id },
+    });
+    return data;
+};
+
 export const fetchAllCategories = async () => {
     const { data } = await $host.get("api/category");
     return data;
 };
 
-export const fetchCategory = async (categoryId) => {
-    const { data } = await $host.post("api/category/:id", {
-        id: categoryId,
-    });
-    return data;
-};
+// export const fetchCategory = async (categoryId) => {
+//     const { data } = await $host.post("api/category/:id", {
+//         id: categoryId,
+//     });
+//     return data;
+// };

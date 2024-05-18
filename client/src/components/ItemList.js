@@ -5,7 +5,7 @@ import { Context } from "..";
 import Badge from "./Badge";
 import { observer } from "mobx-react-lite";
 import CreateItem from "../components/modals/CreateItem";
-import { fetchAllItems } from "../http/itemAPI";
+import { fetchAllItems, removeOne } from "../http/itemAPI";
 
 const ItemList = observer(() => {
     const { collection, item } = useContext(Context);
@@ -21,21 +21,29 @@ const ItemList = observer(() => {
         setOnShowModal(false);
     };
 
+    const onDeleteItem = (itemId) => {
+        removeOne(itemId)
+            .then(() => setItemsByCategory(itemsByCategory.filter((el) => el.id !== itemId)))
+            .catch((err) => console.log(err));
+    };
+
     const { pathname } = useLocation();
 
     useEffect(() => {
+        fetchAllItems(id)
+            .then((data) => setItemsByCategory(item.items))
+            .catch((err) => console.log(err));
+    }, []);
+
+    useEffect(() => {
         if (pathname === MAIN_ROUTE) {
-            fetchAllItems(id)
-                .then((data) => item.setItems(data.rows))
-                .then(() => {
-                    if (collection.selectedCategory.name !== "All") {
-                        setItemsByCategory(
-                            item.items.filter(
-                                (el) => el.collection.categoryId === collection.selectedCategory.id
-                            )
-                        );
-                    } else setItemsByCategory(item.items);
-                });
+            collection.selectedCategory.name !== "All"
+                ? setItemsByCategory(
+                      item.items.filter(
+                          (el) => el.collection.categoryId === collection.selectedCategory.id
+                      )
+                  )
+                : setItemsByCategory(item.items);
         }
     }, [collection.selectedCategory]);
 
@@ -159,11 +167,11 @@ const ItemList = observer(() => {
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <NavLink
-                                                to={ITEM_ROUTE + "/" + el.id}
+                                            <a
+                                                href={ITEM_ROUTE + "/" + el.id}
                                                 className="hover:underline">
                                                 {el.name}
-                                            </NavLink>
+                                            </a>
                                         </th>
                                         <td className="px-6 py-4 hover:underline">
                                             <a href={USER_ROUTE + "/" + el.collection?.user.id}>
@@ -199,7 +207,7 @@ const ItemList = observer(() => {
                                             </a>
                                         </td>
                                         <td className="px-6 py-4 text-right content-center">
-                                            <button>
+                                            <button onClick={() => onDeleteItem(el.id)}>
                                                 <span className="sr-only">Delete</span>
                                                 <svg
                                                     className="w-6 h-6 text-gray-800 dark:text-white"

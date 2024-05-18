@@ -3,6 +3,7 @@ import { Context } from "..";
 import { COLLECTION_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
+import { removeOneCollection } from "../http/collectionAPI";
 
 const CollectionList = observer(({ onShow }) => {
     const { collection } = useContext(Context);
@@ -17,6 +18,14 @@ const CollectionList = observer(({ onShow }) => {
             );
         } else setCollectionsByCategory(collection.allCollections);
     }, [collection.selectedCategory]);
+
+    const onDelete = (id) => {
+        removeOneCollection(id)
+            .then(() =>
+                setCollectionsByCategory(collectionsByCategory.filter((el) => el.id !== id))
+            )
+            .catch((err) => console.log(err));
+    };
 
     return (
         <>
@@ -148,7 +157,7 @@ const CollectionList = observer(({ onShow }) => {
                                                 </a>
                                             </td>
                                             <td className="px-6 py-4 text-right content-center">
-                                                <button>
+                                                <button onClick={() => onDelete(el.id)}>
                                                     <svg
                                                         className="w-6 h-6 text-gray-800 dark:text-white"
                                                         aria-hidden="true"

@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const { Collection, Category, User } = require("../models/models");
+const { Collection, Category, User, Item } = require("../models/models");
 const uuid = require("uuid");
 const path = require("path");
 
@@ -79,22 +79,16 @@ class CollectionController {
         return res.json(collections);
     }
 
-    // async delete(req, res, next) {
-    //     const { id } = req.body;
-    //     const deletedUser = await Collection.destroy({ where: { id } });
+    async remove(req, res, next) {
+        const { id } = req.body;
+        const deletedCollection = await Collection.destroy({ where: { id } });
 
-    //     if (deletedUser === 0) {
-    //         return next(ApiError.badRequest("User not found"));
-    //     }
+        if (deletedCollection === 0) {
+            return next(ApiError.badRequest("Collection is not found"));
+        }
 
-    //     return res.status(204).send();
-    // }
-
-    // async update(req, res, next) {
-    //     const { ids, status } = req.body;
-    //     await Collection.update({ status }, { where: { id: ids } });
-    //     return res.status(204).send();
-    // }
+        return res.status(204).send();
+    }
 }
 
 module.exports = new CollectionController();

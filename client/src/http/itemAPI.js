@@ -20,3 +20,10 @@ export const fetchOneItem = async (id) => {
     const { data } = await $host.get("api/collection/item/" + id);
     return data;
 };
+
+export const removeOne = async (id) => {
+    const { data } = await $authHost.delete("api/collection/item/" + id, {
+        data: { id },
+    });
+    return data;
+};

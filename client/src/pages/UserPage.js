@@ -17,7 +17,9 @@ const UserPage = observer(() => {
 
     useEffect(() => {
         //загрузка всех коллекций юзера
-        fetchAllCollections(null, id).then((data) => collection.setAllCollections(data.rows));
+        fetchAllCollections(null, id, null, 10).then((data) =>
+            collection.setAllCollections(data.rows)
+        );
         fetchAllCategories().then((data) => collection.setAllCategories(data));
     }, []);
 
