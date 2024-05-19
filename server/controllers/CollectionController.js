@@ -1,21 +1,26 @@
 const ApiError = require("../error/ApiError");
-const { Collection, Category, User, Item } = require("../models/models");
+const { Collection, Category } = require("../models/models");
 const uuid = require("uuid");
-const path = require("path");
+const cloudinary = require("../cloudinaryConfig");
 
 class CollectionController {
     async create(req, res, next) {
         try {
             const { name, description, userId, categoryId } = req.body;
             const { img } = req.files;
-            console.log(img, "!!!!!!!!!!!!!!!!!!!!!!!");
             let fileName = uuid.v4() + ".jpg";
-            img.mv(path.resolve(__dirname, "..", "static", fileName));
+            const resultFile = await cloudinary.uploader.upload(img.tempFilePath, {
+                public_id: fileName,
+                folder: "collections",
+                use_filename: true,
+                unique_filename: false,
+                overwrite: true,
+            });
 
             const collection = await Collection.create({
                 name,
                 description,
-                img: fileName,
+                img: resultFile.secure_url,
                 userId,
                 categoryId,
             });
