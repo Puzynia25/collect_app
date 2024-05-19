@@ -1,39 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { COLLECTION_ROUTE, ITEM_ROUTE, MAIN_ROUTE, USER_ROUTE } from "../utils/consts";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Context } from "..";
 import Badge from "./Badge";
 import { observer } from "mobx-react-lite";
-import CreateItem from "../components/modals/CreateItem";
-import { fetchAllItems, removeOne } from "../http/itemAPI";
+import { removeOne } from "../http/itemAPI";
 
 const ItemList = observer(() => {
     const { collection, item } = useContext(Context);
     const [itemsByCategory, setItemsByCategory] = useState(item.items);
-    const [onShowModal, setOnShowModal] = useState(false);
-
-    const { id } = useParams();
-
-    const onShow = () => {
-        setOnShowModal(true);
-    };
-    const onHide = () => {
-        setOnShowModal(false);
-    };
-
-    const onDeleteItem = (itemId) => {
-        removeOne(itemId)
-            .then(() => setItemsByCategory(itemsByCategory.filter((el) => el.id !== itemId)))
-            .catch((err) => console.log(err));
-    };
 
     const { pathname } = useLocation();
-
-    useEffect(() => {
-        fetchAllItems(id)
-            .then((data) => setItemsByCategory(item.items))
-            .catch((err) => console.log(err));
-    }, []);
 
     useEffect(() => {
         if (pathname === MAIN_ROUTE) {
@@ -47,47 +24,20 @@ const ItemList = observer(() => {
         }
     }, [collection.selectedCategory]);
 
+    const onDeleteItem = (itemId) => {
+        removeOne(itemId)
+            .then(() => setItemsByCategory(itemsByCategory.filter((el) => el.id !== itemId)))
+            .catch((err) => console.log(err));
+    };
+
     return (
         <div className="px-2">
-            <div className="flex w-full mt-7">
-                <div className="ms-2">
-                    <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                        My items:
-                    </h2>
-                    <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
-                        A list of all the items in this collection including its name, category and
-                        description.
-                    </p>
-                </div>
-                <button
-                    type="button"
-                    className="ml-auto flex justify-between place-items-center gap-2 place-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    onClick={() => onShow()}>
-                    <svg
-                        className="w-[15px] h-[15px] text-white dark:text-gray-800"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24">
-                        <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M5 12h14m-7 7V5"
-                        />
-                    </svg>
-                    Add item
-                </button>
-            </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-7">
                 <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                                Item
+                                Name
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
@@ -170,7 +120,9 @@ const ItemList = observer(() => {
                                             <a
                                                 href={ITEM_ROUTE + "/" + el.id}
                                                 className="hover:underline">
-                                                {el.name}
+                                                {el.name.length > 20
+                                                    ? el.name.slice(0, 20) + "..."
+                                                    : el.name}
                                             </a>
                                         </th>
                                         <td className="px-6 py-4 hover:underline">
@@ -180,7 +132,9 @@ const ItemList = observer(() => {
                                         </td>
                                         <td className="px-6 py-4 hover:underline">
                                             <a href={COLLECTION_ROUTE + "/" + el.collection?.id}>
-                                                {el.collection?.name}
+                                                {el.collection?.name.length > 20
+                                                    ? el.collection?.name.slice(0, 20) + "..."
+                                                    : el.collection?.name}
                                             </a>
                                         </td>
                                         <td className="px-6 py-4">
@@ -238,8 +192,6 @@ const ItemList = observer(() => {
                     </tbody>
                 </table>
             </div>
-
-            <CreateItem show={onShowModal} onHide={() => onHide()} />
         </div>
     );
 });

@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { Context } from "../..";
-import { createCollection, fetchAllCollections } from "../../http/collectionAPI";
+import { createCollection } from "../../http/collectionAPI";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-const CreateCollection = observer(({ show, onHide }) => {
+const EditCollection = observer(({ show, onHide }) => {
     const { collection } = useContext(Context);
     const { id } = useParams();
 
@@ -15,7 +15,6 @@ const CreateCollection = observer(({ show, onHide }) => {
 
     const selectFile = (e) => {
         setFile(e.target.files[0]);
-        // console.log(process.env.REACT_APP_CLOUD_KEY);
     };
 
     const addCollection = () => {
@@ -162,4 +161,4 @@ const CreateCollection = observer(({ show, onHide }) => {
     );
 });
 
-export default CreateCollection;
+export default EditCollection;

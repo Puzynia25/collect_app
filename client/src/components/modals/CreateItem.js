@@ -11,7 +11,7 @@ const CreateItem = ({ show, onHide }) => {
     const { id } = useParams();
 
     const addItem = () => {
-        createItem({ name, tags: tags[0].split(" "), collectionId: id }).then((data) => {
+        createItem({ name, tags: tags[0].split(","), collectionId: id }).then((data) => {
             return setName(""), setTags([]), onHide();
         });
     };

@@ -9,7 +9,7 @@ const CollectionBar = () => {
                 <div className="mt-2 px-2">
                     <img
                         className="h-64 object-cover mx-auto"
-                        src={process.env.REACT_APP_API_URL + collection.oneCollection.img}
+                        src={collection.oneCollection.img}
                         alt=""
                     />
                     <div className="p-4 max-w-lg place-content-center">
