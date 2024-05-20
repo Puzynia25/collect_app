@@ -4,64 +4,7 @@ export default class UserStore {
     constructor() {
         this._isAuth = false;
         this._userData = {};
-        this._users = [
-            {
-                id: 1,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "active",
-                role: "ADMIN",
-            },
-            {
-                id: 2,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "blocked",
-                role: "USER",
-            },
-            {
-                id: 3,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "active",
-                role: "USER",
-            },
-            {
-                id: 4,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "active",
-                role: "USER",
-            },
-            {
-                id: 5,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "active",
-                role: "USER",
-            },
-            {
-                id: 6,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "active",
-                role: "USER",
-            },
-            {
-                id: 7,
-                name: "Vitalina",
-                email: "vitalina@gmail.com",
-                password: "vitalina",
-                status: "active",
-                role: "USER",
-            },
-        ];
+        this._users = [];
 
         makeAutoObservable(this);
     }

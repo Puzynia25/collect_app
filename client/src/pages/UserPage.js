@@ -9,7 +9,7 @@ import CreateCollection from "../components/modals/CreateCollection";
 import CollectionList from "../components/CollectionList";
 
 const UserPage = observer(() => {
-    const { collection } = useContext(Context);
+    const { collection, user } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -38,36 +38,43 @@ const UserPage = observer(() => {
                 <div className="flex justify-between">
                     <div>
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                            Collections:
+                            Collections
                         </h2>
-                        <p className="mt-2 text-sm text-gray-900 dark:text-gray-400">
+                        <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            Author:{" "}
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                                {collection.allCollections[0]?.user.name}
+                            </span>
+                        </p>
+                        <p className="mt-9 text-sm text-gray-900 dark:text-gray-400">
                             A list of all the collections in your account including their name,
                             category and description.
                         </p>
                     </div>
-
-                    <button
-                        type="button"
-                        className="flex justify-between place-items-center gap-2 place-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={onShow}>
-                        <svg
-                            className="w-[15px] h-[15px] text-white dark:text-gray-800"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24">
-                            <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="3"
-                                d="M5 12h14m-7 7V5"
-                            />
-                        </svg>
-                        Add collection
-                    </button>
+                    {user.userData.id == id || user.userData.role === "ADMIN" ? (
+                        <button
+                            type="button"
+                            className="flex justify-between place-items-center place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            onClick={onShow}>
+                            <svg
+                                className="w-[15px] h-[15px] text-white dark:text-gray-800"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill="none"
+                                viewBox="0 0 24 24">
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M5 12h14m-7 7V5"
+                                />
+                            </svg>
+                            Add collection
+                        </button>
+                    ) : null}
                 </div>
                 <CollectionList loading={loading} />
             </ContentWrapper>

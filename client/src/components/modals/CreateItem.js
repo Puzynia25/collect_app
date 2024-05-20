@@ -53,7 +53,7 @@ const CreateItem = ({ show, onHide, oneCollection }) => {
                     {/* <!-- Modal body --> */}
                     <form className="py-2 md:py-4 px-2 md:px-7">
                         <div className="w-auto">
-                            <Badge category={oneCollection.category?.name} />
+                            <Badge category={oneCollection?.category?.name} />
                         </div>
                         <div className="py-2 md:py-4">
                             <div className="grid gap-4 mb-4 grid-cols-2">
@@ -85,7 +85,7 @@ const CreateItem = ({ show, onHide, oneCollection }) => {
                                         id="description"
                                         rows="4"
                                         className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Write your tags here"
+                                        placeholder="Write, your, tags, here"
                                         value={tags}
                                         onChange={(e) => setTags([e.target.value])}
                                     />

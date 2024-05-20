@@ -18,7 +18,6 @@ const NavBar = observer(() => {
         localStorage.removeItem("token");
         user.setUserData({});
         user.setIsAuth(false);
-        navigate(MAIN_ROUTE);
     };
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg border">

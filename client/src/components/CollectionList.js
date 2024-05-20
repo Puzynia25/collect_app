@@ -31,7 +31,7 @@ const CollectionList = observer(({ loading }) => {
     return (
         <>
             <div className="mt-4">
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-24 md:mt-9">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-12 md:mt-4">
                     <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -152,7 +152,7 @@ const CollectionList = observer(({ loading }) => {
                                 })
                             ) : (
                                 <tr className="w-full">
-                                    <td className="p-5">
+                                    <td className="p-5" colSpan={5}>
                                         There is no any collection in this category...
                                     </td>
                                 </tr>

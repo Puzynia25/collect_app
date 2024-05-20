@@ -135,55 +135,15 @@ const Admin = observer(() => {
                                             <td className="px-6 py-4">{user.email}</td>
                                             <td className="px-6 py-4">13.05.2024</td>
                                             <td className="px-6 py-4">15.05.2024</td>
-                                            <td className="pl-10 py-4">
-                                                {user.status === "active" ? (
-                                                    <button>
-                                                        <svg
-                                                            className="w-6 h-6 text-gray-800 dark:text-white"
-                                                            aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth="1.3"
-                                                                d="M10 14v3m4-6V7a3 3 0 1 1 6 0v4M5 11h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                ) : (
-                                                    <button>
-                                                        <svg
-                                                            className="w-6 h-6 text-gray-800 dark:text-white"
-                                                            aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth="1.3"
-                                                                d="M12 14v3m-3-6V7a3 3 0 1 1 6 0v4m-8 0h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                )}
-
-                                                {/* <p
+                                            <td className="px-6 py-4">
+                                                <p
                                                     className={
                                                         user.status === "active"
                                                             ? "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
                                                             : "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
                                                     }>
                                                     {user.status}
-                                                </p> */}
+                                                </p>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <p

@@ -29,6 +29,6 @@ export const removeOne = async (id) => {
 };
 
 export const fetchAllTags = async () => {
-    const { data } = await $host.get("api/collection/item/tag");
+    const { data } = await $host.get("api/collection/item/tags");
     return data;
 };

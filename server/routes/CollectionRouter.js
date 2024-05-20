@@ -8,6 +8,7 @@ const router = new Router();
 
 router.use("/item", ItemRouter);
 router.post("/", authMiddleware, CollectionController.create);
+router.get("/biggest", CollectionController.getBiggest);
 router.get("/", CollectionController.getAll);
 router.get("/:id", CollectionController.getOne);
 router.delete("/:id", authMiddleware, CollectionController.remove);

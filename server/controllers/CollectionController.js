@@ -1,7 +1,8 @@
 const ApiError = require("../error/ApiError");
-const { Collection, Category } = require("../models/models");
+const { Collection, Category, User, Item } = require("../models/models");
 const uuid = require("uuid");
 const cloudinary = require("../cloudinaryConfig");
+const sequelize = require("../db");
 
 class CollectionController {
     async create(req, res, next) {
@@ -34,9 +35,7 @@ class CollectionController {
         const { id } = req.params;
         const collection = await Collection.findOne({
             where: { id },
-            include: {
-                model: Category,
-            },
+            include: [User, Category],
         });
         return res.json(collection);
     }
@@ -51,7 +50,7 @@ class CollectionController {
         if (categoryId && !userId) {
             collections = await Collection.findAndCountAll({
                 where: { categoryId },
-                include: Category,
+                include: [User, Category],
                 limit,
                 offset,
             });
@@ -59,7 +58,7 @@ class CollectionController {
         if (!categoryId && userId) {
             collections = await Collection.findAndCountAll({
                 where: { userId },
-                include: Category,
+                include: [User, Category],
                 limit,
                 offset,
             });
@@ -68,14 +67,14 @@ class CollectionController {
         if (categoryId && userId) {
             collections = await Collection.findAndCountAll({
                 where: { categoryId, userId },
-                include: Category,
+                include: [User, Category],
                 limit,
                 offset,
             });
         }
         if (!categoryId && !userId) {
             collections = await Collection.findAndCountAll({
-                include: Category,
+                include: [User, Category],
                 limit,
                 offset,
             });
@@ -93,6 +92,38 @@ class CollectionController {
         }
 
         return res.status(204).send();
+    }
+
+    async getBiggest(req, res) {
+        const collections = await Collection.findAll({
+            attributes: {
+                include: [[sequelize.fn("COUNT", sequelize.col("items.id")), "item_count"]],
+            },
+            include: [
+                {
+                    model: Item,
+                    attributes: [],
+                },
+                {
+                    model: User,
+                    attributes: ["name"],
+                },
+                {
+                    model: Category,
+                    attributes: ["name"],
+                },
+            ],
+            group: ["collection.id", "user.id", "category.id"],
+            order: [[sequelize.literal("item_count"), "DESC"]],
+            limit: 5,
+            subQuery: false,
+        });
+
+        if (!collections) {
+            return next(ApiError.badRequest("Collections are not found"));
+        }
+
+        return res.json(collections);
     }
 }
 

@@ -3,7 +3,7 @@ const ItemBar = ({ item }) => {
         <aside className="hidden md:w-1/3 lg:w-1/4 md:block">
             <div className="sticky top-0 flex flex-col gap-2 p-5 border md:rounded-3xl md:shadow-lg">
                 <div className=" dark:bg-gray-800 m-2">
-                    <div className="w-1/3">
+                    <div>
                         <a href="#">
                             <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                                 {item.name}
@@ -18,7 +18,7 @@ const ItemBar = ({ item }) => {
                             </h5>
                         </a>
 
-                        <div className="mt-9">
+                        <div className="mt-9 w-1/3">
                             <div className="">
                                 <span className="flex items-center gap-3 bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 text-xs font-medium me-2 px-3 py-2 rounded-full dark:bg-gray-700 dark:text-gray-300">
                                     <svg

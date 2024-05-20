@@ -9,7 +9,6 @@ import { removeOne } from "../http/itemAPI";
 const ItemList = observer(() => {
     const { collection, item } = useContext(Context);
     const [itemsByCategory, setItemsByCategory] = useState(item.items);
-
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -24,8 +23,6 @@ const ItemList = observer(() => {
         }
     }, [collection.selectedCategory]);
 
-    console.log(item.items, "???????");
-
     const onDeleteItem = (itemId) => {
         removeOne(itemId)
             .then(() => setItemsByCategory(itemsByCategory.filter((el) => el.id !== itemId)))
@@ -34,7 +31,7 @@ const ItemList = observer(() => {
 
     return (
         <div className="px-2">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-7">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-12">
                 <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -188,7 +185,9 @@ const ItemList = observer(() => {
                             })
                         ) : (
                             <tr className="w-full">
-                                <td className="p-5">There is no any items in this category...</td>
+                                <td className="p-5" colSpan={7}>
+                                    There is no any items in this category...
+                                </td>
                             </tr>
                         )}
                     </tbody>

@@ -35,6 +35,11 @@ export const fetchAllCategories = async () => {
     return data;
 };
 
+export const fetchBiggest = async () => {
+    const { data } = await $host.get("api/collection/biggest");
+    return data;
+};
+
 // export const fetchCategory = async (categoryId) => {
 //     const { data } = await $host.post("api/category/:id", {
 //         id: categoryId,

@@ -4,14 +4,12 @@ import { COLLECTION_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
 
-const CollectionCards = observer(() => {
-    const { collection } = useContext(Context);
-
+const CollectionCards = ({ collections }) => {
     return (
         <>
             <h2 className="font-bold text-xl md:text-2xl mt-24">The biggest collections</h2>
             <div className="flex flex-row gap-3 flex-nowrap w-full overflow-auto">
-                {collection.allCollections.map((col) => {
+                {collections.map((col) => {
                     return (
                         <div
                             key={col.id}
@@ -34,7 +32,13 @@ const CollectionCards = observer(() => {
                                             ? col.name.slice(0, 20) + "..."
                                             : col.name}
                                     </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                    <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        Author:{" "}
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                                            {col.user.name}
+                                        </span>
+                                    </p>
+                                    <p className="mt-7 mb-3 font-normal text-gray-700 dark:text-gray-400">
                                         {col.description
                                             ? col.description.slice(0, 115) + "..."
                                             : "There is no description about this collection..."}
@@ -72,6 +76,6 @@ const CollectionCards = observer(() => {
             </div>
         </>
     );
-});
+};
 
 export default CollectionCards;
