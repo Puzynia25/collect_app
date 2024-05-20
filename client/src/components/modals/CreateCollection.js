@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { Context } from "../..";
-import { createCollection, fetchAllCollections } from "../../http/collectionAPI";
+import { createCollection } from "../../http/collectionAPI";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-const CreateCollection = observer(({ show, onHide }) => {
+const CreateCollection = observer(({ show, onHide, setLoading }) => {
     const { collection } = useContext(Context);
     const { id } = useParams();
 
@@ -15,10 +15,11 @@ const CreateCollection = observer(({ show, onHide }) => {
 
     const selectFile = (e) => {
         setFile(e.target.files[0]);
-        // console.log(process.env.REACT_APP_CLOUD_KEY);
     };
 
-    const addCollection = () => {
+    const addCollection = (e) => {
+        e.preventDefault();
+        setLoading(true);
         const userId = Number(id);
         const formData = new FormData();
         formData.append("name", name);
@@ -27,11 +28,19 @@ const CreateCollection = observer(({ show, onHide }) => {
         formData.append("userId", userId);
         formData.append("categoryId", categoryId);
         // formData.append('info', JSON.stringify(info))
+
         createCollection(formData)
-            .then((data) => {
-                return onHide(), setName(""), setFile(null), setDescription("");
-            })
-            .catch((e) => console.log(e));
+            .then(
+                () => (
+                    window.location.reload(),
+                    onHide(),
+                    setName(""),
+                    setFile(null),
+                    setDescription("")
+                )
+            )
+            .catch((e) => alert(e.response.message))
+            .finally(() => setLoading(false));
     };
 
     return (
@@ -102,11 +111,13 @@ const CreateCollection = observer(({ show, onHide }) => {
                                     className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     onChange={(e) => setCategoryId(Number(e.target.value))}>
                                     {collection.allCategories.map((el) => {
-                                        return (
-                                            <option key={el.id} value={el.id}>
-                                                {el.name}
-                                            </option>
-                                        );
+                                        if (el.id !== 0) {
+                                            return (
+                                                <option key={el.id} value={el.id}>
+                                                    {el.name}
+                                                </option>
+                                            );
+                                        }
                                     })}
                                 </select>
                             </div>
@@ -142,7 +153,7 @@ const CreateCollection = observer(({ show, onHide }) => {
                         <button
                             type="submit"
                             className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={addCollection}>
+                            onClick={(e) => addCollection(e)}>
                             <svg
                                 className="me-1 -ms-1 w-5 h-5"
                                 fill="currentColor"

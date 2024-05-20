@@ -4,7 +4,6 @@ export default class CollectionStore {
     constructor() {
         this._allCategories = [];
         this._selectedCategory = {};
-        this._oneCollection = {};
         this._allCollections = [];
         this._totalCollectionsCount = 0;
         makeAutoObservable(this);
@@ -16,10 +15,6 @@ export default class CollectionStore {
 
     setSelectedCategory(category) {
         this._selectedCategory = category;
-    }
-
-    setOneCollection(collection) {
-        this._oneCollection = collection;
     }
 
     setAllCollections(collections) {
@@ -36,10 +31,6 @@ export default class CollectionStore {
 
     get selectedCategory() {
         return this._selectedCategory;
-    }
-
-    get oneCollection() {
-        return this._oneCollection;
     }
 
     get allCollections() {

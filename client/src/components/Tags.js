@@ -1,4 +1,5 @@
 const Tags = ({ tags }) => {
+    // const allTags = ["drgreg", "rgredhgreg", "rgregreg"];
     return (
         <div>
             <h2 className="flex flex-row flex-nowrap items-center mt-24">

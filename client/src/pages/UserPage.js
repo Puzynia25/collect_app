@@ -11,6 +11,8 @@ import CollectionList from "../components/CollectionList";
 const UserPage = observer(() => {
     const { collection } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const { id } = useParams();
 
     // const customFields = [];
@@ -20,7 +22,6 @@ const UserPage = observer(() => {
         fetchAllCollections(null, id, null, 10).then((data) =>
             collection.setAllCollections(data.rows)
         );
-        fetchAllCategories().then((data) => collection.setAllCategories(data));
     }, []);
 
     const onShow = () => {
@@ -68,9 +69,9 @@ const UserPage = observer(() => {
                         Add collection
                     </button>
                 </div>
-                <CollectionList />
+                <CollectionList loading={loading} />
             </ContentWrapper>
-            <CreateCollection show={onShowModal} onHide={() => onHide()} />
+            <CreateCollection show={onShowModal} onHide={() => onHide()} setLoading={setLoading} />
         </div>
     );
 });

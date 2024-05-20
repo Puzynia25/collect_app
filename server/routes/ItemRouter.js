@@ -1,8 +1,10 @@
 const Router = require("express");
 const ItemController = require("../controllers/ItemController");
+const TagRouter = require("./TagRouter");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = new Router();
 
+router.use("/tag", TagRouter);
 router.post("/", ItemController.create);
 router.get("/", ItemController.getAll);
 router.get("/:id", ItemController.getOne);

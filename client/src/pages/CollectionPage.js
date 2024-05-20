@@ -13,12 +13,13 @@ import CreateItem from "../components/modals/CreateItem";
 const CollectionPage = observer(() => {
     const { item, collection } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
+    const [oneCollection, setOneCollection] = useState({});
     const { id } = useParams();
 
     const customFields = [];
 
     useEffect(() => {
-        fetchOneCollection(id).then((data) => collection.setOneCollection(data));
+        fetchOneCollection(id).then((data) => setOneCollection(data));
         fetchAllItems(id).then((data) => item.setItems(data.rows));
         fetchAllCategories().then((data) => collection.setAllCategories(data));
     }, []);
@@ -32,9 +33,9 @@ const CollectionPage = observer(() => {
 
     return (
         <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
-            <CollectionBar />
+            <CollectionBar oneCollection={oneCollection} />
             <ContentWrapper>
-                <Badge category={collection.oneCollection.category?.name} />
+                <Badge category={oneCollection.category?.name} />
                 <div className="flex w-full mt-7">
                     <div className="ms-2">
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
@@ -69,7 +70,11 @@ const CollectionPage = observer(() => {
                     </button>
                 </div>
                 <ItemList />
-                <CreateItem show={onShowModal} onHide={() => onHide()} />
+                <CreateItem
+                    show={onShowModal}
+                    onHide={() => onHide()}
+                    oneCollection={oneCollection}
+                />
             </ContentWrapper>
         </div>
     );

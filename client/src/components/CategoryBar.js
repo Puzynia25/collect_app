@@ -7,15 +7,10 @@ const CategoryBar = observer(() => {
     const { collection } = useContext(Context);
 
     useEffect(() => {
-        fetchAllCategories()
-            .then((data) => collection.setAllCategories(data))
-            .then(() => {
-                collection.allCategories.forEach((el) => {
-                    if (el.name === "All") {
-                        collection.setSelectedCategory(el);
-                    }
-                });
-            });
+        fetchAllCategories().then((categories) => {
+            collection.setAllCategories([{ id: 0, name: "All" }, ...categories]);
+            collection.setSelectedCategory(collection.allCategories[0]);
+        });
     }, []);
 
     return (

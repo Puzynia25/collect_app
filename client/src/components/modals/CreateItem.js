@@ -1,11 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Badge from "../Badge";
 import { createItem } from "../../http/itemAPI";
 import { useParams } from "react-router-dom";
-import { Context } from "../..";
 
-const CreateItem = ({ show, onHide }) => {
-    const { collection } = useContext(Context);
+const CreateItem = ({ show, onHide, oneCollection }) => {
     const [name, setName] = useState("");
     const [tags, setTags] = useState([]);
     const { id } = useParams();
@@ -55,7 +53,7 @@ const CreateItem = ({ show, onHide }) => {
                     {/* <!-- Modal body --> */}
                     <form className="py-2 md:py-4 px-2 md:px-7">
                         <div className="w-auto">
-                            <Badge category={collection.oneCollection.category?.name} />
+                            <Badge category={oneCollection.category?.name} />
                         </div>
                         <div className="py-2 md:py-4">
                             <div className="grid gap-4 mb-4 grid-cols-2">

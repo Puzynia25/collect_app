@@ -24,6 +24,8 @@ const ItemList = observer(() => {
         }
     }, [collection.selectedCategory]);
 
+    console.log(item.items, "???????");
+
     const onDeleteItem = (itemId) => {
         removeOne(itemId)
             .then(() => setItemsByCategory(itemsByCategory.filter((el) => el.id !== itemId)))

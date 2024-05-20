@@ -4,8 +4,9 @@ import { COLLECTION_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
 import { removeOneCollection } from "../http/collectionAPI";
+import Spinner from "./Spinner";
 
-const CollectionList = observer(() => {
+const CollectionList = observer(({ loading }) => {
     const { collection } = useContext(Context);
     const [collectionsByCategory, setCollectionsByCategory] = useState(collection.allCollections);
 
@@ -17,8 +18,7 @@ const CollectionList = observer(() => {
                 )
             );
         } else setCollectionsByCategory(collection.allCollections);
-        console.log(collection.allCollections);
-    }, [collection.selectedCategory]);
+    }, [collection.selectedCategory, collection.allCollections]);
 
     const onDelete = (id) => {
         removeOneCollection(id)
@@ -78,7 +78,13 @@ const CollectionList = observer(() => {
                             </tr>
                         </thead>
                         <tbody>
-                            {collectionsByCategory.length > 0 ? (
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="5" className="p-2 text-center">
+                                        <Spinner />
+                                    </td>
+                                </tr>
+                            ) : collectionsByCategory.length > 0 ? (
                                 collectionsByCategory.map((el) => {
                                     return (
                                         <tr

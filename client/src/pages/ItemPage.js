@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ContentWrapper from "../components/ContentWrapper";
 import { Context } from "..";
-import CategoryBar from "../components/CategoryBar";
 import CommentsContainer from "../components/CommentsContainer";
 import Badge from "../components/Badge";
 import CreateItem from "../components/modals/CreateItem";
