@@ -7,7 +7,7 @@ import { fetchAllCollections, fetchBiggest } from "../http/collectionAPI";
 import { observer } from "mobx-react-lite";
 import ItemList from "../components/ItemList";
 import CollectionCards from "../components/CollectionCards";
-import { fetchAllItems, fetchAllTags } from "../http/itemAPI";
+import { fetchAllItems, fetchPopularTags } from "../http/itemAPI";
 import Spinner from "../components/Spinner";
 
 const MainPage = observer(() => {
@@ -20,7 +20,7 @@ const MainPage = observer(() => {
         Promise.race([
             fetchAllCollections().then((data) => collection.setAllCollections(data.rows)),
             fetchAllItems().then((data) => item.setItems(data.rows)),
-            fetchAllTags().then((data) => setTags(data)),
+            // fetchPopularTags().then((data) => setTags(data)),
             fetchBiggest().then((data) => setBiggestCollections(data)),
         ]).finally(() => setLoading(false));
     }, []);

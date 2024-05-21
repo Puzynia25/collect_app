@@ -48,8 +48,8 @@ class UserController {
             return next(ApiError.badRequest("Wrong password"));
         }
 
-        // user.lastLogin = new Date();
-        // await user.save();
+        user.lastLogin = new Date();
+        await user.save();
 
         const token = generateJwt(user.id, user.name, user.email, user.role);
         return res.json({ token });

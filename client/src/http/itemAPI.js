@@ -28,7 +28,7 @@ export const removeOne = async (id) => {
     return data;
 };
 
-export const fetchAllTags = async () => {
+export const fetchPopularTags = async () => {
     const { data } = await $host.get("api/collection/item/tags");
     return data;
 };

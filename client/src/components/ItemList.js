@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { COLLECTION_ROUTE, ITEM_ROUTE, MAIN_ROUTE, USER_ROUTE } from "../utils/consts";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Context } from "..";
 import Badge from "./Badge";
 import { observer } from "mobx-react-lite";
@@ -10,6 +10,7 @@ const ItemList = observer(() => {
     const { collection, item } = useContext(Context);
     const [itemsByCategory, setItemsByCategory] = useState(item.items);
     const { pathname } = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (pathname === MAIN_ROUTE) {
@@ -116,25 +117,35 @@ const ItemList = observer(() => {
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <a
-                                                href={ITEM_ROUTE + "/" + el.id}
-                                                className="hover:underline">
+                                            <button
+                                                className="hover:underline"
+                                                onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
                                                 {el.name.length > 20
                                                     ? el.name.slice(0, 20) + "..."
                                                     : el.name}
-                                            </a>
+                                            </button>
                                         </th>
                                         <td className="px-6 py-4 hover:underline">
-                                            <a href={USER_ROUTE + "/" + el.collection?.user.id}>
+                                            <button
+                                                onClick={() =>
+                                                    navigate(
+                                                        USER_ROUTE + "/" + el.collection?.user.id
+                                                    )
+                                                }>
                                                 {el.collection?.user.name}
-                                            </a>
+                                            </button>
                                         </td>
                                         <td className="px-6 py-4 hover:underline">
-                                            <a href={COLLECTION_ROUTE + "/" + el.collection?.id}>
+                                            <button
+                                                onClick={() =>
+                                                    navigate(
+                                                        COLLECTION_ROUTE + "/" + el.collection?.id
+                                                    )
+                                                }>
                                                 {el.collection?.name.length > 20
                                                     ? el.collection?.name.slice(0, 20) + "..."
                                                     : el.collection?.name}
-                                            </a>
+                                            </button>
                                         </td>
                                         <td className="px-6 py-4">
                                             <Badge category={el.collection?.category.name} />

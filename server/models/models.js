@@ -8,7 +8,7 @@ const User = sequelize.define("user", {
     password: { type: DataTypes.STRING },
     status: { type: DataTypes.STRING, defaultValue: "active" },
     role: { type: DataTypes.STRING, defaultValue: "USER" },
-    // lastLogin: { type: DataTypes.DATE, allowNull: true },
+    lastLogin: { type: DataTypes.DATE, allowNull: true },
 });
 
 const Category = sequelize.define("category", {
@@ -35,11 +35,19 @@ const Like = sequelize.define("like", {
     like: { type: DataTypes.INTEGER, allowNull: false },
 });
 
+const Comment = sequelize.define("comment", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    content: { type: DataTypes.STRING, allowNull: false },
+});
+
 User.hasMany(Collection);
 Collection.belongsTo(User);
 
 User.hasMany(Like);
 Like.belongsTo(User);
+
+User.hasMany(Comment);
+Comment.belongsTo(User);
 
 Category.hasMany(Collection);
 Collection.belongsTo(Category);
@@ -50,4 +58,7 @@ Item.belongsTo(Collection);
 Item.hasMany(Like);
 Like.belongsTo(Item);
 
-module.exports = { User, Category, Collection, Item, Like };
+Item.hasMany(Comment);
+Comment.belongsTo(Item);
+
+module.exports = { User, Category, Collection, Item, Like, Comment };

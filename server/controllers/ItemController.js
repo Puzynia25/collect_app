@@ -3,9 +3,13 @@ const { Item, User, Collection, Category } = require("../models/models");
 
 class ItemController {
     async create(req, res, next) {
-        const { name, tags, collectionId } = req.body;
-        const item = await Item.create({ name, tags, collectionId });
-        return res.json(item);
+        try {
+            const { name, tags, collectionId } = req.body;
+            const item = await Item.create({ name, tags, collectionId });
+            return res.json(item);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 
     async getOne(req, res) {
@@ -91,19 +95,22 @@ class ItemController {
         return res.status(204).send();
     }
 
-    async getTags(req, res, next) {
-        const items = await Item.findAll();
+    async getPopularTags(req, res, next) {
+        try {
+            const tags = await Item.findAll({
+                attributes: [[sequelize.fn("unnest", sequelize.col("tags")), "tag"]],
+                group: ["tag"],
+                order: [[sequelize.fn("COUNT", sequelize.col("tag")), "DESC"]],
+                limit: 50,
+                raw: true,
+            });
 
-        if (!items) {
-            return next(ApiError.badRequest("Items are not found"));
+            const formattedTags = tags.map((el) => el.tag);
+            return res.json(formattedTags);
+        } catch (e) {
+            console.error(e);
+            return next(ApiError.internal("Internal server error"));
         }
-
-        const tags = items
-            .map((item) => item.tags)
-            .flat()
-            .slice(0, 50);
-
-        return res.json(tags);
     }
 }
 

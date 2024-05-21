@@ -9,25 +9,25 @@ import { fetchAllCategories } from "../http/collectionAPI";
 import { fetchOneItem } from "../http/itemAPI";
 import { useParams } from "react-router-dom";
 import ItemBar from "../components/ItemBar";
+import { fetchItemComments } from "../http/commentAPI";
 
 const ItemPage = observer(() => {
-    const { collection } = useContext(Context);
+    const { collection, comment } = useContext(Context);
     const { id } = useParams();
     const [item, setItem] = useState({});
 
     useEffect(() => {
         fetchAllCategories().then((data) => collection.setAllCategories(data));
         fetchOneItem(id).then((data) => setItem(data));
+        fetchItemComments(id).then((data) => comment.setComments(data.rows));
     }, []);
-
-    console.log(item);
 
     return (
         <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
             <ItemBar item={item} />
             <ContentWrapper>
                 <Badge category={item.collection?.category.name} />
-                <CommentsContainer />
+                <CommentsContainer item={item} />
             </ContentWrapper>
             <CreateItem />
         </div>

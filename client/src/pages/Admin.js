@@ -302,7 +302,7 @@ const Admin = observer(() => {
                                                 {formattedDate(user.createdAt)}
                                             </td>
                                             <td className="px-6 py-4">
-                                                {formattedDate(user.createdAt)}
+                                                {formattedDate(user.lastLogin)}
                                             </td>
                                             <td className="px-6 py-4">
                                                 {user.status === "active" ? (

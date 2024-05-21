@@ -5,6 +5,7 @@ import App from "./App";
 import UserStore from "./store/UserStore";
 import CollectionStore from "./store/CollectionStore";
 import ItemStore from "./store/ItemStore";
+import CommentStore from "./store/CommentStore";
 
 export const Context = createContext(null);
 
@@ -15,6 +16,7 @@ root.render(
             user: new UserStore(),
             collection: new CollectionStore(),
             item: new ItemStore(),
+            comment: new CommentStore(),
         }}>
         <App />
     </Context.Provider>

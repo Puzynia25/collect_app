@@ -1,29 +1,19 @@
 import { observer } from "mobx-react-lite";
+import { useContext, useState } from "react";
+import { Context } from "..";
+import { createComment } from "../http/commentAPI";
 
-const CommentsContainer = observer(() => {
-    const comments = [
-        {
-            id: 1,
-            author: "Angelina Jolie",
-            email: "a.jolie@gmail.com",
-            content:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lorem nulla. Donec consequat urna a tortor sagittis lobortis.",
-        },
-        {
-            id: 2,
-            author: "Lady Gaga",
-            email: "l.gaga@gmail.com",
-            content:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lorem nulla. Donec consequat urna a tortor sagittis lobortis.",
-        },
-        {
-            id: 3,
-            author: "Eva Mendes",
-            email: "e.mendes@gmail.com",
-            content:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lorem nulla. Donec consequat urna a tortor sagittis lobortis.",
-        },
-    ];
+const CommentsContainer = observer(({ item }) => {
+    const { comment, user } = useContext(Context);
+    const [content, setContent] = useState("");
+
+    const addComment = (e) => {
+        e.preventDefault();
+        createComment({ itemId: item.id, userId: user.userData.id, content })
+            .then((data) => comment.setComments([...comment.comments, data]))
+            .catch((e) => console.log(e));
+        setContent("");
+    };
 
     return (
         <>
@@ -34,95 +24,58 @@ const CommentsContainer = observer(() => {
                     </h5>
                     {/* <a
                         href="#"
-                        className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                        className="px-2 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
                         View all
                     </a> */}
                 </div>
-                <div className="pl-2 flow-root">
+                <div className="px-2 flow-root overflow-auto ">
                     <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {comments.map((comment) => {
-                            return (
-                                <li key={comment.id} className="py-3 sm:py-4">
-                                    <div className="flex items-center">
-                                        <div className="flex-1 min-w-0 ms-4">
-                                            <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                                                {comment.author}
-                                            </p>
-                                            <p className="text-sm text-gray-500  dark:text-gray-400">
-                                                {comment.email}
-                                            </p>
-                                            <p className="text-sm font-normal py-2 text-gray-900 dark:text-white">
-                                                {comment.content}
-                                            </p>
+                        {comment.comments.length > 0 ? (
+                            comment.comments.map((comment) => {
+                                return (
+                                    <li key={comment.id} className="py-3 sm:py-4">
+                                        <div className="flex items-center">
+                                            <div className="flex-1 min-w-0 ms-4">
+                                                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                    {comment.user?.name}
+                                                </p>
+                                                <p className="text-sm text-gray-500  dark:text-gray-400">
+                                                    {comment.user?.email}
+                                                </p>
+                                                <p className="text-sm font-normal py-2 text-gray-900 dark:text-white">
+                                                    {comment.content}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            );
-                        })}
+                                    </li>
+                                );
+                            })
+                        ) : (
+                            <li key={comment.id} className="py-3 sm:py-4">
+                                <div className="flex items-center">
+                                    "Be the first to leave a comment..."
+                                </div>
+                            </li>
+                        )}
                     </ul>
                 </div>
-                <form className="mt-2">
+                {/* Add comment */}
+                <form className="mt-2 ">
                     <label htmlFor="chat" className="sr-only">
                         Your message
                     </label>
                     <div className="flex items-center px-3 py-2 rounded-3xl bg-gray-50 dark:bg-gray-700">
-                        <button
-                            type="button"
-                            className="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg
-                                className="w-5 h-5"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 20 18">
-                                <path
-                                    fill="currentColor"
-                                    d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
-                                />
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M18 1H2a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"
-                                />
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
-                                />
-                            </svg>
-                            <span className="sr-only">Upload image</span>
-                        </button>
-                        <button
-                            type="button"
-                            className="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg
-                                className="w-5 h-5"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 20 20">
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M13.408 7.5h.01m-6.876 0h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM4.6 11a5.5 5.5 0 0 0 10.81 0H4.6Z"
-                                />
-                            </svg>
-                            <span className="sr-only">Add emoji</span>
-                        </button>
                         <textarea
                             id="chat"
                             rows="1"
                             className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Your message..."></textarea>
+                            placeholder="Your message..."
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}></textarea>
                         <button
                             type="submit"
-                            className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                            className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
+                            onClick={addComment}>
                             <svg
                                 className="w-5 h-5 rotate-90 rtl:-rotate-90"
                                 aria-hidden="true"
