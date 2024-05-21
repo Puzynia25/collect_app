@@ -140,16 +140,16 @@ const NavBar = observer(() => {
                         </>
                     ) : (
                         <>
-                            <a
-                                href={LOGIN_ROUTE}
-                                className="text-sm text-blue-600 dark:text-blue-500 hover:underline">
+                            <button
+                                className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+                                onClick={() => navigate(LOGIN_ROUTE)}>
                                 Login
-                            </a>
-                            <a
-                                href={REGISTARTION_ROUTE}
-                                className="text-sm text-blue-600 dark:text-blue-500 hover:underline">
+                            </button>
+                            <button
+                                className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+                                onClick={() => navigate(REGISTARTION_ROUTE)}>
                                 Sign up
-                            </a>
+                            </button>
                         </>
                     )}
                 </div>
