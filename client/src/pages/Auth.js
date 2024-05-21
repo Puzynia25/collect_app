@@ -29,7 +29,7 @@ const Auth = observer(() => {
             user.setIsAuth(true);
             navigate(USER_ROUTE + "/" + user.userData.id);
         } catch (e) {
-            alert(e.response.data.message);
+            alert(e.message);
         }
     };
 

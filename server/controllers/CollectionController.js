@@ -35,7 +35,15 @@ class CollectionController {
         const { id } = req.params;
         const collection = await Collection.findOne({
             where: { id },
-            include: [User, Category],
+            include: [
+                {
+                    model: User,
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: Category,
+                },
+            ],
         });
         return res.json(collection);
     }
@@ -50,7 +58,15 @@ class CollectionController {
         if (categoryId && !userId) {
             collections = await Collection.findAndCountAll({
                 where: { categoryId },
-                include: [User, Category],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "name"],
+                    },
+                    {
+                        model: Category,
+                    },
+                ],
                 limit,
                 offset,
             });
@@ -58,7 +74,15 @@ class CollectionController {
         if (!categoryId && userId) {
             collections = await Collection.findAndCountAll({
                 where: { userId },
-                include: [User, Category],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "name"],
+                    },
+                    {
+                        model: Category,
+                    },
+                ],
                 limit,
                 offset,
             });
@@ -67,14 +91,30 @@ class CollectionController {
         if (categoryId && userId) {
             collections = await Collection.findAndCountAll({
                 where: { categoryId, userId },
-                include: [User, Category],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "name"],
+                    },
+                    {
+                        model: Category,
+                    },
+                ],
                 limit,
                 offset,
             });
         }
         if (!categoryId && !userId) {
             collections = await Collection.findAndCountAll({
-                include: [User, Category],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "name"],
+                    },
+                    {
+                        model: Category,
+                    },
+                ],
                 limit,
                 offset,
             });

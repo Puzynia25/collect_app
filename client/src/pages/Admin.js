@@ -1,21 +1,168 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "..";
-import { NavLink } from "react-router-dom";
-import { LOGIN_ROUTE } from "../utils/consts";
+import { USER_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
+import { deleteUser, fetchAllUsers, updateStatusOrRole } from "../http/userAPI";
 
 const Admin = observer(() => {
     const { user } = useContext(Context);
+    const [userTotal, setUserTotal] = useState(0);
+    const [selectedIds, setSelectedIds] = useState([]);
+    const [selectedAll, setSelectedAll] = useState(false);
+    const [status, setStatus] = useState("");
+    const [role, setRole] = useState("");
+
+    useEffect(() => {
+        fetchAllUsers()
+            .then((data) => (user.setUsers(data.rows), setUserTotal(data.count)))
+            .catch((e) => console.log(e));
+    }, []);
+
+    useEffect(() => {
+        if (user.users.length !== 0) {
+            setSelectedAll(selectedIds.length === user.users.length);
+        }
+    }, [selectedIds]);
+
+    const onSelectedAllChange = (event) => {
+        const isChecked = event.target.checked;
+        setSelectedAll(isChecked);
+
+        if (isChecked) {
+            setSelectedIds(user.users.map((item) => item.id));
+        } else {
+            setSelectedIds([]);
+        }
+    };
+
+    const onCheckboxChange = (e, id) => {
+        const isChecked = e.target.checked;
+
+        setSelectedIds((prevSelectedItems) => {
+            if (isChecked) {
+                return [...prevSelectedItems, id];
+            } else {
+                return prevSelectedItems.filter((itemId) => itemId !== id);
+            }
+        });
+    };
+
+    const onRoleChange = (e) => {
+        const newRole = e.target.value;
+        setRole(newRole);
+
+        selectedIds.map((id) => updateStatusOrRole(id, null, newRole).catch((e) => console.log(e)));
+
+        const updateUsers = user.users.map((user) => {
+            if (selectedIds.includes(user.id)) {
+                return { ...user, role: newRole };
+            }
+            return user;
+        });
+
+        user.setUsers(updateUsers);
+        setSelectedIds([]);
+    };
+
+    const onStatusChange = (e) => {
+        const newStatus = e.target.value;
+        setStatus(newStatus);
+
+        selectedIds.map((id) =>
+            updateStatusOrRole(id, newStatus, null).catch((e) => console.log(e))
+        );
+
+        const updateUsers = user.users.map((user) => {
+            if (selectedIds.includes(user.id)) {
+                return { ...user, status: newStatus };
+            }
+            return user;
+        });
+
+        user.setUsers(updateUsers);
+        setSelectedIds([]);
+    };
+
+    const onDelete = (id) => {
+        deleteUser(id)
+            .then(
+                () => user.setUsers(user.users.filter((user) => user.id !== id)),
+                setSelectedIds([])
+            )
+            .catch((e) => console.log(e));
+    };
+
+    const formattedDate = (currentDate) => {
+        const date = new Date(currentDate);
+
+        const options = {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        };
+        const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(date);
+
+        return formattedDate.replace(",", "").replace(",", "");
+    };
 
     return (
         <div className="bg-white w-full mt-9">
             <main className="w-full min-h-screen">
                 <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border w-full">
-                    <div>Users</div>
-                    <div className="mb-8 md:mt-24 relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div className="ms-2">
+                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
+                            Users
+                        </h2>
+                    </div>
+                    {/* Dropdowns */}
+                    <div className="ms-4 mt-7 flex gap-3">
+                        <div>
+                            <select
+                                id="status"
+                                className="cursor-pointer items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                value={status}
+                                onChange={onStatusChange}>
+                                <option defaultValue="active">Status</option>
+                                <option value="active">Active</option>
+                                <option value="blocked">Blocked</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select
+                                id="role"
+                                className="cursor-pointer items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                value={role}
+                                onChange={onRoleChange}>
+                                <option defaultValue="USER">Role</option>
+                                <option value="USER">User</option>
+                                <option value="ADMIN">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    {/* Table */}
+                    <div className="mb-4 ms-4 md:mt-4 relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
+                                    <th scope="col" className="p-4 ">
+                                        <div className="flex items-center ">
+                                            <input
+                                                id="checkbox-all-search"
+                                                type="checkbox"
+                                                className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                checked={selectedAll}
+                                                onChange={onSelectedAllChange}
+                                            />
+                                            <label
+                                                htmlFor="checkbox-all-search"
+                                                className="sr-only">
+                                                checkbox
+                                            </label>
+                                        </div>
+                                    </th>
                                     <th scope="col" className="px-6 py-3">
                                         #
                                     </th>
@@ -119,44 +266,111 @@ const Admin = observer(() => {
                                     return (
                                         <tr
                                             key={user.id}
-                                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            className="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td className="w-4 p-4">
+                                                <div className="flex items-center">
+                                                    <input
+                                                        id={`checkbox-table-search-${user.id}`}
+                                                        type="checkbox"
+                                                        className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        checked={selectedIds.includes(user.id)}
+                                                        onChange={(e) =>
+                                                            onCheckboxChange(e, user.id)
+                                                        }
+                                                    />
+                                                    <label
+                                                        htmlFor="checkbox-table-search-1"
+                                                        className="sr-only">
+                                                        checkbox
+                                                    </label>
+                                                </div>
+                                            </td>
                                             <td
                                                 scope="row"
                                                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {user.id}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <NavLink
-                                                    to={LOGIN_ROUTE + "/" + user.id}
+                                                <a
+                                                    href={USER_ROUTE + "/" + user.id}
                                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                                     {user.name}
-                                                </NavLink>
+                                                </a>
                                             </td>
                                             <td className="px-6 py-4">{user.email}</td>
-                                            <td className="px-6 py-4">13.05.2024</td>
-                                            <td className="px-6 py-4">15.05.2024</td>
                                             <td className="px-6 py-4">
-                                                <p
+                                                {formattedDate(user.createdAt)}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {formattedDate(user.createdAt)}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {user.status === "active" ? (
+                                                    <span className="flex text-sm font-medium text-gray-900 dark:text-white me-3">
+                                                        <span className="flex place-self-center w-2.5 h-2.5 bg-green-600 rounded-full me-1.5 flex-shrink-0"></span>
+                                                        {user.status}
+                                                    </span>
+                                                ) : (
+                                                    <span className="flex text-sm font-medium text-gray-900 dark:text-white me-3">
+                                                        <span className="flex place-self-center w-2.5 h-2.5 bg-red-600 rounded-full me-1.5 flex-shrink-0"></span>
+                                                        {user.status}
+                                                    </span>
+                                                )}
+
+                                                {/* <p
                                                     className={
                                                         user.status === "active"
                                                             ? "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
                                                             : "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
                                                     }>
                                                     {user.status}
-                                                </p>
+                                                </p> */}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <p
-                                                    className={
-                                                        user.role === "ADMIN"
-                                                            ? "font-semibold"
-                                                            : null
-                                                    }>
-                                                    {user.role}
+                                                <p>
+                                                    {user.role === "USER" ? (
+                                                        <span className="text-xs font-medium lowercase bg-gray-100 text-gray-800  inline-flex place-items-center px-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ">
+                                                            <svg
+                                                                className="w-2.5 h-2.5 me-1.5"
+                                                                aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path
+                                                                    fillRule="evenodd"
+                                                                    d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
+                                                                    clipRule="evenodd"
+                                                                />
+                                                                <path
+                                                                    fillRule="evenodd"
+                                                                    d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
+                                                                    clipRule="evenodd"
+                                                                />
+                                                            </svg>
+
+                                                            {user.role}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-xs font-medium lowercase bg-blue-100 text-blue-800 inline-flex place-items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                            <svg
+                                                                className="w-2.5 h-2.5 me-1.5"
+                                                                aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path
+                                                                    fillRule="evenodd"
+                                                                    d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-6 8a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                                                                    clipRule="evenodd"
+                                                                />
+                                                            </svg>
+                                                            {user.role}
+                                                        </span>
+                                                    )}
                                                 </p>
                                             </td>
                                             <td className="px-6 py-4 text-right">
-                                                <button>
+                                                <button onClick={() => onDelete(user.id)}>
                                                     <svg
                                                         className="w-6 h-6 text-gray-800 dark:text-white"
                                                         aria-hidden="true"
@@ -181,6 +395,72 @@ const Admin = observer(() => {
                             </tbody>
                         </table>
                     </div>
+                    <nav
+                        className="ms-4 flex items-center flex-column flex-wrap md:flex-row justify-between pt-4 md:mb-8"
+                        aria-label="Table navigation">
+                        <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+                            Showing{" "}
+                            <span className="font-semibold text-gray-900 dark:text-white">
+                                1-10
+                            </span>{" "}
+                            of{" "}
+                            <span className="font-semibold text-gray-900 dark:text-white">
+                                {userTotal}
+                            </span>
+                        </span>
+                        <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Previous
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    1
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    2
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    aria-current="page"
+                                    className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+                                    3
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    4
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    5
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Next
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </main>
         </div>

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "..";
 import {
@@ -13,12 +13,21 @@ import { observer } from "mobx-react-lite";
 const NavBar = observer(() => {
     const { user } = useContext(Context);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const logOut = () => {
         localStorage.removeItem("token");
         user.setUserData({});
         user.setIsAuth(false);
     };
+
+    const onCheckLogIn = () => {
+        if (!user.isAuth) {
+            alert("You need to log in");
+            navigate(LOGIN_ROUTE);
+        } else navigate(USER_ROUTE + "/" + user.userData.id);
+    };
+
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg border">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -175,14 +184,25 @@ const NavBar = observer(() => {
                     <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
                             <a
-                                href={
-                                    user.userData.id
-                                        ? USER_ROUTE + "/" + user.userData.id
-                                        : LOGIN_ROUTE
-                                }
-                                className="cursor-pointer block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500">
-                                Home page
+                                href={MAIN_ROUTE}
+                                className={`block py-2 px-3 rounded md:p-0 ${
+                                    location.pathname === MAIN_ROUTE
+                                        ? "text-blue-600 dark:text-blue-500"
+                                        : "text-gray-900 dark:text-white"
+                                }`}>
+                                Home
                             </a>
+                        </li>
+                        <li>
+                            <button
+                                className={`cursor-pointer block py-2 px-3 rounded md:p-0 ${
+                                    location.pathname === USER_ROUTE + "/" + user.userData?.id
+                                        ? "text-blue-600 dark:text-blue-500"
+                                        : "text-gray-900 dark:text-white"
+                                }`}
+                                onClick={onCheckLogIn}>
+                                Account
+                            </button>
                         </li>
                     </ul>
                 </div>

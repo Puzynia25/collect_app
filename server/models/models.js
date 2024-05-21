@@ -8,6 +8,7 @@ const User = sequelize.define("user", {
     password: { type: DataTypes.STRING },
     status: { type: DataTypes.STRING, defaultValue: "active" },
     role: { type: DataTypes.STRING, defaultValue: "USER" },
+    // lastLogin: { type: DataTypes.DATE, allowNull: true },
 });
 
 const Category = sequelize.define("category", {

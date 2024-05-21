@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "..";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { fetchAllCategories, fetchAllCollections } from "../http/collectionAPI";
 import ContentWrapper from "../components/ContentWrapper";
 import CategoryBar from "../components/CategoryBar";
 import CreateCollection from "../components/modals/CreateCollection";
 import CollectionList from "../components/CollectionList";
+import { LOGIN_ROUTE } from "../utils/consts";
 
 const UserPage = observer(() => {
     const { collection, user } = useContext(Context);

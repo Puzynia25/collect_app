@@ -28,26 +28,25 @@ export const check = async () => {
     return jwtDecode(data.token);
 };
 
+export const fetchAllUsers = async () => {
+    const { data } = await $authHost.get("api/user/users");
+    return data;
+};
+
+export const updateStatusOrRole = async (ids, status, role) => {
+    if (status) {
+        return await $authHost.patch("api/user/status", { ids, status });
+    } else return await $authHost.patch("api/user/status", { ids, role });
+};
+
 // export const isFindUser = async (email) => {
 //     const { data } = await $host.post("api/user/find-user", { email });
 //     return data.exists;
 // };
 
-// export const fetchAllUsers = async () => {
-//     const { data } = await $authHost.get("api/user/table");
-//     return data;
-// };
-
-// export const deleteUser = async (id) => {
-//     const { data } = await $authHost.delete("api/user/delete", {
-//         data: { id: id },
-//     });
-//     return data;
-// };
-
-// export const updateUsersStatus = async (ids, status) => {
-//     return await $authHost.patch("api/user/status", { ids, status });
-// };
+export const deleteUser = async (id) => {
+    return await $authHost.delete("api/user/" + id, { id });
+};
 
 // export const logOutBlockedUser = (e, setUser, setIsAuth, navigate) => {
 //     if (e.response.data.message === "Your account is blocked!") {

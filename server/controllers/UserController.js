@@ -39,32 +39,47 @@ class UserController {
             return next(ApiError.badRequest("User is not found"));
         }
 
-        // if (user.status === "blocked") {
-        //     return next(ApiError.unauthorized("Your account is blocked!"));
-        // }
+        if (user.status === "blocked") {
+            return next(ApiError.unauthorized("Your account is blocked!"));
+        }
 
         let comparePassword = bcrypt.compareSync(password, user.password);
         if (!comparePassword) {
             return next(ApiError.badRequest("Wrong password"));
         }
 
+        // user.lastLogin = new Date();
+        // await user.save();
+
         const token = generateJwt(user.id, user.name, user.email, user.role);
         return res.json({ token });
     }
 
     async getAll(req, res) {
-        const users = await User.findAll();
+        const users = await User.findAndCountAll({
+            attributes: { exclude: ["password"] },
+            order: [["id", "ASC"]],
+        });
+
+        if (!users) {
+            return next(ApiError.badRequest("Users are not found"));
+        }
         return res.json(users);
     }
 
-    // async updateUsersStatus(req, res, next) {
-    //     const { ids, status } = req.body;
-    //     await User.update({ status }, { where: { id: ids } });
-    //     return res.status(204).send();
-    // }
+    async updateStatusOrRole(req, res, next) {
+        const { ids, status, role } = req.body;
+        if (status) {
+            await User.update({ status }, { where: { id: ids } });
+        }
+        if (role) {
+            await User.update({ role }, { where: { id: ids } });
+        }
+        return res.status(204).send();
+    }
 
     async delete(req, res, next) {
-        const { id } = req.body;
+        const { id } = req.params;
         const deletedUser = await User.destroy({ where: { id } });
 
         if (deletedUser === 0) {

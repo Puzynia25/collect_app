@@ -17,8 +17,7 @@ const AppRouter = observer(() => {
             {publicRoutes.map(({ path, Component }) => {
                 return <Route key={path} path={path} element={Component} />;
             })}
-
-            <Route path="*" element={<Navigate to={<MainPage />} replace />} />
+            <Route path="*" element={<MainPage />} />{" "}
         </Routes>
     );
 });

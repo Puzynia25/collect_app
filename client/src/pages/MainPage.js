@@ -29,7 +29,7 @@ const MainPage = observer(() => {
         <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
             <CategoryBar />
             <ContentWrapper>
-                <h1 className="font-bold text-xl md:text-2xl my-4">Recently Added</h1>
+                <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">Recently Added</h1>
                 {loading ? <Spinner /> : <ItemList />}
                 {/* 5 the biggest collections */}
                 <CollectionCards collections={biggestCollections} />

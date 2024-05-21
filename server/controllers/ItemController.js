@@ -14,7 +14,15 @@ class ItemController {
             where: { id },
             include: {
                 model: Collection,
-                include: [User, Category],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["id", "name"],
+                    },
+                    {
+                        model: Category,
+                    },
+                ],
             },
         });
         return res.json(item);
@@ -30,7 +38,15 @@ class ItemController {
             items = await Item.findAndCountAll({
                 include: {
                     model: Collection,
-                    include: [User, Category],
+                    include: [
+                        {
+                            model: User,
+                            attributes: ["id", "name"],
+                        },
+                        {
+                            model: Category,
+                        },
+                    ],
                 },
                 limit,
                 offset,
@@ -40,7 +56,15 @@ class ItemController {
                 where: { collectionId },
                 include: {
                     model: Collection,
-                    include: [User, Category],
+                    include: [
+                        {
+                            model: User,
+                            attributes: ["id", "name"],
+                        },
+                        {
+                            model: Category,
+                        },
+                    ],
                 },
                 limit,
                 offset,
