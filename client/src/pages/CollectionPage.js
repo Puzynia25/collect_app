@@ -36,7 +36,7 @@ const CollectionPage = observer(() => {
             <CollectionBar oneCollection={oneCollection} />
             <ContentWrapper>
                 <Badge category={oneCollection.category?.name} />
-                <div className="flex w-full mt-5">
+                <div className="flex w-full mt-5 pb-2">
                     <div className="ms-2">
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
                             Items
@@ -47,10 +47,10 @@ const CollectionPage = observer(() => {
                             and description.
                         </p>
                     </div>
-                    {user.userData.id == id || user.userData.role === "ADMIN" ? (
+                    {user.userData.id == oneCollection.userId || user.userData.role === "ADMIN" ? (
                         <button
                             type="button"
-                            className="ml-auto flex justify-between place-items-center gap-2 place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="mr-2 ml-auto flex justify-between place-items-center gap-2 place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             onClick={() => onShow()}>
                             <svg
                                 className="w-[15px] h-[15px] text-white dark:text-gray-800"

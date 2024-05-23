@@ -18,7 +18,6 @@ const CollectionBar = ({ oneCollection }) => {
                         <h2 className="font-bold text-xl uppercase tracking-wide md:text-2xl text-center mt-2 ">
                             "{oneCollection.name}"
                         </h2>
-
                         <p className="mt-6 text-sm text-gray-900 dark:text-gray-400">
                             {oneCollection.description}
                         </p>

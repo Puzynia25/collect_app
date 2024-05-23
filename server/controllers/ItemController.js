@@ -1,5 +1,6 @@
 const ApiError = require("../error/ApiError");
-const { Item, User, Collection, Category } = require("../models/models");
+const { Item, User, Collection, Category, Like } = require("../models/models");
+const sequelize = require("../db");
 
 class ItemController {
     async create(req, res, next) {
@@ -100,7 +101,7 @@ class ItemController {
             const tags = await Item.findAll({
                 attributes: [[sequelize.fn("unnest", sequelize.col("tags")), "tag"]],
                 group: ["tag"],
-                order: [[sequelize.fn("COUNT", sequelize.col("tag")), "DESC"]],
+                order: [[sequelize.fn("COUNT", sequelize.col("tags")), "DESC"]],
                 limit: 50,
                 raw: true,
             });
@@ -110,6 +111,79 @@ class ItemController {
         } catch (e) {
             console.error(e);
             return next(ApiError.internal("Internal server error"));
+        }
+
+        // const items = await Item.findAll();
+
+        // if (!items) {
+        //     return next(ApiError.badRequest("Items are not found"));
+        // }
+
+        // const tags = items
+        //     .map((item) => item.tags)
+        //     .flat()
+        //     .slice(0, 50);
+
+        // return res.json(tags);
+    }
+
+    async addLike(req, res, next) {
+        const { userId } = req.body;
+        const { id } = req.params;
+        try {
+            const existLike = await Like.findOne({
+                where: { id, userId },
+            });
+
+            if (existLike) {
+                return next(ApiError.badRequest("User already liked it"));
+            }
+
+            await Like.create({ itemId: id, userId, like: 1 });
+            const item = await Item.findByPk(id);
+            item.like += 1;
+            await item.save();
+
+            return res.json(item.like);
+        } catch (e) {
+            console.error(e);
+            return next(ApiError.badRequest(e.message));
+        }
+    }
+
+    async removeLike(req, res, next) {
+        const { userId } = req.body;
+        const { id } = req.params;
+
+        try {
+            const existLike = await Like.findOne({
+                where: { itemId: id, userId },
+            });
+
+            if (!existLike) {
+                return next(ApiError.badRequest("User has not liked it yet"));
+            }
+            await existLike.destroy();
+
+            const item = await Item.findByPk(id);
+            item.like -= 1;
+            await item.save();
+
+            return res.json(item.like);
+        } catch (e) {
+            console.error(e);
+            return next(ApiError.badRequest(e.message));
+        }
+    }
+
+    async checkLike(req, res, next) {
+        const { userId } = req.query;
+        const { id } = req.params;
+        try {
+            const existLike = await Like.findOne({ where: { userId, itemId: id } });
+            return res.json(!!existLike);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
         }
     }
 }

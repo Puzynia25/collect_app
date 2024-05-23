@@ -12,7 +12,7 @@ import ItemBar from "../components/ItemBar";
 import { fetchItemComments } from "../http/commentAPI";
 
 const ItemPage = observer(() => {
-    const { collection, comment } = useContext(Context);
+    const { collection, comment, user } = useContext(Context);
     const { id } = useParams();
     const [item, setItem] = useState({});
 
@@ -24,7 +24,7 @@ const ItemPage = observer(() => {
 
     return (
         <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
-            <ItemBar item={item} />
+            <ItemBar item={item} userId={user.userData.id} />
             <ContentWrapper>
                 <Badge category={item.collection?.category.name} />
                 <CommentsContainer item={item} />

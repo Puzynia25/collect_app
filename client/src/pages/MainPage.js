@@ -20,7 +20,7 @@ const MainPage = observer(() => {
         Promise.race([
             fetchAllCollections().then((data) => collection.setAllCollections(data.rows)),
             fetchAllItems().then((data) => item.setItems(data.rows)),
-            // fetchPopularTags().then((data) => setTags(data)),
+            fetchPopularTags().then((data) => setTags(data)),
             fetchBiggest().then((data) => setBiggestCollections(data)),
         ]).finally(() => setLoading(false));
     }, []);

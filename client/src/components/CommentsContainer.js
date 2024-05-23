@@ -17,10 +17,10 @@ const CommentsContainer = observer(({ item }) => {
 
     return (
         <>
-            <div className="mt-24 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700 ml-auto">
+            <div className="mt-12 mb-8 mx-5 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                     <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">
-                        Latest Comments
+                        Comments
                     </h5>
                     {/* <a
                         href="#"

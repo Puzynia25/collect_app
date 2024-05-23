@@ -25,7 +25,12 @@ class CollectionController {
                 userId,
                 categoryId,
             });
-            return res.json(collection);
+
+            const resultCollection = await Collection.findOne({
+                where: { id: collection.id },
+                include: Category,
+            });
+            return res.json(resultCollection);
         } catch (e) {
             next(ApiError.badRequest(e.message));
         }

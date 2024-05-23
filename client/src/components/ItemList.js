@@ -33,15 +33,16 @@ const ItemList = observer(() => {
     return (
         <div className="px-2">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-12">
-                <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
                                 Name
                             </th>
+
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Author
+                                    Collection
                                     <a href="#">
                                         <svg
                                             className="w-3 h-3 ms-1.5"
@@ -56,7 +57,7 @@ const ItemList = observer(() => {
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Collection
+                                    Author
                                     <a href="#">
                                         <svg
                                             className="w-3 h-3 ms-1.5"
@@ -116,27 +117,18 @@ const ItemList = observer(() => {
                                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th
                                             scope="row"
-                                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            className="text-balance max-w-[140px] px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <button
-                                                className="hover:underline"
+                                                className="hover:underline text-left"
                                                 onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
-                                                {el.name.length > 20
-                                                    ? el.name.slice(0, 20) + "..."
+                                                {el.name.length > 25
+                                                    ? el.name.slice(0, 25) + "..."
                                                     : el.name}
                                             </button>
                                         </th>
-                                        <td className="px-6 py-4 hover:underline">
+                                        <td className="text-balance max-w-[140px] px-6 py-4 ">
                                             <button
-                                                onClick={() =>
-                                                    navigate(
-                                                        USER_ROUTE + "/" + el.collection?.user.id
-                                                    )
-                                                }>
-                                                {el.collection?.user.name}
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 hover:underline">
-                                            <button
+                                                className="hover:underline"
                                                 onClick={() =>
                                                     navigate(
                                                         COLLECTION_ROUTE + "/" + el.collection?.id
@@ -147,17 +139,31 @@ const ItemList = observer(() => {
                                                     : el.collection?.name}
                                             </button>
                                         </td>
+                                        <td className="px-6 py-4 text-balance max-w-[140px]">
+                                            <button
+                                                className="hover:underline"
+                                                onClick={() =>
+                                                    navigate(
+                                                        USER_ROUTE + "/" + el.collection?.user.id
+                                                    )
+                                                }>
+                                                {el.collection?.user.name}
+                                            </button>
+                                        </td>
+
                                         <td className="px-6 py-4">
                                             <Badge category={el.collection?.category.name} />
                                         </td>
-                                        <td className="px-6 py-4 max-w-sm">
+                                        <td className=" text-wrap  px-6 py-4 max-w-36">
                                             {el.tags
                                                 ? el.tags.map((tag, i) => {
                                                       return (
                                                           <button
                                                               key={i}
                                                               className="m-1 px-2 py-1 rounded bg-gray-200/50 text-gray-700 hover:bg-gray-300">
-                                                              {tag}
+                                                              {tag.length > 15
+                                                                  ? tag.slice(0, 15) + "..."
+                                                                  : tag}
                                                           </button>
                                                       );
                                                   })

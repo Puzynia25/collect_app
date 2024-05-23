@@ -32,3 +32,22 @@ export const fetchPopularTags = async () => {
     const { data } = await $host.get("api/collection/item/tags");
     return data;
 };
+
+export const addLike = async (itemId, userId) => {
+    const { data } = await $authHost.post("api/collection/item/" + itemId + "/like", { userId });
+    return data;
+};
+
+export const removeLike = async (itemId, userId) => {
+    const { data } = await $authHost.delete("api/collection/item/" + itemId + "/unlike", {
+        data: { userId },
+    });
+    return data;
+};
+
+export const checkLike = async (itemId, userId) => {
+    const { data } = await $authHost.get("api/collection/item/" + itemId + "/checklike", {
+        params: { userId },
+    });
+    return data;
+};

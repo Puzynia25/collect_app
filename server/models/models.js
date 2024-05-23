@@ -32,7 +32,7 @@ const Item = sequelize.define("item", {
 
 const Like = sequelize.define("like", {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    like: { type: DataTypes.INTEGER, allowNull: false },
+    like: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
 });
 
 const Comment = sequelize.define("comment", {

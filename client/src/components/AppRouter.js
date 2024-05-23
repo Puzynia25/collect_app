@@ -17,7 +17,7 @@ const AppRouter = observer(() => {
             {publicRoutes.map(({ path, Component }) => {
                 return <Route key={path} path={path} element={Component} />;
             })}
-            <Route path="*" element={<MainPage />} />{" "}
+            <Route path="*" element={<MainPage />} />
         </Routes>
     );
 });
