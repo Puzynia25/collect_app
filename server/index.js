@@ -1,19 +1,29 @@
 require("dotenv").config();
 const express = require("express");
 const sequelize = require("./db");
-const models = require("./models/models");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const router = require("./routes/index");
 const errorHandler = require("./middleware/ErrorHandlingMiddleware");
-const path = require("path");
 
 const PORT = process.env.PORT || 9000;
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+    origin: ["https://collect-app.onrender.com", "https://collect-app-client.onrender.com"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
+
+app.use((req, res, next) => {
+    console.log("Request Headers:", req.headers);
+    next();
+});
+
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, "static")));
 app.use(fileUpload({ useTempFiles: true }));
 app.use("/api", router);
 

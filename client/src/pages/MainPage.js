@@ -30,7 +30,13 @@ const MainPage = observer(() => {
             <CategoryBar />
             <ContentWrapper>
                 <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">Recently Added</h1>
-                {loading ? <Spinner /> : <ItemList />}
+                {loading ? (
+                    <div className="mt-5">
+                        <Spinner />
+                    </div>
+                ) : (
+                    <ItemList />
+                )}
                 {/* 5 the biggest collections */}
                 <CollectionCards collections={biggestCollections} />
                 <Tags tags={tags} />
