@@ -5,6 +5,7 @@ import Badge from "../components/Badge";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { fetchAllCategories, fetchOneCollection } from "../http/collectionAPI";
+import { fetchAllCustomFields } from "../http/customFieldAPI";
 import ItemList from "../components/ItemList";
 import { fetchAllItems } from "../http/itemAPI";
 import CollectionBar from "../components/CollectionBar";
@@ -14,13 +15,15 @@ const CollectionPage = observer(() => {
     const { item, collection, user } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
     const [oneCollection, setOneCollection] = useState({});
+    const [fields, setFields] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
         fetchOneCollection(id).then((data) => setOneCollection(data));
         fetchAllItems(id).then((data) => item.setItems(data.rows));
         fetchAllCategories().then((data) => collection.setAllCategories(data));
-    }, []);
+        fetchAllCustomFields(id).then((data) => setFields(data));
+    }, [id]);
 
     const onShow = () => {
         setOnShowModal(true);
@@ -67,7 +70,7 @@ const CollectionPage = observer(() => {
                         </button>
                     ) : null}
                 </div>
-                <ItemList />
+                <ItemList items={item.items} fields={fields} />
                 <CreateItem show={onShowModal} onHide={() => onHide()} oneCollection={oneCollection} />
             </ContentWrapper>
         </div>

@@ -15,7 +15,11 @@ const Like = ({ userId, like }) => {
 
     useEffect(() => {
         if (userId) {
-            checkLike(id, userId).then((data) => setIsLiked(data));
+            try {
+                checkLike(id, userId).then((data) => setIsLiked(data));
+            } catch (e) {
+                alert(e.response.data.message);
+            }
         }
     }, []);
 
@@ -33,7 +37,7 @@ const Like = ({ userId, like }) => {
             }
             setLikes(data);
         } catch (e) {
-            console.log(e);
+            alert(e.response.data.message);
         } finally {
             setLoading(false);
         }

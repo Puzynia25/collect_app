@@ -1,30 +1,26 @@
-import { useContext, useEffect, useState } from "react";
-import { COLLECTION_ROUTE, ITEM_ROUTE, MAIN_ROUTE, USER_ROUTE } from "../utils/consts";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Context } from "..";
+import { useEffect, useState } from "react";
+import { ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
+import { useNavigate } from "react-router-dom";
 import Badge from "./Badge";
-import { observer } from "mobx-react-lite";
 import { removeOne } from "../http/itemAPI";
-import { fetchAllCustomFields } from "../http/collectionAPI";
 
-const ItemList = observer(() => {
-    const { collection, item } = useContext(Context);
-    const { pathname } = useLocation();
-    const { id } = useParams();
+const ItemList = ({ items, fields }) => {
     const navigate = useNavigate();
-    const [itemsByCategory, setItemsByCategory] = useState(item.items);
-    const [fields, setFields] = useState([]);
+    const [allItems, setAllItems] = useState(items);
 
     useEffect(() => {
-        fetchAllCustomFields(id)
-            .then((data) => setFields(data))
-            .finally(() => console.log(fields));
-    }, []);
+        setAllItems(items);
+    }, [items]);
 
     const onDeleteItem = (itemId) => {
         removeOne(itemId)
-            .then(() => setItemsByCategory(itemsByCategory.filter((el) => el.id !== itemId)))
+            .then(() => setAllItems(allItems.filter((el) => el.id !== itemId)))
             .catch((err) => console.log(err));
+    };
+
+    const formatDate = (date) => {
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return new Date(date).toLocaleDateString("en-US", options);
     };
 
     return (
@@ -127,29 +123,29 @@ const ItemList = observer(() => {
                         </tr>
                     </thead>
                     <tbody>
-                        {itemsByCategory.length > 0 ? (
-                            itemsByCategory.map((el) => {
+                        {allItems.length > 0 ? (
+                            allItems.map((el) => {
                                 return (
                                     <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th
                                             scope="row"
-                                            className="text-balance max-w-[140px] px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            className="text-balance max-w-[140px] px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <button
                                                 className="hover:underline text-left"
                                                 onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
                                                 {el.name.length > 25 ? el.name.slice(0, 25) + "..." : el.name}
                                             </button>
                                         </th>
-                                        <td className="text-balance max-w-[140px] px-6 py-4 ">
+                                        <td className="text-balance max-w-[140px] px-4 py-4 ">
                                             <button
                                                 className="hover:underline"
-                                                onClick={() => navigate(COLLECTION_ROUTE + "/" + el.collection?.id)}>
+                                                onClick={() => navigate(USER_ROUTE + "/" + el.collection?.id)}>
                                                 {el.collection?.name.length > 20
                                                     ? el.collection?.name.slice(0, 20) + "..."
                                                     : el.collection?.name}
                                             </button>
                                         </td>
-                                        <td className="px-6 py-4 text-balance max-w-[140px]">
+                                        <td className="px-4 py-4 text-balance max-w-[140px]">
                                             <button
                                                 className="hover:underline"
                                                 onClick={() => navigate(USER_ROUTE + "/" + el.collection?.user.id)}>
@@ -157,10 +153,10 @@ const ItemList = observer(() => {
                                             </button>
                                         </td>
 
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 py-4">
                                             <Badge category={el.collection?.category.name} />
                                         </td>
-                                        <td className=" text-wrap  px-6 py-4 max-w-36">
+                                        <td className=" text-wrap  px-4 py-4 max-w-36">
                                             {el.tags
                                                 ? el.tags.map((tag, i) => {
                                                       return (
@@ -176,20 +172,22 @@ const ItemList = observer(() => {
                                         {fields.map((field) => {
                                             if (field.type === "string" || field.type === "date") {
                                                 return (
-                                                    <td key={field.id} className=" text-wrap  px-6 py-4 max-w-36">
-                                                        {field.name}
+                                                    <td key={field.id} className=" text-wrap  px-4 py-4 max-w-36">
+                                                        {field.type === "date"
+                                                            ? formatDate(field.values[0]?.value)
+                                                            : field.values[0]?.value}
                                                     </td>
                                                 );
                                             }
                                         })}
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-4 py-4 text-right">
                                             <a
                                                 href="#"
                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                                 Edit
                                             </a>
                                         </td>
-                                        <td className="px-6 py-4 text-right content-center">
+                                        <td className="px-4 py-4 text-right content-center">
                                             <button onClick={() => onDeleteItem(el.id)}>
                                                 <span className="sr-only">Delete</span>
                                                 <svg
@@ -225,6 +223,6 @@ const ItemList = observer(() => {
             </div>
         </div>
     );
-});
+};
 
 export default ItemList;

@@ -5,11 +5,12 @@ import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
 import { removeOneCollection } from "../http/collectionAPI";
 import Spinner from "./Spinner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CollectionList = observer(({ loading }) => {
     const { collection, user } = useContext(Context);
     const { id } = useParams();
+    const navigate = useNavigate();
     const [collectionsByCategory, setCollectionsByCategory] = useState(collection.allCollections);
 
     useEffect(() => {
@@ -19,6 +20,7 @@ const CollectionList = observer(({ loading }) => {
             );
         } else setCollectionsByCategory(collection.allCollections);
     }, [collection.selectedCategory, collection.allCollections]);
+
     const onDelete = (id) => {
         removeOneCollection(id)
             .then(() => setCollectionsByCategory(collectionsByCategory.filter((el) => el.id !== id)))
@@ -37,31 +39,27 @@ const CollectionList = observer(({ loading }) => {
                         <th scope="col" className="px-6 py-3">
                             <div className="flex items-center">
                                 Category
-                                <a href="#">
-                                    <svg
-                                        className="w-3 h-3 ms-1.5"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                    </svg>
-                                </a>
+                                <svg
+                                    className="w-3 h-3 ms-1.5"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                                </svg>
                             </div>
                         </th>
                         <th scope="col" className="px-6 py-3">
                             <div className="flex items-center">
                                 description
-                                <a href="#">
-                                    <svg
-                                        className="w-3 h-3 ms-1.5"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                    </svg>
-                                </a>
+                                <svg
+                                    className="w-3 h-3 ms-1.5"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                                </svg>
                             </div>
                         </th>
                         {user.userData.id === Number(id) ? (
@@ -98,11 +96,11 @@ const CollectionList = observer(({ loading }) => {
                                             </div>
 
                                             <div className="ml-4">
-                                                <a
-                                                    href={COLLECTION_ROUTE + "/" + el.id}
-                                                    className="text-sm font-medium text-gray-900 hover:underline">
+                                                <button
+                                                    className="text-sm font-medium text-gray-900 hover:underline"
+                                                    onClick={() => navigate(COLLECTION_ROUTE + "/" + el.id)}>
                                                     {el.name.length > 25 ? el.name.slice(0, 25) + "..." : el.name}
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </td>
