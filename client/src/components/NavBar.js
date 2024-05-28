@@ -19,6 +19,7 @@ const NavBar = observer(() => {
         localStorage.removeItem("token");
         user.setUserData({});
         user.setIsAuth(false);
+        navigate(MAIN_ROUTE);
     };
 
     const onCheckLogIn = () => {

@@ -40,9 +40,15 @@ export const fetchBiggest = async () => {
     return data;
 };
 
-// export const fetchCategory = async (categoryId) => {
-//     const { data } = await $host.post("api/category/:id", {
-//         id: categoryId,
-//     });
-//     return data;
-// };
+export const createCustomFields = async ({ collectionId, customFields }) => {
+    const { data } = await $authHost.post("api/collection/" + collectionId + "/custom-fields", {
+        collectionId,
+        customFields,
+    });
+    return data;
+};
+
+export const fetchAllCustomFields = async (collectionId) => {
+    const { data } = await $host.get("api/collection/" + collectionId + "/custom-fields");
+    return data;
+};

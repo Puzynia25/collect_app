@@ -23,7 +23,7 @@ class CategoryController {
 
     async getAll(req, res) {
         const categoriesList = await Category.findAll({
-            include: { model: Collection },
+            include: [{ model: Collection }],
         });
         return res.json(categoriesList);
     }

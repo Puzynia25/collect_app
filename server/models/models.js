@@ -40,6 +40,17 @@ const Comment = sequelize.define("comment", {
     content: { type: DataTypes.STRING, allowNull: false },
 });
 
+const CustomField = sequelize.define("customField", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING, allowNull: false },
+});
+
+const CustomFieldValue = sequelize.define("customFieldValue", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    value: { type: DataTypes.STRING, allowNull: false },
+});
+
 User.hasMany(Collection);
 Collection.belongsTo(User);
 
@@ -55,10 +66,19 @@ Collection.belongsTo(Category);
 Collection.hasMany(Item);
 Item.belongsTo(Collection);
 
+Collection.hasMany(CustomField);
+CustomField.belongsTo(Collection);
+
+CustomField.hasMany(CustomFieldValue, { as: "values" });
+CustomFieldValue.belongsTo(CustomField);
+
+Item.hasMany(CustomFieldValue);
+CustomFieldValue.belongsTo(Item);
+
 Item.hasMany(Like);
 Like.belongsTo(Item);
 
 Item.hasMany(Comment);
 Comment.belongsTo(Item);
 
-module.exports = { User, Category, Collection, Item, Like, Comment };
+module.exports = { User, Category, Collection, Item, Like, Comment, CustomField, CustomFieldValue };

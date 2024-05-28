@@ -9,20 +9,20 @@ const errorHandler = require("./middleware/ErrorHandlingMiddleware");
 const PORT = process.env.PORT || 9000;
 
 const app = express();
-const corsOptions = {
-    origin: ["https://collect-app.onrender.com", "https://collect-app-client.onrender.com"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-    optionsSuccessStatus: 204,
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//     origin: ["https://collect-app.onrender.com", "https://collect-app-client.onrender.com"],
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//     optionsSuccessStatus: 204,
+// };
+// app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-    console.log("Request Headers:", req.headers);
-    next();
-});
-
+// app.use((req, res, next) => {
+//     console.log("Request Headers:", req.headers);
+//     next();
+// });
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
 app.use("/api", router);

@@ -16,8 +16,6 @@ const CollectionPage = observer(() => {
     const [oneCollection, setOneCollection] = useState({});
     const { id } = useParams();
 
-    const customFields = [];
-
     useEffect(() => {
         fetchOneCollection(id).then((data) => setOneCollection(data));
         fetchAllItems(id).then((data) => item.setItems(data.rows));
@@ -38,19 +36,16 @@ const CollectionPage = observer(() => {
                 <Badge category={oneCollection.category?.name} />
                 <div className="flex w-full mt-5 pb-2">
                     <div className="ms-2">
-                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                            Items
-                        </h2>
+                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">Items</h2>
 
                         <p className="mt-9 text-sm text-gray-900 dark:text-gray-400">
-                            A list of all the items in this collection including its name, category
-                            and description.
+                            A list of all the items in this collection including its name, category and description.
                         </p>
                     </div>
                     {user.userData.id == oneCollection.userId || user.userData.role === "ADMIN" ? (
                         <button
                             type="button"
-                            className="mr-2 ml-auto flex justify-between place-items-center gap-2 place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="mr-2 ml-auto flex justify-between place-items-center gap-2 place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             onClick={() => onShow()}>
                             <svg
                                 className="w-[15px] h-[15px] text-white dark:text-gray-800"
@@ -73,11 +68,7 @@ const CollectionPage = observer(() => {
                     ) : null}
                 </div>
                 <ItemList />
-                <CreateItem
-                    show={onShowModal}
-                    onHide={() => onHide()}
-                    oneCollection={oneCollection}
-                />
+                <CreateItem show={onShowModal} onHide={() => onHide()} oneCollection={oneCollection} />
             </ContentWrapper>
         </div>
     );

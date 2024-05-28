@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const { Collection, Category, User, Item } = require("../models/models");
+const { Collection, Category, User, Item, CustomField, CustomFieldValue } = require("../models/models");
 const uuid = require("uuid");
 const cloudinary = require("../cloudinaryConfig");
 const sequelize = require("../db");
@@ -133,7 +133,7 @@ class CollectionController {
         const deletedCollection = await Collection.destroy({ where: { id } });
 
         if (deletedCollection === 0) {
-            return next(ApiError.badRequest("Collection is not found"));
+            return next(ApiError.badRequest("Collection not found"));
         }
 
         return res.status(204).send();
@@ -165,10 +165,50 @@ class CollectionController {
         });
 
         if (!collections) {
-            return next(ApiError.badRequest("Collections are not found"));
+            return next(ApiError.badRequest("Collections not found"));
         }
 
         return res.json(collections);
+    }
+
+    async createCustomFields(req, res, next) {
+        try {
+            const { collectionId, customFields } = req.body;
+            console.log(collectionId, customFields);
+
+            const collection = await Collection.findByPk(collectionId);
+            if (!collection) {
+                return next(ApiError.badRequest("Collection not found"));
+            }
+
+            const items = await Item.findAll({ where: { collectionId } });
+
+            for (const field of customFields) {
+                const newField = await CustomField.create({ collectionId, name: field.name, type: field.type });
+
+                for (const item of items) {
+                    await CustomFieldValue.create({
+                        customFieldId: newField.id,
+                        itemId: item.id,
+                        value: "",
+                    });
+                }
+            }
+
+            return res.status(204).send();
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
+    }
+
+    async getAllCustomFields(req, res, next) {
+        const { id } = req.params;
+
+        const fields = await CustomField.findAll({
+            where: { collectionId: id },
+            include: [{ model: CustomFieldValue, as: "values" }],
+        });
+        return res.json(fields);
     }
 }
 

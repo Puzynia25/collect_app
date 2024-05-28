@@ -27,7 +27,7 @@ const CollectionCards = ({ collections }) => {
                         return (
                             <div
                                 key={col.id}
-                                className="cursor-pointer flex flex-col justify-between min-w-[280px] bg-white border border-gray-200 rounded-3xl dark:bg-gray-800 dark:border-gray-700">
+                                className="cursor-pointer flex flex-col justify-between w-72 bg-white border border-gray-200 rounded-3xl dark:bg-gray-800 dark:border-gray-700">
                                 <a href={COLLECTION_ROUTE + "/" + col.id}>
                                     <img
                                         className="rounded-t-3xl p-10 h-80 object-cover object-center mx-auto"
@@ -47,7 +47,7 @@ const CollectionCards = ({ collections }) => {
                                                 : col.name}
                                         </h5>
                                         <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                            Author:{" "}
+                                            Creator:{" "}
                                             <span className="text-sm text-gray-500 dark:text-gray-400">
                                                 {col.user.name}
                                             </span>

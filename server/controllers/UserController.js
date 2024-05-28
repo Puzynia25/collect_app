@@ -36,7 +36,7 @@ class UserController {
         const user = await User.findOne({ where: { email } });
 
         if (!user) {
-            return next(ApiError.badRequest("User is not found"));
+            return next(ApiError.badRequest("User not found"));
         }
 
         if (user.status === "blocked") {
@@ -62,7 +62,7 @@ class UserController {
         });
 
         if (!users) {
-            return next(ApiError.badRequest("Users are not found"));
+            return next(ApiError.badRequest("Users not found"));
         }
         return res.json(users);
     }
@@ -83,7 +83,7 @@ class UserController {
         const deletedUser = await User.destroy({ where: { id } });
 
         if (deletedUser === 0) {
-            return next(ApiError.badRequest("User is not found"));
+            return next(ApiError.badRequest("User not found"));
         }
 
         return res.status(204).send();

@@ -17,18 +17,20 @@ class ItemController {
         const { id } = req.params;
         const item = await Item.findOne({
             where: { id },
-            include: {
-                model: Collection,
-                include: [
-                    {
-                        model: User,
-                        attributes: ["id", "name"],
-                    },
-                    {
-                        model: Category,
-                    },
-                ],
-            },
+            include: [
+                {
+                    model: Collection,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ["id", "name"],
+                        },
+                        {
+                            model: Category,
+                        },
+                    ],
+                },
+            ],
         });
         return res.json(item);
     }
@@ -41,36 +43,40 @@ class ItemController {
         let items;
         if (!collectionId) {
             items = await Item.findAndCountAll({
-                include: {
-                    model: Collection,
-                    include: [
-                        {
-                            model: User,
-                            attributes: ["id", "name"],
-                        },
-                        {
-                            model: Category,
-                        },
-                    ],
-                },
+                include: [
+                    {
+                        model: Collection,
+                        include: [
+                            {
+                                model: User,
+                                attributes: ["id", "name"],
+                            },
+                            {
+                                model: Category,
+                            },
+                        ],
+                    },
+                ],
                 limit,
                 offset,
             });
         } else {
             items = await Item.findAndCountAll({
                 where: { collectionId },
-                include: {
-                    model: Collection,
-                    include: [
-                        {
-                            model: User,
-                            attributes: ["id", "name"],
-                        },
-                        {
-                            model: Category,
-                        },
-                    ],
-                },
+                include: [
+                    {
+                        model: Collection,
+                        include: [
+                            {
+                                model: User,
+                                attributes: ["id", "name"],
+                            },
+                            {
+                                model: Category,
+                            },
+                        ],
+                    },
+                ],
                 limit,
                 offset,
             });
@@ -90,7 +96,7 @@ class ItemController {
         const deletedItem = await Item.destroy({ where: { id } });
 
         if (deletedItem === 0) {
-            return next(ApiError.badRequest("Item is not found"));
+            return next(ApiError.badRequest("Item not found"));
         }
 
         return res.status(204).send();
@@ -116,7 +122,7 @@ class ItemController {
         // const items = await Item.findAll();
 
         // if (!items) {
-        //     return next(ApiError.badRequest("Items are not found"));
+        //     return next(ApiError.badRequest("Items not found"));
         // }
 
         // const tags = items

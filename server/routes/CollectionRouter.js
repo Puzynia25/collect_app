@@ -12,6 +12,8 @@ router.get("/biggest", CollectionController.getBiggest);
 router.get("/", CollectionController.getAll);
 router.get("/:id", CollectionController.getOne);
 router.delete("/:id", authMiddleware, CollectionController.remove);
+router.post("/:id/custom-fields", authMiddleware, CollectionController.createCustomFields);
+router.get("/:id/custom-fields", CollectionController.getAllCustomFields);
 
 // router.patch("/:id", checkRole("ADMIN"), CollectionController.update);
 
