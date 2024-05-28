@@ -18,13 +18,8 @@ const UserPage = observer(() => {
 
     const { id } = useParams();
 
-    // const customFields = []; ?
-
     useEffect(() => {
-        //загрузка всех коллекций юзера
-        fetchAllCollections(null, id, null, 10).then((data) =>
-            collection.setAllCollections(data.rows)
-        );
+        fetchAllCollections(null, id, null, 10).then((data) => collection.setAllCollections(data.rows));
     }, []);
 
     const onShow = () => {
@@ -53,12 +48,12 @@ const UserPage = observer(() => {
                         <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Creator:{" "}
                             <span className="text-sm text-gray-500 dark:text-gray-400">
-                                {user.userData.name}
+                                {collection.allCollections[0]?.user?.name}
                             </span>
                         </p>
                         <p className="mt-9 text-sm max-w-md text-gray-900 dark:text-gray-400">
-                            A list of all the collections in your account including their name,
-                            category and description.
+                            A list of all the collections in your account including their name, category and
+                            description.
                         </p>
                     </div>
                     {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
@@ -102,12 +97,7 @@ const UserPage = observer(() => {
                 </div>
                 <CollectionList loading={loading} />
             </ContentWrapper>
-            <CreateCollection
-                show={onShowModal}
-                onHide={() => onHide()}
-                loading={loading}
-                setLoading={setLoading}
-            />
+            <CreateCollection show={onShowModal} onHide={() => onHide()} loading={loading} setLoading={setLoading} />
             <CreateCustomFields
                 show={onShowFieldsModal}
                 onHide={() => onHideFields()}

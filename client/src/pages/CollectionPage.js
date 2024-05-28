@@ -34,7 +34,7 @@ const CollectionPage = observer(() => {
             <CollectionBar oneCollection={oneCollection} />
             <ContentWrapper>
                 <Badge category={oneCollection.category?.name} />
-                <div className="flex w-full mt-5 pb-2">
+                <div className="flex w-full mt-5">
                     <div className="ms-2">
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">Items</h2>
 

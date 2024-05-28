@@ -21,9 +21,9 @@ const ItemPage = observer(() => {
         fetchAllCategories().then((data) => collection.setAllCategories(data));
         fetchOneItem(id).then((data) => setItem(data));
         fetchItemComments(id).then((data) => comment.setComments(data.rows));
-        fetchAllCustomFields(id)
-            .then((data) => setFields(data))
-            .finally(() => console.log(fields));
+        // fetchAllCustomFields(id)
+        //     .then((data) => setFields(data))
+        //     .finally(() => console.log(fields));
     }, []);
 
     return (

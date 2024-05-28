@@ -16,22 +16,10 @@ const ItemList = observer(() => {
     const [fields, setFields] = useState([]);
 
     useEffect(() => {
-        if (pathname !== MAIN_ROUTE) {
-            fetchAllCustomFields(id)
-                .then((data) => setFields(data))
-                .finally(() => console.log(fields));
-        }
+        fetchAllCustomFields(id)
+            .then((data) => setFields(data))
+            .finally(() => console.log(fields));
     }, []);
-
-    useEffect(() => {
-        if (pathname === MAIN_ROUTE) {
-            collection.selectedCategory.name !== "All"
-                ? setItemsByCategory(
-                      item.items.filter((el) => el.collection.categoryId === collection.selectedCategory.id)
-                  )
-                : setItemsByCategory(item.items);
-        }
-    }, [collection.selectedCategory]);
 
     const onDeleteItem = (itemId) => {
         removeOne(itemId)

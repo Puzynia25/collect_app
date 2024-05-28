@@ -5,26 +5,23 @@ import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
 import { removeOneCollection } from "../http/collectionAPI";
 import Spinner from "./Spinner";
+import { useParams } from "react-router-dom";
 
 const CollectionList = observer(({ loading }) => {
-    const { collection } = useContext(Context);
+    const { collection, user } = useContext(Context);
+    const { id } = useParams();
     const [collectionsByCategory, setCollectionsByCategory] = useState(collection.allCollections);
 
     useEffect(() => {
         if (collection.selectedCategory.name !== "All") {
             setCollectionsByCategory(
-                collection.allCollections.filter(
-                    (el) => el.categoryId === collection.selectedCategory.id
-                )
+                collection.allCollections.filter((el) => el.categoryId === collection.selectedCategory.id)
             );
         } else setCollectionsByCategory(collection.allCollections);
     }, [collection.selectedCategory, collection.allCollections]);
-
     const onDelete = (id) => {
         removeOneCollection(id)
-            .then(() =>
-                setCollectionsByCategory(collectionsByCategory.filter((el) => el.id !== id))
-            )
+            .then(() => setCollectionsByCategory(collectionsByCategory.filter((el) => el.id !== id)))
             .catch((err) => console.log(err));
     };
 
@@ -67,12 +64,16 @@ const CollectionList = observer(({ loading }) => {
                                 </a>
                             </div>
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            <span className="sr-only">Edit</span>
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            <span className="sr-only">Delete</span>
-                        </th>
+                        {user.userData.id === Number(id) ? (
+                            <>
+                                <th scope="col" className="px-6 py-3">
+                                    <span className="sr-only">Edit</span>
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    <span className="sr-only">Delete</span>
+                                </th>
+                            </>
+                        ) : null}
                     </tr>
                 </thead>
                 <tbody>
@@ -85,9 +86,7 @@ const CollectionList = observer(({ loading }) => {
                     ) : collectionsByCategory.length > 0 ? (
                         collectionsByCategory.map((el) => {
                             return (
-                                <tr
-                                    key={el.id}
-                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <td className="px-4 py-4">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0 h-14 w-14">
@@ -102,9 +101,7 @@ const CollectionList = observer(({ loading }) => {
                                                 <a
                                                     href={COLLECTION_ROUTE + "/" + el.id}
                                                     className="text-sm font-medium text-gray-900 hover:underline">
-                                                    {el.name.length > 25
-                                                        ? el.name.slice(0, 25) + "..."
-                                                        : el.name}
+                                                    {el.name.length > 25 ? el.name.slice(0, 25) + "..." : el.name}
                                                 </a>
                                             </div>
                                         </div>
@@ -114,37 +111,39 @@ const CollectionList = observer(({ loading }) => {
                                         <Badge category={el.category?.name} />
                                     </td>
                                     <td className="px-6 py-4  max-w-sm">
-                                        {el.description.length > 0
-                                            ? el.description
-                                            : "There is no description..."}
+                                        {el.description.length > 0 ? el.description : "There is no description..."}
                                     </td>
-                                    <td className="px-3 py-4 text-right">
-                                        <a
-                                            href="#"
-                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                            Edit
-                                        </a>
-                                    </td>
-                                    <td className="px-6 py-4 text-right content-center">
-                                        <button onClick={() => onDelete(el.id)}>
-                                            <svg
-                                                className="w-6 h-6 text-gray-800 dark:text-white"
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                fill="none"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    stroke="currentColor"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="1.3"
-                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </td>
+                                    {user.userData.id === Number(id) ? (
+                                        <>
+                                            <td className="px-3 py-4 text-right">
+                                                <a
+                                                    href="#"
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                            <td className="px-6 py-4 text-right content-center">
+                                                <button onClick={() => onDelete(el.id)}>
+                                                    <svg
+                                                        className="w-6 h-6 text-gray-800 dark:text-white"
+                                                        aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            stroke="currentColor"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="1.3"
+                                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </>
+                                    ) : null}
                                 </tr>
                             );
                         })

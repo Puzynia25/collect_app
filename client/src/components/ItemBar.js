@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { USER_ROUTE } from "../utils/consts";
 import Like from "./Like";
 
 const ItemBar = ({ item, userId, fields }) => {
+    const navigate = useNavigate();
     return (
         <aside className="hidden md:w-1/3 lg:w-1/4 md:block">
             <div className="sticky top-0 flex flex-col gap-2 p-5 border md:rounded-3xl md:shadow-lg">
@@ -13,11 +15,11 @@ const ItemBar = ({ item, userId, fields }) => {
 
                         <h5 className="mt-4 text-sm font-semibold tracking-tight text-gray-900 dark:text-white ">
                             Creator:{" "}
-                            <a
-                                href={USER_ROUTE + "/" + userId}
+                            <button
+                                onClick={() => navigate(USER_ROUTE + "/" + userId)}
                                 className="text-sm text-gray-500 dark:text-gray-400 hover:underline">
                                 {item.collection?.user.name}
-                            </a>
+                            </button>
                         </h5>
 
                         <div className="mt-9 w-1/3">

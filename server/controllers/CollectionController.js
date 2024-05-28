@@ -204,6 +204,10 @@ class CollectionController {
     async getAllCustomFields(req, res, next) {
         const { id } = req.params;
 
+        if (!id) {
+            return next(ApiError.badRequest("Collection ID is required"));
+        }
+
         const fields = await CustomField.findAll({
             where: { collectionId: id },
             include: [{ model: CustomFieldValue, as: "values" }],
