@@ -10,15 +10,17 @@ const Tags = ({ tags }) => {
             </h2>
 
             <div className="flex justify-center flex-wrap gap-2 p-4 max-w-sm mx-auto m-4 text-sm">
-                {tags.map((el, i) => {
-                    return (
-                        <button
-                            key={i}
-                            className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300">
-                            {el}
-                        </button>
-                    );
-                })}
+                {tags.length > 0
+                    ? tags.map((el, i) => {
+                          return (
+                              <button
+                                  key={i}
+                                  className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300">
+                                  {el}
+                              </button>
+                          );
+                      })
+                    : null}
             </div>
         </div>
     );

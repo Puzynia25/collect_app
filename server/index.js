@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 9000;
 const app = express();
 
 const corsOptions = {
-    origin: ["https://collect-app.onrender.com", "https://collect-app-client.onrender.com/"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     preflightContinue: false,
