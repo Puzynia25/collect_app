@@ -9,7 +9,8 @@ const CreateItem = ({ show, onHide, oneCollection }) => {
     const { id } = useParams();
 
     const addItem = () => {
-        createItem({ name, tags: tags[0].toLowerCase().split(","), collectionId: id }).then((data) => {
+        const formattedTags = tags[0] ? tags[0].toLowerCase().split(",") : tags[0];
+        createItem({ name, tags: formattedTags, collectionId: id }).then((data) => {
             return setName(""), setTags([]), onHide();
         });
     };

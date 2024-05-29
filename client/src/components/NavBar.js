@@ -45,9 +45,9 @@ const NavBar = observer(() => {
     return (
         <nav className="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900 md:rounded-3xl md:shadow-lg border">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a
+                <button
                     className="cursor-pointer ms-2 flex items-center space-x-3 rtl:space-x-reverse dark:text-white"
-                    href={MAIN_ROUTE}>
+                    onClick={() => navigate(MAIN_ROUTE)}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                         <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
                     </svg>
@@ -55,7 +55,7 @@ const NavBar = observer(() => {
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                         Collections
                     </span>
-                </a>
+                </button>
 
                 <div className="flex md:order-2">
                     <button
@@ -219,15 +219,15 @@ const NavBar = observer(() => {
 
                     <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
-                            <a
-                                href={MAIN_ROUTE}
+                            <button
+                                onClick={() => navigate(MAIN_ROUTE)}
                                 className={`block py-2 px-3 rounded md:p-0 ${
                                     location.pathname === MAIN_ROUTE
                                         ? "text-blue-600 dark:text-blue-500"
                                         : "text-gray-900 dark:text-white"
                                 }`}>
                                 Home
-                            </a>
+                            </button>
                         </li>
                         <li>
                             <button
