@@ -68,9 +68,7 @@ const Admin = observer(() => {
         const newStatus = e.target.value;
         setStatus(newStatus);
 
-        selectedIds.map((id) =>
-            updateStatusOrRole(id, newStatus, null).catch((e) => console.log(e))
-        );
+        selectedIds.map((id) => updateStatusOrRole(id, newStatus, null).catch((e) => console.log(e)));
 
         const updateUsers = user.users.map((user) => {
             if (selectedIds.includes(user.id)) {
@@ -85,10 +83,7 @@ const Admin = observer(() => {
 
     const onDelete = (id) => {
         deleteUser(id)
-            .then(
-                () => user.setUsers(user.users.filter((user) => user.id !== id)),
-                setSelectedIds([])
-            )
+            .then(() => user.setUsers(user.users.filter((user) => user.id !== id)), setSelectedIds([]))
             .catch((e) => console.log(e));
     };
 
@@ -109,13 +104,11 @@ const Admin = observer(() => {
     };
 
     return (
-        <div className="bg-white w-full mt-9">
+        <div className="w-full mt-9 bg-white dark:bg-gray-900 dark:text-white">
             <main className="w-full min-h-screen">
-                <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border w-full">
+                <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border border-gray-200 dark:border-gray-600 w-full">
                     <div className="ms-2">
-                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                            Users
-                        </h2>
+                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">Users</h2>
                     </div>
                     {/* Dropdowns */}
                     <div className="ms-4 mt-7 flex gap-3">
@@ -156,9 +149,7 @@ const Admin = observer(() => {
                                                 checked={selectedAll}
                                                 onChange={onSelectedAllChange}
                                             />
-                                            <label
-                                                htmlFor="checkbox-all-search"
-                                                className="sr-only">
+                                            <label htmlFor="checkbox-all-search" className="sr-only">
                                                 checkbox
                                             </label>
                                         </div>
@@ -274,13 +265,9 @@ const Admin = observer(() => {
                                                         type="checkbox"
                                                         className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                                         checked={selectedIds.includes(user.id)}
-                                                        onChange={(e) =>
-                                                            onCheckboxChange(e, user.id)
-                                                        }
+                                                        onChange={(e) => onCheckboxChange(e, user.id)}
                                                     />
-                                                    <label
-                                                        htmlFor="checkbox-table-search-1"
-                                                        className="sr-only">
+                                                    <label htmlFor="checkbox-table-search-1" className="sr-only">
                                                         checkbox
                                                     </label>
                                                 </div>
@@ -298,12 +285,8 @@ const Admin = observer(() => {
                                                 </a>
                                             </td>
                                             <td className="px-6 py-4">{user.email}</td>
-                                            <td className="px-6 py-4">
-                                                {formattedDate(user.createdAt)}
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                {formattedDate(user.lastLogin)}
-                                            </td>
+                                            <td className="px-6 py-4">{formattedDate(user.createdAt)}</td>
+                                            <td className="px-6 py-4">{formattedDate(user.lastLogin)}</td>
                                             <td className="px-6 py-4">
                                                 {user.status === "active" ? (
                                                     <span className="flex text-sm font-medium text-gray-900 dark:text-white me-3">
@@ -399,14 +382,8 @@ const Admin = observer(() => {
                         className="ms-4 flex items-center flex-column flex-wrap md:flex-row justify-between pt-4 md:mb-8"
                         aria-label="Table navigation">
                         <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-                            Showing{" "}
-                            <span className="font-semibold text-gray-900 dark:text-white">
-                                1-10
-                            </span>{" "}
-                            of{" "}
-                            <span className="font-semibold text-gray-900 dark:text-white">
-                                {userTotal}
-                            </span>
+                            Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of{" "}
+                            <span className="font-semibold text-gray-900 dark:text-white">{userTotal}</span>
                         </span>
                         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                             <li>

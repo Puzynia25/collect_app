@@ -45,7 +45,7 @@ const MainPage = observer(() => {
     }
 
     return (
-        <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
+        <div className="w-full flex flex-col gap-5 md:flex-row mt-9 bg-white dark:bg-gray-900 dark:text-white">
             <CategoryBar />
             <ContentWrapper>
                 <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">Recently Added</h1>

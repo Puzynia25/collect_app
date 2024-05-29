@@ -35,7 +35,7 @@ const Auth = observer(() => {
 
     return (
         <div className="mt-8">
-            <form className="max-w-sm mx-auto border border-gray-300 rounded-3xl p-5">
+            <form className="max-w-sm mx-auto border border-gray-300 dark:border-gray-600 rounded-3xl p-5">
                 {isLogin ? (
                     <>
                         <div className="mb-5">
@@ -81,7 +81,7 @@ const Auth = observer(() => {
                             />
                         </div>
                         <div className="my-4" style={{ fontSize: "small" }}>
-                            <p className="inline-block">Don't have an account? </p>
+                            <p className="inline-block dark:text-gray-400">Don't have an account? </p>
 
                             <a
                                 href={REGISTARTION_ROUTE}

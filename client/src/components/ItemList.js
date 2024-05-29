@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
+import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
 import { useNavigate } from "react-router-dom";
 import Badge from "./Badge";
 import { removeOne } from "../http/itemAPI";
@@ -139,7 +139,7 @@ const ItemList = ({ items, fields }) => {
                                         <td className="text-balance max-w-[140px] px-4 py-4 ">
                                             <button
                                                 className="hover:underline"
-                                                onClick={() => navigate(USER_ROUTE + "/" + el.collection?.id)}>
+                                                onClick={() => navigate(COLLECTION_ROUTE + "/" + el.collection?.id)}>
                                                 {el.collection?.name.length > 20
                                                     ? el.collection?.name.slice(0, 20) + "..."
                                                     : el.collection?.name}
@@ -162,7 +162,7 @@ const ItemList = ({ items, fields }) => {
                                                       return (
                                                           <button
                                                               key={i}
-                                                              className="m-1 px-2 py-1 rounded bg-gray-200/50 text-gray-700 hover:bg-gray-300">
+                                                              className="m-1 px-2 py-1 rounded bg-gray-200/50 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300">
                                                               {tag.length > 15 ? tag.slice(0, 15) + "..." : tag}
                                                           </button>
                                                       );

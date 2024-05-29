@@ -37,7 +37,7 @@ const UserPage = observer(() => {
     };
 
     return (
-        <div className="bg-white w-full flex flex-col gap-5 md:flex-row my-2 md:my-9">
+        <div className="w-full flex flex-col gap-5 md:flex-row my-2 md:my-9 bg-white border-gray-200 dark:bg-gray-900 dark:text-white">
             <CategoryBar />
             <ContentWrapper>
                 <div className="flex justify-between">

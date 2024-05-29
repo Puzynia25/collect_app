@@ -1,19 +1,28 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "..";
-import {
-    ADMIN_ROUTE,
-    LOGIN_ROUTE,
-    MAIN_ROUTE,
-    REGISTARTION_ROUTE,
-    USER_ROUTE,
-} from "../utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 
 const NavBar = observer(() => {
     const { user } = useContext(Context);
+    const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem("color-theme"));
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        const storedTheme = localStorage.getItem("color-theme");
+        if (storedTheme) {
+            setIsDarkMode(storedTheme === "dark");
+            document.documentElement.classList.toggle("dark", storedTheme === "dark");
+        }
+    }, []);
+
+    useEffect(() => {
+        document.documentElement.classList.toggle("dark", isDarkMode);
+        const colorTheme = isDarkMode ? "dark" : "light";
+        localStorage.setItem("color-theme", colorTheme);
+    }, [isDarkMode]);
 
     const logOut = () => {
         localStorage.removeItem("token");
@@ -29,17 +38,17 @@ const NavBar = observer(() => {
         } else navigate(USER_ROUTE + "/" + user.userData.id);
     };
 
+    const toggleTheme = () => {
+        setIsDarkMode(!isDarkMode);
+    };
+
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 md:rounded-3xl md:shadow-lg border">
+        <nav className="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900 md:rounded-3xl md:shadow-lg border">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a
-                    className="cursor-pointer ms-2 flex items-center space-x-3 rtl:space-x-reverse"
+                    className="cursor-pointer ms-2 flex items-center space-x-3 rtl:space-x-reverse dark:text-white"
                     href={MAIN_ROUTE}>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                         <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
                     </svg>
 
@@ -153,6 +162,32 @@ const NavBar = observer(() => {
                             </button>
                         </>
                     )}
+                    <button
+                        id="theme-toggle"
+                        data-tooltip-target="tooltip-toggle"
+                        type="button"
+                        className="text-gray-500 inline-flex items-center justify-center dark:text-gray-400 hover:bg-gray-100 w-10 h-10 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+                        onClick={toggleTheme}>
+                        <svg
+                            id="theme-toggle-dark-icon"
+                            className={isDarkMode ? "w-4 h-4 block" : "w-4 h-4 hidden"}
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 18 20">
+                            <path d="M17.8 13.75a1 1 0 0 0-.859-.5A7.488 7.488 0 0 1 10.52 2a1 1 0 0 0 0-.969A1.035 1.035 0 0 0 9.687.5h-.113a9.5 9.5 0 1 0 8.222 14.247 1 1 0 0 0 .004-.997Z"></path>
+                        </svg>
+                        <svg
+                            id="theme-toggle-light-icon"
+                            className={!isDarkMode ? "w-4 h-4 block" : "w-4 h-4 hidden"}
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-11a1 1 0 0 0 1-1V1a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1Zm0 12a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1ZM4.343 5.757a1 1 0 0 0 1.414-1.414L4.343 2.929a1 1 0 0 0-1.414 1.414l1.414 1.414Zm11.314 8.486a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM4 10a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1Zm15-1h-2a1 1 0 1 0 0 2h2a1 1 0 0 0 0-2ZM4.343 14.243l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414a1 1 0 0 0-1.414-1.414ZM14.95 6.05a1 1 0 0 0 .707-.293l1.414-1.414a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 .707 1.707Z"></path>
+                        </svg>
+                        <span className="sr-only">Toggle dark mode</span>
+                    </button>
                 </div>
                 <div
                     className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"

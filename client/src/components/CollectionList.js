@@ -97,7 +97,7 @@ const CollectionList = observer(({ loading }) => {
 
                                             <div className="ml-4">
                                                 <button
-                                                    className="text-sm font-medium text-gray-900 hover:underline"
+                                                    className="text-sm font-medium text-gray-900 hover:underline dark:text-gray-400"
                                                     onClick={() => navigate(COLLECTION_ROUTE + "/" + el.id)}>
                                                     {el.name.length > 25 ? el.name.slice(0, 25) + "..." : el.name}
                                                 </button>

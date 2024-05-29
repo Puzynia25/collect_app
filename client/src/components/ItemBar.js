@@ -7,11 +7,11 @@ const ItemBar = ({ item, userId }) => {
 
     return (
         <aside className="hidden md:w-1/3 lg:w-1/4 md:block">
-            <div className="sticky top-0 flex flex-col gap-2 p-5 border md:rounded-3xl md:shadow-lg">
-                <div className="dark:bg-gray-800 m-2">
+            <div className="sticky top-0 flex flex-col gap-2 p-5 border md:rounded-3xl md:shadow-lg dark:border-gray-600 dark:bg-gray-900 dark:text-white">
+                <div className="m-2">
                     <div>
                         <button onClick={() => navigate(COLLECTION_ROUTE + "/" + item.collectionId)}>
-                            <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white hover:underline">
+                            <h5 className="text-xl text-left font-semibold tracking-tight text-gray-900 dark:text-white hover:underline">
                                 {item.name}
                             </h5>
                         </button>
@@ -40,7 +40,7 @@ const ItemBar = ({ item, userId }) => {
                                 return (
                                     <button
                                         key={i}
-                                        className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 hover:bg-gray-300">
+                                        className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300">
                                         {el}
                                     </button>
                                 );

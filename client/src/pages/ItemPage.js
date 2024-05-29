@@ -34,10 +34,10 @@ const ItemPage = observer(() => {
     }
 
     return (
-        <div className="bg-white w-full flex flex-col gap-5 md:flex-row mt-9">
+        <div className="w-full flex flex-col gap-5 md:flex-row mt-9 dark:bg-gray-900 dark:text-white">
             <ItemBar item={item} userId={user.userData.id} />
             <div className="md:w-2/3 lg:w-3/4 w-full">
-                <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border w-full">
+                <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border w-full dark:border-gray-600">
                     <Badge category={item.collection?.category.name} />
                     {fields.length > 0 ? <CustomFields fields={fields} collectionId={item.collectionId} /> : null}
                 </div>

@@ -23,7 +23,7 @@ const CreateItem = ({ show, onHide, oneCollection }) => {
             }`}>
             <div className="relative p-5 w-full max-w-md max-h-full">
                 {/* <!-- Modal content --> */}
-                <div className="relative bg-white rounded-3xl shadow dark:bg-gray-700">
+                <div className="relative bg-white rounded-3xl shadow dark:bg-gray-800">
                     {/* <!-- Modal header --> */}
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">Create New Item</h3>

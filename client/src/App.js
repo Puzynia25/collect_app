@@ -24,7 +24,11 @@ const App = observer(() => {
     }, []);
 
     if (loading) {
-        return <Spinner />;
+        return (
+            <div className="mt-5">
+                <Spinner />
+            </div>
+        );
     }
 
     return (

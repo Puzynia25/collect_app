@@ -49,7 +49,7 @@ const CreateCustomFields = ({ show, onHide, loading, setLoading, customFields, s
             }`}>
             <div className="relative p-5 w-full max-w-md max-h-full">
                 {/* <!-- Modal content --> */}
-                <div className="relative bg-white rounded-3xl shadow dark:bg-gray-700">
+                <div className="relative bg-white rounded-3xl shadow dark:bg-gray-800">
                     {/* <!-- Modal header --> */}
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">Create New Fields</h3>
@@ -187,7 +187,7 @@ const CreateCustomFields = ({ show, onHide, loading, setLoading, customFields, s
                         </ul>
                     </form>
 
-                    <div className="text-right border-t p-4 md:p-5">
+                    <div className="text-right border-t p-4 md:p-5 dark:border-gray-600">
                         <button
                             onClick={submitCustomFields}
                             className="mx-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

@@ -16,7 +16,7 @@ const CommentsContainer = observer(({ item }) => {
     };
 
     return (
-        <div className="mt-9 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="mt-9 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-900 dark:border-gray-700">
             <div className="flex items-center justify-between mb-4">
                 <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">Comments</h5>
                 {/* <a
@@ -59,7 +59,7 @@ const CommentsContainer = observer(({ item }) => {
                 <label htmlFor="chat" className="sr-only">
                     Your message
                 </label>
-                <div className="flex items-center px-3 py-2 rounded-3xl bg-gray-50 dark:bg-gray-700">
+                <div className="flex items-center px-3 py-2 rounded-3xl bg-gray-50 dark:bg-gray-800">
                     <textarea
                         id="chat"
                         rows="1"

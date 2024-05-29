@@ -2,11 +2,11 @@ const Tags = ({ tags }) => {
     return (
         <div>
             <h2 className="flex flex-row flex-nowrap items-center mt-24">
-                <span className="flex-grow block border-t border-black" />
-                <span className="flex-none block mx-4 px-4 py-2.5 text-md rounded-3xl leading-none font-medium bg-black text-white">
+                <span className="flex-grow block border-t border-black dark:border-gray-600" />
+                <span className="flex-none block mx-4 px-4 py-2.5 text-md rounded-3xl leading-none font-medium bg-black text-white dark:bg-white dark:text-black">
                     Popular Tags
                 </span>
-                <span className="flex-grow block border-t border-black" />
+                <span className="flex-grow block border-t border-black dark:border-gray-600" />
             </h2>
 
             <div className="flex justify-center flex-wrap gap-2 p-4 max-w-sm mx-auto m-4 text-sm">
@@ -14,7 +14,7 @@ const Tags = ({ tags }) => {
                     return (
                         <button
                             key={i}
-                            className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 hover:bg-gray-300">
+                            className="px-2 py-1 rounded bg-gray-200/50 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300">
                             {el}
                         </button>
                     );

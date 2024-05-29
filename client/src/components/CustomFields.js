@@ -17,7 +17,6 @@ const CustomFields = ({ fields, collectionId }) => {
             ...prev,
             [id]: value,
         }));
-        console.log(fieldValues);
     };
 
     const onUpdateValue = () => {
