@@ -2,6 +2,7 @@ const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const { User } = require("../models/models");
 const jwt = require("jsonwebtoken");
+const sequelize = require("../db");
 
 const generateJwt = (id, name, email, role) => {
     return jwt.sign({ id, name, email, role }, process.env.SECRET_KEY, {
@@ -80,13 +81,23 @@ class UserController {
 
     async delete(req, res, next) {
         const { id } = req.params;
-        const deletedUser = await User.destroy({ where: { id } });
+        const transaction = await sequelize.transaction();
 
-        if (deletedUser === 0) {
-            return next(ApiError.badRequest("User not found"));
+        try {
+            const user = await User.findByPk(id);
+            if (!user) {
+                return next(ApiError.badRequest("User not found"));
+            }
+            await user.destroy({ transaction });
+            //для фиксации всех изменений
+            await transaction.commit();
+
+            return res.status(204).send();
+        } catch (e) {
+            //для отката всех изменений
+            await transaction.rollback();
+            return next(ApiError.badRequest(error.message));
         }
-
-        return res.status(204).send();
     }
 
     async check(req, res, next) {

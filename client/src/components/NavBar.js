@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 
 const NavBar = observer(() => {
     const { user } = useContext(Context);
-    const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem("color-theme"));
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 

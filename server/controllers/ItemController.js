@@ -118,19 +118,6 @@ class ItemController {
             console.error(e);
             return next(ApiError.internal("Internal server error"));
         }
-
-        // const items = await Item.findAll();
-
-        // if (!items) {
-        //     return next(ApiError.badRequest("Items not found"));
-        // }
-
-        // const tags = items
-        //     .map((item) => item.tags)
-        //     .flat()
-        //     .slice(0, 50);
-
-        // return res.json(tags);
     }
 
     async addLike(req, res, next) {

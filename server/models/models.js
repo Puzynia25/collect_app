@@ -51,34 +51,34 @@ const CustomFieldValue = sequelize.define("customFieldValue", {
     value: { type: DataTypes.STRING, allowNull: false },
 });
 
-User.hasMany(Collection);
+User.hasMany(Collection, { onDelete: "CASCADE" });
 Collection.belongsTo(User);
 
-User.hasMany(Like);
+User.hasMany(Like, { onDelete: "CASCADE" });
 Like.belongsTo(User);
 
-User.hasMany(Comment);
+User.hasMany(Comment, { onDelete: "CASCADE" });
 Comment.belongsTo(User);
 
 Category.hasMany(Collection);
 Collection.belongsTo(Category);
 
-Collection.hasMany(Item);
+Collection.hasMany(Item, { onDelete: "CASCADE" });
 Item.belongsTo(Collection);
 
-Collection.hasMany(CustomField);
+Collection.hasMany(CustomField, { onDelete: "CASCADE" });
 CustomField.belongsTo(Collection);
 
-CustomField.hasMany(CustomFieldValue, { as: "values" });
+CustomField.hasMany(CustomFieldValue, { as: "values", onDelete: "CASCADE" });
 CustomFieldValue.belongsTo(CustomField);
 
-Item.hasMany(CustomFieldValue);
+Item.hasMany(CustomFieldValue, { onDelete: "CASCADE" });
 CustomFieldValue.belongsTo(Item);
 
-Item.hasMany(Like);
+Item.hasMany(Like, { onDelete: "CASCADE" });
 Like.belongsTo(Item);
 
-Item.hasMany(Comment);
+Item.hasMany(Comment, { onDelete: "CASCADE" });
 Comment.belongsTo(Item);
 
 module.exports = { User, Category, Collection, Item, Like, Comment, CustomField, CustomFieldValue };

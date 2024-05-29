@@ -107,7 +107,7 @@ export const CustomFieldTypes = ({ type, name, value, onChange, isReadOnly }) =>
                 <>
                     <input
                         type="checkbox"
-                        checked={value === "true" ? true : false}
+                        checked={Boolean(value === "true" || value === true)}
                         onChange={(e) => onChange(e.target.checked)}
                         className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
