@@ -5,27 +5,31 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const router = require("./routes/index");
 const errorHandler = require("./middleware/ErrorHandlingMiddleware");
+const path = require("path");
 
 const PORT = process.env.PORT || 9000;
 
 const app = express();
-// const corsOptions = {
-//     origin: ["https://collect-app.onrender.com", "https://collect-app-client.onrender.com"],
-//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     credentials: true,
-//     optionsSuccessStatus: 204,
-// };
-// app.use(cors(corsOptions));
 
-// app.use((req, res, next) => {
-//     console.log("Request Headers:", req.headers);
-//     next();
-// });
-app.use(cors());
+const corsOptions = {
+    origin: ["https://collect-app.onrender.com", "https://collect-app-client.onrender.com/"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
 app.use("/api", router);
+
+app.use(express.static(path.join(__dirname, "build")));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.use(errorHandler);
 

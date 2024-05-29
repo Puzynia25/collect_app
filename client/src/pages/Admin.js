@@ -3,6 +3,7 @@ import { Context } from "..";
 import { USER_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import { deleteUser, fetchAllUsers, updateStatusOrRole } from "../http/userAPI";
+import { useNavigate } from "react-router-dom";
 
 const Admin = observer(() => {
     const { user } = useContext(Context);
@@ -11,6 +12,8 @@ const Admin = observer(() => {
     const [selectedAll, setSelectedAll] = useState(false);
     const [status, setStatus] = useState("");
     const [role, setRole] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchAllUsers()
@@ -278,11 +281,11 @@ const Admin = observer(() => {
                                                 {user.id}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <a
-                                                    href={USER_ROUTE + "/" + user.id}
-                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                <button
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                    onClick={() => navigate(USER_ROUTE + "/" + user.id)}>
                                                     {user.name}
-                                                </a>
+                                                </button>
                                             </td>
                                             <td className="px-6 py-4">{user.email}</td>
                                             <td className="px-6 py-4">{formattedDate(user.createdAt)}</td>

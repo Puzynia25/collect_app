@@ -28,6 +28,7 @@ class UserController {
             email,
             role,
             password: hashPassword,
+            lastLogin: new Date(),
         });
         const token = generateJwt(user.id, user.name, user.email, user.role);
         return res.json({ token });

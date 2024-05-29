@@ -83,11 +83,11 @@ const Auth = observer(() => {
                         <div className="my-4" style={{ fontSize: "small" }}>
                             <p className="inline-block dark:text-gray-400">Don't have an account? </p>
 
-                            <a
-                                href={REGISTARTION_ROUTE}
+                            <button
+                                onClick={() => navigate(REGISTARTION_ROUTE)}
                                 className="ms-2 text-sm text-blue-600 dark:text-blue-500 hover:underline">
                                 sign up
-                            </a>
+                            </button>
                         </div>
                         <button
                             type="submit"
