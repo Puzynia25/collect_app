@@ -18,6 +18,11 @@ export const fetchAllCollections = async (categoryId, userId, page, limit = 5) =
     return data;
 };
 
+export const updateCollection = async (collection) => {
+    const { data } = await $authHost.patch("api/collection", collection);
+    return data;
+};
+
 export const fetchOneCollection = async (id) => {
     const { data } = await $host.get("api/collection/" + id);
     return data;

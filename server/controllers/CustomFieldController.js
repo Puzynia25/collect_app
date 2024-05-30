@@ -1,12 +1,15 @@
 const ApiError = require("../error/ApiError");
-const { Collection, Category, User, Item, CustomField, CustomFieldValue } = require("../models/models");
-const sequelize = require("../db");
+const { Collection, Item, CustomField, CustomFieldValue } = require("../models/models");
 
 class CustomFieldController {
     async create(req, res, next) {
         try {
-            const { collectionId, customFields } = req.body;
-            console.log(collectionId, customFields);
+            const { customFields } = req.body;
+            const { id: collectionId } = req.params;
+
+            if (!collectionId) {
+                return next(ApiError.badRequest("Please select a collection"));
+            }
 
             const collection = await Collection.findByPk(collectionId);
             if (!collection) {

@@ -114,7 +114,7 @@ export const CustomFieldTypes = ({ type, name, value, onChange, isReadOnly }) =>
 
                     <label
                         htmlFor="checkbox-input"
-                        className="text-wrap truncate ... ms-4 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        className="text-wrap truncate ... ms-4 text-sm font-medium text-gray-900 dark:text-white">
                         {name}
                     </label>
                 </>
@@ -125,11 +125,11 @@ export const CustomFieldTypes = ({ type, name, value, onChange, isReadOnly }) =>
                 <>
                     <label
                         htmlFor="date-input"
-                        className="w-1/3 text-wrap truncate ... pr-2 mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        className="w-1/3 text-wrap truncate ... pr-2 text-sm font-medium text-gray-900 dark:text-white">
                         {name}
                     </label>
 
-                    <div className="w-full">
+                    <div className="w-full mt-2">
                         <Datepicker
                             weekStart={1}
                             defaultDate={value ? new Date(value) : new Date()}

@@ -36,6 +36,50 @@ class CollectionController {
         }
     }
 
+    async update(req, res, next) {
+        try {
+            const { name, description, categoryId, collectionId } = req.body;
+            let img;
+
+            if (req.files && req.files.img) {
+                const { img: newImg } = req.files;
+                let fileName = uuid.v4() + ".jpg";
+                const resultFile = await cloudinary.uploader.upload(newImg.tempFilePath, {
+                    public_id: fileName,
+                    folder: "collections",
+                    use_filename: true,
+                    unique_filename: false,
+                    overwrite: true,
+                });
+
+                img = resultFile.secure_url;
+            }
+
+            const collection = await Collection.findByPk(collectionId);
+
+            if (!collection) {
+                return next(ApiError.badRequest("Collection not found"));
+            }
+
+            collection.name = name ?? collection.name;
+            collection.description = description ?? collection.description;
+            collection.categoryId = categoryId ?? collection.categoryId;
+            if (img) {
+                collection.img = img;
+            }
+
+            await collection.save();
+
+            const updateCollection = await Collection.findOne({
+                where: { id: collection.id },
+                include: Category,
+            });
+            return res.json(updateCollection);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
+    }
+
     async getOne(req, res) {
         const { id } = req.params;
         const collection = await Collection.findOne({

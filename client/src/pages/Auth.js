@@ -56,12 +56,14 @@ const Auth = observer(() => {
                                     </svg>
                                 </div>
                                 <input
-                                    type="text"
+                                    type="email"
                                     id="email-address-icon"
+                                    pattern=".+@example\.com"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="name@gmail.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    required
                                 />
                             </div>
                         </div>
@@ -84,6 +86,7 @@ const Auth = observer(() => {
                             <p className="inline-block dark:text-gray-400">Don't have an account? </p>
 
                             <button
+                                type="submit"
                                 onClick={() => navigate(REGISTARTION_ROUTE)}
                                 className="ms-2 text-sm text-blue-600 dark:text-blue-500 hover:underline">
                                 sign up
@@ -131,12 +134,14 @@ const Auth = observer(() => {
                                     </svg>
                                 </div>
                                 <input
-                                    type="text"
+                                    type="email"
                                     id="email-address-icon"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="name@gmail.com"
+                                    pattern=".+@example\.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    required
                                 />
                             </div>
                         </div>

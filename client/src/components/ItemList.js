@@ -7,9 +7,11 @@ import { removeOne } from "../http/itemAPI";
 const ItemList = ({ items, fields }) => {
     const navigate = useNavigate();
     const [allItems, setAllItems] = useState(items);
+    // const [isEditFields, setIsEditFields] = useState(false);
 
     useEffect(() => {
         setAllItems(items);
+        console.log(fields, "ItemList");
     }, [items]);
 
     const onDeleteItem = (itemId) => {

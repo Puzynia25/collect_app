@@ -1,10 +1,7 @@
 import { $authHost, $host } from ".";
 
-export const createCustomFields = async ({ collectionId, customFields }) => {
-    const { data } = await $authHost.post("api/collection/" + collectionId + "/custom-fields", {
-        collectionId,
-        customFields,
-    });
+export const createCustomFields = async (collectionId, customFields) => {
+    const { data } = await $authHost.post("api/collection/" + collectionId + "/custom-fields", { customFields });
     return data;
 };
 

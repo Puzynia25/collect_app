@@ -5,7 +5,7 @@ import Badge from "../components/Badge";
 import CreateItem from "../components/modals/CreateItem";
 import { observer } from "mobx-react-lite";
 import { fetchAllCategories } from "../http/collectionAPI";
-import { fetchAllCustomFields } from "../http/customFieldAPI";
+import { fetchAllCustomFields, updateCustomFields } from "../http/customFieldAPI";
 import { fetchOneItem } from "../http/itemAPI";
 import { useParams } from "react-router-dom";
 import ItemBar from "../components/ItemBar";
@@ -29,6 +29,11 @@ const ItemPage = observer(() => {
         ]).finally(() => setLoading(false));
     }, []);
 
+    const onUpdateValue = (fieldValues) => {
+        const validateValues = Object.keys(fieldValues).map((id) => ({ id: parseInt(id, 10), value: fieldValues[id] }));
+        updateCustomFields(item.collectionId, validateValues).catch((e) => console.log(e.response.data.message));
+    };
+
     if (loading) {
         return <Spinner />;
     }
@@ -39,7 +44,14 @@ const ItemPage = observer(() => {
             <div className="md:w-2/3 lg:w-3/4 w-full">
                 <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border w-full dark:border-gray-600">
                     <Badge category={item.collection?.category.name} />
-                    {fields.length > 0 ? <CustomFields fields={fields} collectionId={item.collectionId} /> : null}
+                    {fields.length > 0 ? (
+                        <CustomFields
+                            fields={fields}
+                            collectionId={item.collectionId}
+                            onUpdateValue={onUpdateValue}
+                            isButton={true}
+                        />
+                    ) : null}
                 </div>
                 <CommentsContainer item={item} />
             </div>

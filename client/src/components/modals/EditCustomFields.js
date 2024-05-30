@@ -3,7 +3,7 @@ import { createCustomFields, fetchAllCustomFields } from "../../http/customField
 import CustomFieldTypes from "../CustomFieldTypes";
 import ErrorMessage from "./ErrorMessage";
 
-const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
+const EditCustomFields = ({ show, onHide, collectionId, setFields }) => {
     const availableTypes = [
         { value: "number", label: "Number", max: 3 },
         { value: "string", label: "String", max: 3 },
@@ -201,4 +201,4 @@ const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
     );
 };
 
-export default CreateCustomFields;
+export default EditCustomFields;

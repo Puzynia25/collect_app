@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { addLike, checkLike, removeLike } from "../http/itemAPI";
 import { useParams } from "react-router-dom";
+import ErrorMessage from "./modals/ErrorMessage";
 
 const Like = ({ userId, like }) => {
     const [likes, setLikes] = useState(like);
@@ -18,7 +19,7 @@ const Like = ({ userId, like }) => {
             try {
                 checkLike(id, userId).then((data) => setIsLiked(data));
             } catch (e) {
-                alert(e.response.data.message);
+                console.log(e.response.data.message);
             }
         }
     }, []);
@@ -37,7 +38,7 @@ const Like = ({ userId, like }) => {
             }
             setLikes(data);
         } catch (e) {
-            alert(e.response.data.message);
+            console.log(e.response.data.message);
         } finally {
             setLoading(false);
         }
