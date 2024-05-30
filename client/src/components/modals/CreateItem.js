@@ -93,7 +93,7 @@ const CreateItem = ({ show, onHide, oneCollection, fields }) => {
                                 {fields?.length > 0
                                     ? fields.map((field) => {
                                           return (
-                                              <div key={field.number} className="col-span-2">
+                                              <div key={field.id} className="col-span-2">
                                                   <div className="grow">
                                                       <CustomFieldTypes
                                                           type={field.type}

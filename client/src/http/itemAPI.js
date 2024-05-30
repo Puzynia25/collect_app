@@ -28,6 +28,11 @@ export const removeOne = async (id) => {
     return data;
 };
 
+export const updateItem = async (item) => {
+    const { data } = await $authHost.patch("api/collection/item/" + item.itemId, item);
+    return data;
+};
+
 export const fetchPopularTags = async () => {
     const { data } = await $host.get("api/collection/item/tags");
     return data;

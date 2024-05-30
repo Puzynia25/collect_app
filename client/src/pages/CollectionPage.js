@@ -28,10 +28,9 @@ const CollectionPage = observer(() => {
         Promise.race([
             fetchOneCollection(id).then((data) => setOneCollection(data)),
             fetchAllCategories().then((data) => collection.setAllCategories(data)),
-            fetchAllCustomFields(id).then((data) => setFields(data)),
             fetchAllItems(id).then((data) => item.setItems(data.rows)),
+            fetchAllCustomFields(id).then((data) => setFields(data)),
         ]).finally(() => setLoading(false));
-        console.log("setIsEditFields_CollPage");
     }, [id]);
 
     const onShow = () => {

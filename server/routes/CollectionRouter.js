@@ -11,14 +11,14 @@ router.use("/item", ItemRouter);
 router.post("/", authMiddleware, CollectionController.create);
 router.patch("/", authMiddleware, CollectionController.update);
 router.get("/biggest", CollectionController.getBiggest);
+router.delete("/custom-fields", authMiddleware, CustomFieldController.delete);
 router.get("/", CollectionController.getAll);
 router.get("/:id", CollectionController.getOne);
 router.delete("/:id", authMiddleware, CollectionController.remove);
 router.post("/:id/custom-fields", authMiddleware, CustomFieldController.create);
 router.get("/:id/custom-fields", CustomFieldController.getAll);
-router.patch("/:id/custom-fields", CustomFieldController.update);
-router.patch("/:id/custom-fields-names", CustomFieldController.updateNames);
-router.delete("/custom-fields", CustomFieldController.delete);
+router.patch("/:id/custom-fields", authMiddleware, CustomFieldController.update);
+router.patch("/:id/custom-fields-names", authMiddleware, CustomFieldController.updateNames);
 
 // router.patch("/:id", checkRole("ADMIN"), CollectionController.update);
 

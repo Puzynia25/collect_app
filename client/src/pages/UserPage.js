@@ -40,10 +40,15 @@ const UserPage = observer(() => {
                             Collections
                         </h2>
                         <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            Creator:{" "}
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                                {collection.allCollections[0]?.user?.name}
-                            </span>
+                            {collection.allCollections.length > 0 ? (
+                                <>
+                                    {" "}
+                                    Creator:{" "}
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                                        {collection.allCollections[0]?.user?.name}
+                                    </span>
+                                </>
+                            ) : null}
                         </p>
                         <p className="mt-9 text-sm max-w-md text-gray-900 dark:text-gray-400">
                             A list of all the collections in your account including their name, category and

@@ -41,7 +41,9 @@ const CollectionCards = ({ collections }) => {
                                                       <Badge category={col.category.name} />
                                                   </span>
                                               </h5>
-                                              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                              <h5
+                                                  className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer hover:underline"
+                                                  onClick={() => navigate(COLLECTION_ROUTE + "/" + col.id)}>
                                                   {col.name.length > 60 ? col.name.slice(0, 20) + "..." : col.name}
                                               </h5>
                                               <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">

@@ -24,8 +24,6 @@ export const updateCustomFieldsNames = async (collectionId, customFieldsNames) =
 };
 
 export const removeCustomField = async (fieldsId) => {
-    const { data } = await $authHost.delete("api/collection/custom-fields/", {
-        data: { fieldsId },
-    });
+    const { data } = await $authHost.delete("api/collection/custom-fields/", { data: { fieldsId } });
     return data;
 };

@@ -122,12 +122,11 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                                             <Badge category={el.category?.name} />
                                         </td>
                                         <td className="px-6 py-4 max-w-sm markdownContent">
-                                            <div dangerouslySetInnerHTML={renderMarkdown(el.description)} />
-                                            {/* {el.description.length > 0
-                                                ? el.description.length > 130
-                                                    ? el.description.slice(0, 130) + "..."
-                                                    : el.description
-                                                : "There is no description..."} */}
+                                            {el.description.length > 0 ? (
+                                                <div dangerouslySetInnerHTML={renderMarkdown(el.description)} />
+                                            ) : (
+                                                "There is no description..."
+                                            )}
                                         </td>
                                         {user.userData.id === Number(id) ? (
                                             <>

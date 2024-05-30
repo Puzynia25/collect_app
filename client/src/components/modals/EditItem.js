@@ -1,23 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../..";
-import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { fetchAllCollections, fetchOneCollection, updateCollection } from "../../http/collectionAPI";
 import Spinner from "../Spinner";
 import ErrorMessage from "./ErrorMessage";
+import { fetchAllItems, fetchOneItem, updateItem } from "../../http/itemAPI";
 
-const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
-    const { collection } = useContext(Context);
+const EditItem = observer(({ show, onHide, itemId }) => {
+    const { item } = useContext(Context);
     const [name, setName] = useState("");
-    const [file, setFile] = useState(null);
-    const [description, setDescription] = useState("");
-    const [categoryId, setCategoryId] = useState(null);
-    const [categoryName, setCategoryName] = useState(null);
+    const [tags, setTags] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
-    const { id } = useParams();
 
     const onHideError = () => {
         setError(false);
@@ -25,39 +19,28 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
 
     useEffect(() => {
         setLoading(true);
-        if (collectionId) {
-            fetchOneCollection(collectionId)
+        if (itemId) {
+            fetchOneItem(itemId)
                 .then((data) => initialValues(data))
                 .finally(() => setLoading(false));
         }
-    }, [collectionId]);
+    }, [itemId]);
 
     const initialValues = (data) => {
-        setCategoryName(data.category.name);
         setName(data.name);
-        setDescription(data.description);
-        setCategoryId(data.categoryId);
+        setTags(data.tags);
     };
 
-    const selectFile = (e) => {
-        setFile(e.target.files[0]);
-    };
-
-    const editCollection = (e) => {
+    const editItem = (e) => {
         e.preventDefault();
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("img", file);
-        formData.append("categoryId", categoryId);
-        formData.append("collectionId", collectionId);
 
-        updateCollection(formData)
-            .then((data) => onHide())
-            .then(() => fetchAllCollections(null, id, null, 10).then((data) => collection.setAllCollections(data.rows)))
-            .catch((e) => (setErrorMessage("The collection has not been edited, please try again"), setError(true)))
-            .finally(() => setLoading(false), setIsEdit(true));
+        const formattedTags = Array.isArray(tags) ? tags : tags.split(",").map((tag) => tag.trim().toLowerCase());
+
+        updateItem({ name, tags: formattedTags, itemId })
+            .then(() => (onHide(), setErrorMessage("Item successfully updated!"), setError(true)))
+            .then(() => fetchAllItems(itemId).then((data) => item.setItems(data.rows)))
+            .catch((e) => (setErrorMessage("The item has not been edited, please try again"), setError(true)))
+            .finally(() => setLoading(false));
     };
 
     const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
@@ -75,9 +58,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                     <div className="relative bg-white rounded-3xl shadow dark:bg-gray-800">
                         {/* <!-- Modal header --> */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                Edit Collection
-                            </h3>
+                            <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">Edit Item</h3>
                             <button
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -100,7 +81,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                             </button>
                         </div>
                         {/* <!-- Modal body --> */}
-                        <form className="p-4 md:p-7" onSubmit={editCollection}>
+                        <form className="p-4 md:p-7" onSubmit={editItem}>
                             {!loading ? (
                                 <>
                                     <div className="grid gap-4 mb-4 grid-cols-2">
@@ -115,7 +96,6 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                                 name="name"
                                                 id="name"
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Type collection name"
                                                 required=""
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
@@ -124,55 +104,17 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
 
                                         <div className="col-span-2">
                                             <label
-                                                htmlFor="category"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Category
-                                            </label>
-                                            <select
-                                                id="category"
-                                                className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                onChange={(e) => setCategoryId(Number(e.target.value))}>
-                                                <option>{categoryName}</option>
-
-                                                {collection.allCategories
-                                                    .filter((category) => category.name !== categoryName)
-                                                    .map((el) => {
-                                                        if (el.id !== 0) {
-                                                            return (
-                                                                <option key={el.id} value={el.id}>
-                                                                    {el.name}
-                                                                </option>
-                                                            );
-                                                        }
-                                                    })}
-                                            </select>
-                                        </div>
-                                        <div className="col-span-2">
-                                            <label
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                htmlFor="file_input">
-                                                Upload cover
-                                            </label>
-                                            <input
-                                                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                id="file_input"
-                                                type="file"
-                                                onChange={selectFile}
-                                            />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <label
                                                 htmlFor="description"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Description
+                                                Tags
                                             </label>
+
                                             <textarea
                                                 id="description"
                                                 rows="4"
                                                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Write a description of your collection here"
-                                                value={description}
-                                                onChange={(e) => setDescription(e.target.value)}
+                                                value={tags}
+                                                onChange={(e) => setTags(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -199,7 +141,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <p>Edit collection</p>
+                                            <p>Edit item</p>
                                         </button>
                                     ) : (
                                         <button
@@ -238,4 +180,4 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
     );
 });
 
-export default EditCollection;
+export default EditItem;

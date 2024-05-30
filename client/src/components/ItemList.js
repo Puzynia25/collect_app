@@ -3,14 +3,16 @@ import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
 import { useNavigate } from "react-router-dom";
 import Badge from "./Badge";
 import { removeOne } from "../http/itemAPI";
+import EditItem from "./modals/EditItem";
 
 const ItemList = ({ items, fields }) => {
     const navigate = useNavigate();
     const [allItems, setAllItems] = useState(items);
+    const [onShowEditModal, setOnShowEditModal] = useState(false);
+    const [currentItemId, setCurrentItemId] = useState(null);
 
     useEffect(() => {
         setAllItems(items);
-        console.log(fields, "ItemList");
     }, [items]);
 
     const onDeleteItem = (itemId) => {
@@ -22,6 +24,14 @@ const ItemList = ({ items, fields }) => {
     const formatDate = (date) => {
         const options = { year: "numeric", month: "long", day: "numeric" };
         return new Date(date).toLocaleDateString("en-US", options);
+    };
+
+    const onShowEdit = (id) => {
+        setOnShowEditModal(true);
+        setCurrentItemId(id);
+    };
+    const onHideEdit = () => {
+        setOnShowEditModal(false);
     };
 
     return (
@@ -157,7 +167,7 @@ const ItemList = ({ items, fields }) => {
                                         <td className="px-4 py-4">
                                             <Badge category={el.collection?.category.name} />
                                         </td>
-                                        <td className=" text-wrap  px-4 py-4 max-w-36">
+                                        <td className="text-wrap px-4 py-4 max-w-36">
                                             {el.tags
                                                 ? el.tags.map((tag, i) => {
                                                       return (
@@ -184,11 +194,11 @@ const ItemList = ({ items, fields }) => {
                                             }
                                         })}
                                         <td className="px-4 py-4 text-right">
-                                            <a
-                                                href="#"
-                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                            <button
+                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                onClick={() => onShowEdit(el.id)}>
                                                 Edit
-                                            </a>
+                                            </button>
                                         </td>
                                         <td className="px-4 py-4 text-right content-center">
                                             <button onClick={() => onDeleteItem(el.id)}>
@@ -224,6 +234,7 @@ const ItemList = ({ items, fields }) => {
                     </tbody>
                 </table>
             </div>
+            <EditItem show={onShowEditModal} onHide={() => onHideEdit()} itemId={currentItemId} />
         </div>
     );
 };

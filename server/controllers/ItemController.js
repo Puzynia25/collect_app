@@ -98,6 +98,29 @@ class ItemController {
         return res.status(204).send();
     }
 
+    async updateOne(req, res, next) {
+        try {
+            const { name, tags, itemId } = req.body;
+            const item = await Item.findByPk(itemId);
+
+            if (!item) {
+                return next(ApiError.badRequest("Item not found"));
+            }
+
+            item.name = name ?? item.name;
+            item.tags = tags;
+
+            await item.save();
+
+            const updateItem = await Item.findOne({
+                where: { id: item.id },
+            });
+            return res.json(updateItem);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
+    }
+
     async getPopularTags(req, res, next) {
         const items = await Item.findAll();
 
