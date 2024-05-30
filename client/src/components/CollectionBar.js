@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { USER_ROUTE } from "../utils/consts";
+import { renderMarkdown } from "../utils/renderMarkdown";
 
 const CollectionBar = ({ oneCollection }) => {
     const navigate = useNavigate();
@@ -24,7 +25,9 @@ const CollectionBar = ({ oneCollection }) => {
                         <h2 className="font-bold text-xl uppercase tracking-wide md:text-2xl text-center mt-2 ">
                             "{oneCollection.name}"
                         </h2>
-                        <p className="mt-6 text-sm text-gray-900 dark:text-gray-400">{oneCollection.description}</p>
+                        <p className="mt-6 text-sm text-gray-900 dark:text-gray-400 markdownContent">
+                            <div dangerouslySetInnerHTML={renderMarkdown(oneCollection.description)} />
+                        </p>
                     </div>
                 </div>
             </div>

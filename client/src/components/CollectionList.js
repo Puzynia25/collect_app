@@ -7,6 +7,7 @@ import { removeOneCollection } from "../http/collectionAPI";
 import Spinner from "./Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import EditCollection from "./modals/EditCollection";
+import { renderMarkdown } from "../utils/renderMarkdown";
 
 const CollectionList = observer(({ loading, setIsEdit }) => {
     const { collection, user } = useContext(Context);
@@ -120,12 +121,13 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                                         <td className="px-6 py-4">
                                             <Badge category={el.category?.name} />
                                         </td>
-                                        <td className="px-6 py-4  max-w-sm">
-                                            {el.description.length > 0
+                                        <td className="px-6 py-4 max-w-sm markdownContent">
+                                            <div dangerouslySetInnerHTML={renderMarkdown(el.description)} />
+                                            {/* {el.description.length > 0
                                                 ? el.description.length > 130
                                                     ? el.description.slice(0, 130) + "..."
                                                     : el.description
-                                                : "There is no description..."}
+                                                : "There is no description..."} */}
                                         </td>
                                         {user.userData.id === Number(id) ? (
                                             <>

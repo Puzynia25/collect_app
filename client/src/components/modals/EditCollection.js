@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../..";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { fetchAllCustomFields, updateCustomFields } from "../../http/customFieldAPI";
-import CustomFields from "../CustomFields";
 import { fetchAllCollections, fetchOneCollection, updateCollection } from "../../http/collectionAPI";
 import Spinner from "../Spinner";
 import ErrorMessage from "./ErrorMessage";
@@ -16,10 +14,10 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
     const [categoryId, setCategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [customFields, setCustomFields] = useState([]);
-    const [fieldValues, setFieldValues] = useState([]);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const { id } = useParams();
 
     const onHideError = () => {
         setError(false);
@@ -28,12 +26,9 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
     useEffect(() => {
         setLoading(true);
         if (collectionId) {
-            Promise.all([
-                fetchAllCustomFields(collectionId).then((data) => {
-                    return setCustomFields(data), setFieldValues(initialCustomFields(data));
-                }),
-                fetchOneCollection(collectionId).then((data) => (initialValues(data), console.log(data))),
-            ]).finally(() => setLoading(false));
+            fetchOneCollection(collectionId)
+                .then((data) => initialValues(data))
+                .finally(() => setLoading(false));
         }
     }, [collectionId]);
 
@@ -44,21 +39,8 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
         setCategoryId(data.categoryId);
     };
 
-    const initialCustomFields = (fields) => {
-        return fields.reduce((obj, field) => {
-            obj[field.id] =
-                field.values[0]?.value ?? (field.type === "checkbox" ? false : field.type === "date" ? new Date() : "");
-            return obj;
-        }, {});
-    };
-
     const selectFile = (e) => {
         setFile(e.target.files[0]);
-    };
-
-    const onUpdateValue = (fieldValues) => {
-        const validateValues = Object.keys(fieldValues).map((id) => ({ id: parseInt(id, 10), value: fieldValues[id] }));
-        updateCustomFields(collectionId, validateValues).catch((e) => alert(e.response.data.message));
     };
 
     const editCollection = (e) => {
@@ -71,13 +53,15 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
         formData.append("categoryId", categoryId);
         formData.append("collectionId", collectionId);
 
-        Promise.all([
-            updateCollection(formData)
-                .then((data) => onHide())
-                .catch((e) => (setErrorMessage("The collection has not been edited, please try again"), setError(true)))
-                .finally(() => setLoading(false)),
-            onUpdateValue(fieldValues),
-        ]).finally(() => (setLoading(false), setIsEdit(true)));
+        updateCollection(formData)
+            .then((data) => onHide())
+            .then(() =>
+                fetchAllCollections(null, id, null, 10).then(
+                    (data) => (collection.setAllCollections(data.rows), console.log(data))
+                )
+            )
+            .catch((e) => (setErrorMessage("The collection has not been edited, please try again"), setError(true)))
+            .finally(() => setLoading(false), setIsEdit(true));
     };
 
     const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
@@ -196,15 +180,6 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                             />
                                         </div>
                                     </div>
-                                    {customFields.length > 0 ? (
-                                        <CustomFields
-                                            fields={customFields}
-                                            fieldValues={fieldValues}
-                                            setFieldValues={setFieldValues}
-                                            isButton={false}
-                                            isReadOnly={true}
-                                        />
-                                    ) : null}
                                     {!loading ? (
                                         <button
                                             type="submit"

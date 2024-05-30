@@ -118,6 +118,7 @@ class CollectionController {
                 ],
                 limit,
                 offset,
+                order: [["createdAt", "ASC"]],
             });
         }
         if (!categoryId && userId) {
@@ -134,6 +135,7 @@ class CollectionController {
                 ],
                 limit,
                 offset,
+                order: [["createdAt", "ASC"]],
             });
         }
 
@@ -151,6 +153,7 @@ class CollectionController {
                 ],
                 limit,
                 offset,
+                order: [["createdAt", "ASC"]],
             });
         }
         if (!categoryId && !userId) {
@@ -166,6 +169,7 @@ class CollectionController {
                 ],
                 limit,
                 offset,
+                order: [["createdAt", "ASC"]],
             });
         }
 

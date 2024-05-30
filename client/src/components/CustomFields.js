@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import CustomFieldTypes from "./CustomFieldTypes";
-import { updateCustomFields } from "../http/customFieldAPI";
 
 const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldValues, isReadOnly }) => {
     const onChangeValue = (id, value) => {
@@ -12,18 +11,15 @@ const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldVa
 
     return (
         <div>
-            {/* <h5 className="mt-4 text-md font-semibold tracking-tight text-gray-900 dark:text-white ">
-                You can change the values below:
-            </h5> */}
             <ul className="my-7">
                 {fields.map((field) => {
                     return (
-                        <li key={field.id} className="mt-4">
+                        <li key={field.id} className="mt-4 w-1/3">
                             <CustomFieldTypes
                                 type={field.type}
                                 name={field.name}
                                 isReadOnly={isReadOnly}
-                                value={fieldValues[field.id]}
+                                value={fieldValues ? fieldValues[field.id] : ""}
                                 onChange={(value) => onChangeValue(field.id, value)}
                             />
                         </li>

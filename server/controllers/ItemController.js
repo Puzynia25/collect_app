@@ -59,6 +59,7 @@ class ItemController {
                 ],
                 limit,
                 offset,
+                order: [["createdAt", "ASC"]],
             });
         } else {
             items = await Item.findAndCountAll({
@@ -79,6 +80,7 @@ class ItemController {
                 ],
                 limit,
                 offset,
+                order: [["createdAt", "ASC"]],
             });
         }
 

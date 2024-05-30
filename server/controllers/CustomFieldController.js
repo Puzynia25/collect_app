@@ -50,6 +50,21 @@ class CustomFieldController {
         return res.json(fields);
     }
 
+    async updateNames(req, res, next) {
+        try {
+            const customFieldNames = req.body;
+
+            const namePromises = customFieldNames.map((field) =>
+                CustomField.update({ name: field.name }, { where: { id: field.id } })
+            );
+            await Promise.all(namePromises);
+
+            return res.status(204).send();
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
+    }
+
     async update(req, res, next) {
         try {
             const customFields = req.body;
@@ -58,6 +73,19 @@ class CustomFieldController {
             );
 
             await Promise.all(promises);
+            return res.status(204).send();
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
+    }
+
+    async delete(req, res, next) {
+        try {
+            const { fieldsId } = req.body;
+
+            const fieldPromises = fieldsId.map((id) => CustomField.destroy({ where: { id } }));
+            await Promise.all(fieldPromises);
+
             return res.status(204).send();
         } catch (e) {
             next(ApiError.badRequest(e.message));

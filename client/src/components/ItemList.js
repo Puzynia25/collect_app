@@ -7,7 +7,6 @@ import { removeOne } from "../http/itemAPI";
 const ItemList = ({ items, fields }) => {
     const navigate = useNavigate();
     const [allItems, setAllItems] = useState(items);
-    // const [isEditFields, setIsEditFields] = useState(false);
 
     useEffect(() => {
         setAllItems(items);
@@ -176,7 +175,9 @@ const ItemList = ({ items, fields }) => {
                                                 return (
                                                     <td key={field.id} className=" text-wrap  px-4 py-4 max-w-36">
                                                         {field.type === "date"
-                                                            ? formatDate(field.values[0]?.value)
+                                                            ? field.values[0]?.value
+                                                                ? formatDate(field.values[0]?.value)
+                                                                : "No value"
                                                             : field.values[0]?.value}
                                                     </td>
                                                 );

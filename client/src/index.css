@@ -16,14 +16,12 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-.custom-datepicker-popup {
-    @apply bg-gray-700 text-white;
+.markdownContent ul,
+.markdownContent ol {
+    margin-left: 20px;
+    list-style-type: disc;
 }
 
-.custom-datepicker-popup .datepicker-cell {
-    @apply text-white hover:bg-gray-600;
-}
-
-.custom-datepicker-popup .datepicker-cell-selected {
-    @apply bg-blue-500 text-white;
+.markdownContent li {
+    margin-bottom: 5px;
 }

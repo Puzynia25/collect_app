@@ -11,18 +11,17 @@ const PORT = process.env.PORT || 9000;
 
 const app = express();
 
-// const corsOptions = {
-//     origin: "*",
-//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     preflightContinue: false,
-//     optionsSuccessStatus: 204,
-// };
+const corsOptions = {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+};
 
-// app.use(cors(corsOptions));
-// app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
-app.use(cors());
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
 app.use("/api", router);
