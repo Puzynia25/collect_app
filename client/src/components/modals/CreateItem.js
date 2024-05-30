@@ -10,7 +10,7 @@ const CreateItem = ({ show, onHide, oneCollection, fields }) => {
     const { id } = useParams();
 
     const addItem = () => {
-        const formattedTags = tags[0] ? tags[0].toLowerCase().split(",") : tags[0];
+        const formattedTags = tags[0] ? tags[0].toLowerCase().replace(/\s/g, "").split(",") : tags[0];
         createItem({ name, tags: formattedTags, collectionId: id }).then((data) => {
             return setName(""), setTags([]), onHide();
         });

@@ -87,12 +87,6 @@ class ItemController {
         return res.json(items);
     }
 
-    // async update(req, res, next) {
-    //     const { ids, status } = req.body;
-    //     await Item.update({ status }, { where: { id: ids } });
-    //     return res.status(204).send();
-    // }
-
     async remove(req, res, next) {
         const { id } = req.body;
         const deletedItem = await Item.destroy({ where: { id } });
@@ -105,21 +99,26 @@ class ItemController {
     }
 
     async getPopularTags(req, res, next) {
-        try {
-            const tags = await Item.findAll({
-                attributes: [[sequelize.fn("unnest", sequelize.col("tags")), "tag"]],
-                group: ["tag"],
-                order: [[sequelize.fn("COUNT", sequelize.col("tags")), "DESC"]],
-                limit: 50,
-                raw: true,
-            });
+        const items = await Item.findAll();
 
-            const formattedTags = tags.map((el) => el.tag);
-            return res.json(formattedTags);
-        } catch (e) {
-            console.error(e);
-            return next(ApiError.internal("Internal server error"));
+        if (!items) {
+            return next(ApiError.badRequest("Items are not found"));
         }
+
+        const tags = items.map((item) => item.tags).flat();
+
+        let popularTags = {};
+        for (let i = 0; i < tags.length; i++) {
+            if (popularTags[tags[i]]) {
+                popularTags[tags[i]] += 1;
+            } else {
+                popularTags[tags[i]] = 1;
+            }
+        }
+
+        const sortedTags = Object.entries(popularTags).sort((a, b) => b[1] - a[1]);
+        const top50Tags = sortedTags.slice(0, 50).map((tag) => tag[0]);
+        return res.json(top50Tags);
     }
 
     async addLike(req, res, next) {
