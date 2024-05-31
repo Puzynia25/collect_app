@@ -248,7 +248,7 @@ const NavBar = observer(() => {
                                             ? "text-blue-600 dark:text-blue-500"
                                             : "text-gray-900 dark:text-white"
                                     }`}
-                                    onClick={onCheckLogIn}>
+                                    onClick={() => onCheckLogIn()}>
                                     Account
                                 </button>
                             </li>

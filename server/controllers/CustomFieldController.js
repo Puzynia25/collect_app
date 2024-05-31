@@ -38,15 +38,28 @@ class CustomFieldController {
 
     async getAll(req, res, next) {
         const { id } = req.params;
+        let { itemId } = req.query;
 
         if (!id) {
             return next(ApiError.badRequest("Collection ID is required"));
         }
 
-        const fields = await CustomField.findAll({
-            where: { collectionId: id },
-            include: [{ model: CustomFieldValue, as: "values" }],
-        });
+        let fields;
+
+        if (itemId) {
+            fields = await CustomField.findAll({
+                where: { collectionId: id },
+                include: [{ model: CustomFieldValue, as: "values", where: { itemId }, required: true }],
+                order: [["createdAt", "ASC"]],
+            });
+        } else {
+            fields = await CustomField.findAll({
+                where: { collectionId: id },
+                include: [{ model: CustomFieldValue, as: "values" }],
+                order: [["createdAt", "ASC"]],
+            });
+        }
+
         return res.json(fields);
     }
 

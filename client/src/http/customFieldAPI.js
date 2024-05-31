@@ -5,8 +5,8 @@ export const createCustomFields = async (collectionId, customFields) => {
     return data;
 };
 
-export const fetchAllCustomFields = async (collectionId) => {
-    const { data } = await $host.get("api/collection/" + collectionId + "/custom-fields");
+export const fetchAllCustomFields = async (collectionId, itemId) => {
+    const { data } = await $host.get("api/collection/" + collectionId + "/custom-fields", { params: { itemId } });
     return data;
 };
 

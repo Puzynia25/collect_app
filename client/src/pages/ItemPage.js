@@ -12,6 +12,7 @@ import ItemBar from "../components/ItemBar";
 import { fetchItemComments } from "../http/commentAPI";
 import CustomFields from "../components/CustomFields";
 import Spinner from "../components/Spinner";
+import ErrorMessage from "../components/modals/ErrorMessage";
 
 const ItemPage = observer(() => {
     const { collection, comment, user } = useContext(Context);
@@ -19,24 +20,62 @@ const ItemPage = observer(() => {
     const [loading, setLoading] = useState(true);
     const [item, setItem] = useState({});
     const [fields, setFields] = useState([]);
+    const [fieldValues, setFieldValues] = useState([]);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        Promise.race([
-            fetchAllCategories().then((data) => collection.setAllCategories(data)),
-            fetchOneItem(id).then((data) => setItem(data)),
-            fetchItemComments(id).then((data) => comment.setComments(data.rows)),
-            fetchAllCustomFields(id).then((data) => setFields(data)),
-        ]).finally(() => setLoading(false));
-    }, []);
+        setLoading(true);
+
+        fetchOneItem(id)
+            .then((data) => {
+                setItem(data);
+                Promise.all([
+                    fetchAllCategories().then((data) => collection.setAllCategories(data)),
+                    fetchItemComments(id).then((data) => comment.setComments(data.rows)),
+                    fetchAllCustomFields(data.collectionId, id).then((data) => setFields(data)),
+                ]).finally(() => setLoading(false));
+            })
+            .catch((e) => {
+                setLoading(false);
+                console.log(e);
+            });
+    }, [id]);
+
+    console.log(fields, "ItemPage");
+
+    useEffect(() => {
+        if (fields.length > 0) {
+            setFieldValues(initialCustomFields(fields));
+        }
+    }, [fields]);
+
+    const onHideError = () => {
+        setError(false);
+    };
 
     const onUpdateValue = (fieldValues) => {
-        const validateValues = Object.keys(fieldValues).map((id) => ({ id: parseInt(id, 10), value: fieldValues[id] }));
-        updateCustomFields(item.collectionId, validateValues).catch((e) => console.log(e.response.data.message));
+        const formattedValues = Object.keys(fieldValues).map((id) => ({
+            id: parseInt(id, 10),
+            value: fieldValues[id],
+        }));
+        updateCustomFields(item.collectionId, formattedValues)
+            .then(() => (setErrorMessage("Сhanges successfully saved"), setError(true)))
+            .catch((e) => console.log(e.response.data.message));
+    };
+
+    const initialCustomFields = (fields) => {
+        return fields.reduce((obj, field) => {
+            obj[field.id] = field.values[0]?.value;
+            return obj;
+        }, {});
     };
 
     if (loading) {
         return <Spinner />;
     }
+
+    const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
 
     return (
         <div className="w-full flex flex-col gap-5 md:flex-row mt-9 dark:bg-gray-900 dark:text-white">
@@ -50,12 +89,15 @@ const ItemPage = observer(() => {
                             collectionId={item.collectionId}
                             onUpdateValue={onUpdateValue}
                             isButton={true}
+                            fieldValues={fieldValues}
+                            setFieldValues={setFieldValues}
                         />
                     ) : null}
                 </div>
                 <CommentsContainer item={item} />
             </div>
             <CreateItem />
+            {errorModal}
         </div>
     );
 });

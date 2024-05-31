@@ -21,7 +21,7 @@ const UserPage = observer(() => {
         fetchAllCollections(null, id, null, 10)
             .then((data) => collection.setAllCollections(data.rows))
             .finally(() => setLoading(false));
-    }, [isEdit]);
+    }, [isEdit, id]);
 
     const onShow = () => {
         setOnShowModal(true);
