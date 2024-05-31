@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { addLike, checkLike, removeLike } from "../http/itemAPI";
 import { useParams } from "react-router-dom";
-import ErrorMessage from "./modals/ErrorMessage";
 
 const Like = ({ userId, like }) => {
     const [likes, setLikes] = useState(like);
