@@ -9,8 +9,6 @@ import CommentStore from "./store/CommentStore";
 
 export const Context = createContext(null);
 
-console.log("index");
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Context.Provider

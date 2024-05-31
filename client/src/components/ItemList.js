@@ -139,14 +139,14 @@ const ItemList = ({ fields, setFields }) => {
                                     <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th
                                             scope="row"
-                                            className="text-balance max-w-[140px] px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            className="text-balance max-w-[140px] px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <button
                                                 className="hover:underline text-left"
                                                 onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
                                                 {el.name.length > 25 ? el.name.slice(0, 25) + "..." : el.name}
                                             </button>
                                         </th>
-                                        <td className="text-balance max-w-[140px] px-4 py-4 ">
+                                        <td className="text-balance max-w-[140px] px-6 py-4 ">
                                             <button
                                                 className="hover:underline"
                                                 onClick={() => navigate(COLLECTION_ROUTE + "/" + el.collection?.id)}>
@@ -155,7 +155,7 @@ const ItemList = ({ fields, setFields }) => {
                                                     : el.collection?.name}
                                             </button>
                                         </td>
-                                        <td className="px-4 py-4 text-balance max-w-[140px]">
+                                        <td className="px-6 py-4 text-balance max-w-[140px]">
                                             <button
                                                 className="hover:underline"
                                                 onClick={() => navigate(USER_ROUTE + "/" + el.collection?.user.id)}>
@@ -163,10 +163,10 @@ const ItemList = ({ fields, setFields }) => {
                                             </button>
                                         </td>
 
-                                        <td className="px-4 py-4">
+                                        <td className="px-6 py-4">
                                             <Badge category={el.collection?.category.name} />
                                         </td>
-                                        <td className="text-wrap px-4 py-4 max-w-36">
+                                        <td className="text-wrap px-6 py-4 max-w-36">
                                             {el.tags
                                                 ? el.tags.map((tag, i) => {
                                                       return (
@@ -182,7 +182,7 @@ const ItemList = ({ fields, setFields }) => {
                                         {fields.map((field) => {
                                             if (field.type === "string" || field.type === "date") {
                                                 return (
-                                                    <td key={field.id} className=" text-wrap  px-4 py-4 max-w-36">
+                                                    <td key={field.id} className=" text-wrap  px-6 py-4 max-w-36">
                                                         {field.type === "date"
                                                             ? field.values[0]?.value
                                                                 ? formatDate(field.values[0]?.value)
@@ -192,14 +192,14 @@ const ItemList = ({ fields, setFields }) => {
                                                 );
                                             }
                                         })}
-                                        <td className="px-4 py-4 text-right">
+                                        <td className="px-6 py-4 text-right">
                                             <button
                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                 onClick={() => onShowEdit(el.id)}>
                                                 Edit
                                             </button>
                                         </td>
-                                        <td className="px-4 py-4 text-right content-center">
+                                        <td className="px-6 py-4 text-right content-center">
                                             <button onClick={() => onDeleteItem(el.id)}>
                                                 <span className="sr-only">Delete</span>
                                                 <svg

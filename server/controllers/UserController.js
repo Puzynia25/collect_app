@@ -67,8 +67,15 @@ class UserController {
     }
 
     async getAll(req, res) {
+        let { page, limit } = req.query;
+        page = page || 1;
+        limit = limit || 10;
+        let offset = page * limit - limit;
+
         const users = await User.findAndCountAll({
             attributes: { exclude: ["password"] },
+            limit,
+            offset,
             order: [["id", "ASC"]],
         });
 

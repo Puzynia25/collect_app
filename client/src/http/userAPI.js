@@ -27,8 +27,8 @@ export const check = async () => {
     return jwtDecode(data.token);
 };
 
-export const fetchAllUsers = async () => {
-    const { data } = await $authHost.get("api/user/users");
+export const fetchAllUsers = async (page, limit = 10) => {
+    const { data } = await $authHost.get("api/user/users", { params: { page, limit } });
     return data;
 };
 
