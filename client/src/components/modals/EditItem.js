@@ -4,12 +4,17 @@ import { observer } from "mobx-react-lite";
 import Spinner from "../Spinner";
 import ErrorMessage from "./ErrorMessage";
 import { fetchAllItems, fetchOneItem, updateItem } from "../../http/itemAPI";
+import CustomFieldTypes from "../CustomFieldTypes";
+import { fetchAllCustomFields, updateCustomFields } from "../../http/customFieldAPI";
 
-const EditItem = observer(({ show, onHide, itemId }) => {
+const EditItem = observer(({ show, onHide, itemId, fields, setFields, collectionId }) => {
     const { item } = useContext(Context);
     const [name, setName] = useState("");
     const [tags, setTags] = useState([]);
+    const [fieldValues, setFieldValues] = useState([]);
+    const [customFields, setCustomFields] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [loadingEdit, setLoadingEdit] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -24,6 +29,8 @@ const EditItem = observer(({ show, onHide, itemId }) => {
                 .then((data) => initialValues(data))
                 .finally(() => setLoading(false));
         }
+        setCustomFields(fields);
+        setFieldValues(initialCustomFields(fields));
     }, [itemId]);
 
     const initialValues = (data) => {
@@ -31,16 +38,47 @@ const EditItem = observer(({ show, onHide, itemId }) => {
         setTags(data.tags);
     };
 
+    const initialCustomFields = (fields) => {
+        return fields.reduce((obj, field) => {
+            obj[field.id] =
+                field.values[0]?.value ?? (field.type === "checkbox" ? false : field.type === "date" ? new Date() : "");
+            return obj;
+        }, {});
+    };
+
+    const onChangeValue = (id, value) => {
+        setFieldValues((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+
     const editItem = (e) => {
         e.preventDefault();
+        setLoadingEdit(true);
 
         const formattedTags = Array.isArray(tags) ? tags : tags.split(",").map((tag) => tag.trim().toLowerCase());
+        const formattedValues = Object.keys(fieldValues).map((id) => ({
+            id: parseInt(id, 10),
+            value: fieldValues[id],
+        }));
 
-        updateItem({ name, tags: formattedTags, itemId })
-            .then(() => (onHide(), setErrorMessage("Item successfully updated!"), setError(true)))
-            .then(() => fetchAllItems(itemId).then((data) => item.setItems(data.rows)))
-            .catch((e) => (setErrorMessage("The item has not been edited, please try again"), setError(true)))
-            .finally(() => setLoading(false));
+        Promise.all([
+            updateItem({ name, tags: formattedTags, itemId }).catch(
+                (e) => (setErrorMessage("The item has not been edited, please try again"), setError(true))
+            ),
+
+            updateCustomFields(collectionId, formattedValues).catch(
+                (e) => (setErrorMessage(e.response.data.message), setError(true))
+            ),
+        ]).then(
+            () =>
+                fetchAllCustomFields(collectionId)
+                    .then((data) => setFields(data))
+                    .then(() => fetchAllItems(collectionId).then((data) => item.setItems(data.rows))),
+            setLoadingEdit(false),
+            onHide()
+        );
     };
 
     const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
@@ -117,8 +155,26 @@ const EditItem = observer(({ show, onHide, itemId }) => {
                                                 onChange={(e) => setTags(e.target.value)}
                                             />
                                         </div>
+                                        <div className="col-span-2">
+                                            {" "}
+                                            <ul>
+                                                {customFields?.map((field) => {
+                                                    return (
+                                                        <li key={field.id} className="my-4">
+                                                            <CustomFieldTypes
+                                                                type={field.type}
+                                                                name={field.name}
+                                                                isReadOnly={false}
+                                                                value={fieldValues[field.id]}
+                                                                onChange={(e) => onChangeValue(field.id, e)}
+                                                            />
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </div>
                                     </div>
-                                    {!loading ? (
+                                    {!loadingEdit ? (
                                         <button
                                             type="submit"
                                             className="relative text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm ps-4 pr-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

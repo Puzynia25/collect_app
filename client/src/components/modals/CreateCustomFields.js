@@ -5,11 +5,11 @@ import ErrorMessage from "./ErrorMessage";
 
 const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
     const availableTypes = [
-        { value: "number", label: "Number", max: 3 },
-        { value: "string", label: "String", max: 3 },
-        { value: "text", label: "Text", max: 3 },
-        { value: "checkbox", label: "Checkbox", max: 3 },
-        { value: "date", label: "Date", max: 3 },
+        { value: "number", label: "Number" },
+        { value: "string", label: "String" },
+        { value: "text", label: "Text" },
+        { value: "checkbox", label: "Checkbox" },
+        { value: "date", label: "Date" },
     ];
 
     const [name, setName] = useState("");
@@ -24,15 +24,13 @@ const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
     };
 
     const addField = () => {
-        const currentTypeCount = customFields.filter((field) => field.type === type).length;
         const selectedType = availableTypes.find((el) => el.value === type);
         if (!selectedType) return setErrorMessage("Please choose a type"), setError(true);
-        if (selectedType && currentTypeCount < selectedType.max) {
+        if (selectedType) {
             setCustomFields(() => [...customFields, { name, type, number: Date.now() }]);
             setName("");
             setType("");
         } else {
-            setErrorMessage(`You can only add up to ${selectedType.max} fields of type ${selectedType.label}`);
             setError(true);
         }
     };

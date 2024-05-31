@@ -15,7 +15,6 @@ import {
 } from "./utils/consts";
 
 export const authRoutes = [
-    //авторизованный пользователь
     {
         path: ADMIN_ROUTE,
         Component: <Admin />,

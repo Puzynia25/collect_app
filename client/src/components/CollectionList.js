@@ -75,7 +75,7 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                                     </svg>
                                 </div>
                             </th>
-                            {user.userData.id === Number(id) ? (
+                            {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
                                 <>
                                     <th scope="col" className="px-6 py-3">
                                         <span className="sr-only">Edit</span>
@@ -128,7 +128,7 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                                                 "There is no description..."
                                             )}
                                         </td>
-                                        {user.userData.id === Number(id) ? (
+                                        {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
                                             <>
                                                 <td className="px-3 py-4 text-right">
                                                     <button

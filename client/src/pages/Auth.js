@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "..";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { LOGIN_ROUTE, MAIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
+import { useLocation, useNavigate } from "react-router-dom";
+import { LOGIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { login, registration } from "../http/userAPI";
 import { observer } from "mobx-react-lite";
 import { Button } from "flowbite-react";

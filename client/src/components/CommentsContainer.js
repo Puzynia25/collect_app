@@ -19,11 +19,6 @@ const CommentsContainer = observer(({ item }) => {
         <div className="mt-9 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-900 dark:border-gray-700">
             <div className="flex items-center justify-between mb-4">
                 <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">Comments</h5>
-                {/* <a
-                        href="#"
-                        className="px-2 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                        View all
-                    </a> */}
             </div>
             <div className="px-2 flow-root overflow-auto ">
                 <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">

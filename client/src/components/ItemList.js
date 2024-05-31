@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Badge from "./Badge";
 import { removeOne } from "../http/itemAPI";
 import EditItem from "./modals/EditItem";
+import { Context } from "..";
 
-const ItemList = ({ items, fields }) => {
+const ItemList = ({ fields, setFields }) => {
+    const { item } = useContext(Context);
     const navigate = useNavigate();
-    const [allItems, setAllItems] = useState(items);
     const [onShowEditModal, setOnShowEditModal] = useState(false);
     const [currentItemId, setCurrentItemId] = useState(null);
 
-    useEffect(() => {
-        setAllItems(items);
-    }, [items]);
+    const { id } = useParams();
 
     const onDeleteItem = (itemId) => {
         removeOne(itemId)
-            .then(() => setAllItems(allItems.filter((el) => el.id !== itemId)))
-            .catch((err) => console.log(err));
+            .then(() => item.setItems(item.items.filter((el) => el.id !== itemId)))
+            .catch((e) => console.log(e));
     };
 
     const formatDate = (date) => {
@@ -134,8 +133,8 @@ const ItemList = ({ items, fields }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {allItems.length > 0 ? (
-                            allItems.map((el) => {
+                        {item.items.length > 0 ? (
+                            item.items.map((el) => {
                                 return (
                                     <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th
@@ -234,7 +233,14 @@ const ItemList = ({ items, fields }) => {
                     </tbody>
                 </table>
             </div>
-            <EditItem show={onShowEditModal} onHide={() => onHideEdit()} itemId={currentItemId} />
+            <EditItem
+                show={onShowEditModal}
+                onHide={() => onHideEdit()}
+                itemId={currentItemId}
+                fields={fields}
+                setFields={setFields}
+                collectionId={id}
+            />
         </div>
     );
 };

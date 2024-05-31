@@ -78,7 +78,7 @@ const CollectionPage = observer(() => {
                                 onClick={onShowEditFields}>
                                 <span className="flex text-sm ps-4 pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     <svg
-                                        className="me-1 -ms-1 -mt-0.5 w-5 h-5 text-black"
+                                        className="me-1 -ms-1 -mt-0.5 w-5 h-5 text-black dark:text-white"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
@@ -142,7 +142,7 @@ const CollectionPage = observer(() => {
                         </div>
                     ) : null}
                 </div>
-                <ItemList items={item.items} fields={fields} />
+                <ItemList items={item.items} fields={fields} setFields={setFields} />
                 <CreateItem show={onShowModal} onHide={() => onHide()} oneCollection={oneCollection} fields={fields} />
                 <CreateCustomFields
                     show={onShowFieldsModal}
