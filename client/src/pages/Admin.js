@@ -16,7 +16,7 @@ const Admin = observer(() => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchAllUsers(1, 3)
+        fetchAllUsers(user.page, user.limit)
             .then((data) => (user.setUsers(data.rows), user.setTotalCount(data.count)))
             .catch((e) => console.log(e));
     }, []);
@@ -65,6 +65,7 @@ const Admin = observer(() => {
 
         user.setUsers(updateUsers);
         setSelectedIds([]);
+        setRole("");
     };
 
     const onStatusChange = (e) => {
@@ -82,6 +83,7 @@ const Admin = observer(() => {
 
         user.setUsers(updateUsers);
         setSelectedIds([]);
+        setStatus("");
     };
 
     const onDelete = (id) => {

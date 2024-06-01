@@ -6,10 +6,17 @@ import Spinner from "./components/Spinner";
 import { Context } from ".";
 import { check } from "./http/userAPI";
 import { observer } from "mobx-react-lite";
+import ErrorMessage from "./components/modals/ErrorMessage";
 
 const App = observer(() => {
     const { user } = useContext(Context);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const onHideError = () => {
+        setError(false);
+    };
 
     useEffect(() => {
         if (localStorage.getItem("token")) {
@@ -19,6 +26,7 @@ const App = observer(() => {
                     user.setIsAuth(true);
                     user.setUserData(data);
                 })
+                .catch((e) => (setErrorMessage("You need to log in"), setError(true)))
                 .finally(() => setLoading(false));
         }
     }, []);
@@ -31,11 +39,14 @@ const App = observer(() => {
         );
     }
 
+    const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
+
     return (
         <BrowserRouter>
             <div className="container mx-auto my-9">
                 <NavBar />
                 <AppRouter />
+                {errorModal}
             </div>
         </BrowserRouter>
     );
