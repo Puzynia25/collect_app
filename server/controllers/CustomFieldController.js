@@ -66,7 +66,6 @@ class CustomFieldController {
     async updateNames(req, res, next) {
         try {
             const customFieldNames = req.body;
-
             const namePromises = customFieldNames.map((field) =>
                 CustomField.update({ name: field.name }, { where: { id: field.id } })
             );
@@ -78,11 +77,16 @@ class CustomFieldController {
         }
     }
 
-    async update(req, res, next) {
+    async updateValues(req, res, next) {
         try {
-            const customFields = req.body;
+            const { customFields, itemId } = req.body;
+
+            if (!itemId) {
+                return next(ApiError.badRequest("Item ID is required"));
+            }
+
             const promises = customFields.map((field) =>
-                CustomFieldValue.update({ value: field.value }, { where: { customFieldId: field.id } })
+                CustomFieldValue.update({ value: field.value }, { where: { customFieldId: field.id, itemId: itemId } })
             );
 
             await Promise.all(promises);

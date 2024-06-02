@@ -143,7 +143,13 @@ const CollectionPage = observer(() => {
                     ) : null}
                 </div>
                 <ItemList items={item.items} fields={fields} setFields={setFields} />
-                <CreateItem show={onShowModal} onHide={() => onHide()} oneCollection={oneCollection} fields={fields} />
+                <CreateItem
+                    show={onShowModal}
+                    onHide={() => onHide()}
+                    oneCollection={oneCollection}
+                    fields={fields}
+                    setFields={setFields}
+                />
                 <CreateCustomFields
                     show={onShowFieldsModal}
                     onHide={() => onHideFields()}

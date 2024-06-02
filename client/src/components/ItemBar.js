@@ -25,6 +25,15 @@ const ItemBar = ({ item, userId }) => {
                             </button>
                         </h5>
 
+                        <h5 className="mt-4 text-sm font-semibold tracking-tight text-gray-900 dark:text-white ">
+                            Collection:{" "}
+                            <button
+                                onClick={() => navigate(COLLECTION_ROUTE + "/" + item.collectionId)}
+                                className="text-sm text-gray-500 dark:text-gray-400 hover:underline">
+                                {item.collection?.name}
+                            </button>
+                        </h5>
+
                         <div className="mt-9 w-1/3">
                             <Like like={item.like} userId={userId} />
                             {/* Badges: */}

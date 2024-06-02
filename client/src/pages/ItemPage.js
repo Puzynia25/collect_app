@@ -5,7 +5,7 @@ import Badge from "../components/Badge";
 import CreateItem from "../components/modals/CreateItem";
 import { observer } from "mobx-react-lite";
 import { fetchAllCategories } from "../http/collectionAPI";
-import { fetchAllCustomFields, updateCustomFields } from "../http/customFieldAPI";
+import { fetchAllCustomFields, updateCustomFieldsValues } from "../http/customFieldAPI";
 import { fetchOneItem } from "../http/itemAPI";
 import { useParams } from "react-router-dom";
 import ItemBar from "../components/ItemBar";
@@ -23,6 +23,10 @@ const ItemPage = observer(() => {
     const [fieldValues, setFieldValues] = useState([]);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const onHideError = () => {
+        setError(false);
+    };
 
     useEffect(() => {
         setLoading(true);
@@ -42,24 +46,18 @@ const ItemPage = observer(() => {
             });
     }, [id]);
 
-    console.log(fields, "ItemPage");
-
     useEffect(() => {
         if (fields.length > 0) {
             setFieldValues(initialCustomFields(fields));
         }
     }, [fields]);
 
-    const onHideError = () => {
-        setError(false);
-    };
-
     const onUpdateValue = (fieldValues) => {
         const formattedValues = Object.keys(fieldValues).map((id) => ({
             id: parseInt(id, 10),
             value: fieldValues[id],
         }));
-        updateCustomFields(item.collectionId, formattedValues)
+        updateCustomFieldsValues(item.collectionId, formattedValues)
             .then(() => (setErrorMessage("Сhanges successfully saved"), setError(true)))
             .catch((e) => console.log(e.response.data.message));
     };

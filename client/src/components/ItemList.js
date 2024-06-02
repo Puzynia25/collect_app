@@ -181,15 +181,15 @@ const ItemList = ({ fields, setFields }) => {
                                         </td>
                                         {fields.map((field) => {
                                             if (field.type === "string" || field.type === "date") {
-                                                return (
-                                                    <td key={field.id} className=" text-wrap  px-6 py-4 max-w-36">
-                                                        {field.type === "date"
-                                                            ? field.values[0]?.value
-                                                                ? formatDate(field.values[0]?.value)
-                                                                : "No value"
-                                                            : field.values[0]?.value}
-                                                    </td>
-                                                );
+                                                return field.values
+                                                    .filter((obj) => obj.itemId === el.id)
+                                                    .map((item) => (
+                                                        <td key={item.id} className="text-wrap px-6 py-4 max-w-36">
+                                                            {field.type === "date"
+                                                                ? formatDate(item.value)
+                                                                : item.value}
+                                                        </td>
+                                                    ));
                                             }
                                         })}
                                         <td className="px-6 py-4 text-right">

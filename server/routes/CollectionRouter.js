@@ -17,7 +17,7 @@ router.get("/:id", CollectionController.getOne);
 router.delete("/:id", authMiddleware, CollectionController.remove);
 router.post("/:id/custom-fields", authMiddleware, CustomFieldController.create);
 router.get("/:id/custom-fields", CustomFieldController.getAll);
-router.patch("/:id/custom-fields", authMiddleware, CustomFieldController.update);
+router.patch("/:id/custom-fields-values", authMiddleware, CustomFieldController.updateValues);
 router.patch("/:id/custom-fields-names", authMiddleware, CustomFieldController.updateNames);
 
 // router.patch("/:id", checkRole("ADMIN"), CollectionController.update);

@@ -35,7 +35,8 @@ const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => 
 
     const updateFieldNames = () => {
         setLoading(true);
-        const formattedNames = Object.keys(fieldNames).map((id) => ({ id: parseInt(id, 10), value: fieldNames[id] }));
+        const formattedNames = Object.keys(fieldNames).map((id) => ({ id, name: fieldNames[id] }));
+
         updateCustomFieldsNames(collectionId, formattedNames)
             .then(() => (setFields(fields.map((field) => ({ ...field, name: fieldNames[field.id] }))), onHide()))
             .catch((e) => (setErrorMessage(e.response.data.message), setError(true)))

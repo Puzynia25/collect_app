@@ -1,20 +1,58 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Badge from "../Badge";
-import { createItem } from "../../http/itemAPI";
+import { createItem, fetchAllItems } from "../../http/itemAPI";
 import { useParams } from "react-router-dom";
 import CustomFieldTypes from "../CustomFieldTypes";
+import { fetchAllCustomFields, updateCustomFieldsValues } from "../../http/customFieldAPI";
+import ErrorMessage from "./ErrorMessage";
+import { observer } from "mobx-react-lite";
+import { Context } from "../..";
 
-const CreateItem = ({ show, onHide, oneCollection, fields }) => {
+const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields }) => {
+    const { item } = useContext(Context);
     const [name, setName] = useState("");
     const [tags, setTags] = useState([]);
+    const [fieldValues, setFieldValues] = useState([]);
+    // const [customFields, setCustomFields] = useState([]);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
     const { id } = useParams();
 
-    const addItem = () => {
-        const formattedTags = tags[0] ? tags[0].toLowerCase().replace(/\s/g, "").split(",") : tags[0];
-        createItem({ name, tags: formattedTags, collectionId: id }).then((data) => {
-            return setName(""), setTags([]), onHide();
-        });
+    const onHideError = () => {
+        setError(false);
     };
+
+    const addItem = (e) => {
+        e.preventDefault();
+
+        const formattedTags = tags[0] ? tags[0].toLowerCase().replace(/\s/g, "").split(",") : tags[0];
+        const formattedValues = Object.keys(fieldValues).map((id) => ({
+            id: parseInt(id, 10),
+            value: fieldValues[id],
+        }));
+
+        createItem({ name, tags: formattedTags, collectionId: id, fieldValues: formattedValues })
+            .then((data) => {
+                return setName(""), setTags([]);
+            })
+            .then(
+                () =>
+                    fetchAllCustomFields(id)
+                        .then((data) => setFields(data))
+                        .then(() => fetchAllItems(id).then((data) => item.setItems(data.rows))),
+                onHide()
+            );
+    };
+
+    const onChangeValue = (id, value) => {
+        setFieldValues((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+
+    const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
 
     return (
         <div
@@ -51,7 +89,7 @@ const CreateItem = ({ show, onHide, oneCollection, fields }) => {
                         </button>
                     </div>
                     {/* <!-- Modal body --> */}
-                    <form className="py-2 md:py-4 px-2 md:px-7">
+                    <form className="py-2 md:py-4 px-2 md:px-7" onSubmit={addItem}>
                         <div className="w-auto">
                             <Badge category={oneCollection?.category?.name} />
                         </div>
@@ -99,6 +137,8 @@ const CreateItem = ({ show, onHide, oneCollection, fields }) => {
                                                           type={field.type}
                                                           name={field.name}
                                                           isReadOnly={false}
+                                                          value={fieldValues[field.id]}
+                                                          onChange={(e) => onChangeValue(field.id, e)}
                                                       />
                                                   </div>
                                               </div>
@@ -108,8 +148,7 @@ const CreateItem = ({ show, onHide, oneCollection, fields }) => {
                             </div>
                             <button
                                 type="submit"
-                                className="mt-4 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                onClick={addItem}>
+                                className="mt-4 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg
                                     className="me-1 -ms-1 w-5 h-5"
                                     fill="currentColor"
@@ -126,8 +165,9 @@ const CreateItem = ({ show, onHide, oneCollection, fields }) => {
                     </form>
                 </div>
             </div>
+            {errorModal}
         </div>
     );
-};
+});
 
 export default CreateItem;

@@ -1,12 +1,29 @@
 const ApiError = require("../error/ApiError");
-const { Item, User, Collection, Category, Like } = require("../models/models");
-const sequelize = require("../db");
+const { Item, User, Collection, Category, Like, CustomField, CustomFieldValue } = require("../models/models");
 
 class ItemController {
     async create(req, res, next) {
         try {
-            const { name, tags, collectionId } = req.body;
+            const { name, tags, collectionId, fieldValues } = req.body;
             const item = await Item.create({ name, tags, collectionId });
+
+            const fields = await CustomField.findAll({ where: { collectionId } });
+            for (const field of fields) {
+                let value;
+
+                for (const fieldValue of fieldValues) {
+                    if (fieldValues.length > 0 && field.dataValues.id === fieldValue.id) {
+                        value = fieldValue.value;
+                    }
+                }
+
+                await CustomFieldValue.create({
+                    customFieldId: field.dataValues.id,
+                    itemId: item.id,
+                    value: value || "",
+                });
+            }
+
             return res.json(item);
         } catch (e) {
             next(ApiError.badRequest(e.message));

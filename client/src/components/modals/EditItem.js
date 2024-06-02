@@ -5,7 +5,7 @@ import Spinner from "../Spinner";
 import ErrorMessage from "./ErrorMessage";
 import { fetchAllItems, fetchOneItem, updateItem } from "../../http/itemAPI";
 import CustomFieldTypes from "../CustomFieldTypes";
-import { fetchAllCustomFields, updateCustomFields } from "../../http/customFieldAPI";
+import { fetchAllCustomFields, updateCustomFieldsValues } from "../../http/customFieldAPI";
 
 const EditItem = observer(({ show, onHide, itemId, fields, setFields, collectionId }) => {
     const { item } = useContext(Context);
@@ -59,7 +59,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
 
         const formattedTags = Array.isArray(tags) ? tags : tags.split(",").map((tag) => tag.trim().toLowerCase());
         const formattedValues = Object.keys(fieldValues).map((id) => ({
-            id: parseInt(id, 10),
+            id,
             value: fieldValues[id],
         }));
 
@@ -68,8 +68,10 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
                 (e) => (setErrorMessage("The item has not been edited, please try again"), setError(true))
             ),
 
-            updateCustomFields(collectionId, formattedValues).catch(
-                (e) => (setErrorMessage(e.response.data.message), setError(true))
+            updateCustomFieldsValues(collectionId, { itemId, customFields: formattedValues }).catch(
+                (e) => (
+                    setErrorMessage("Failed to update the item"), setError(true), console.log(e.response.data.message)
+                )
             ),
         ]).then(
             () =>

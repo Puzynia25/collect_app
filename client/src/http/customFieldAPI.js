@@ -10,8 +10,11 @@ export const fetchAllCustomFields = async (collectionId, itemId) => {
     return data;
 };
 
-export const updateCustomFields = async (collectionId, customFields) => {
-    const { data } = await $authHost.patch("api/collection/" + collectionId + "/custom-fields", customFields);
+export const updateCustomFieldsValues = async (collectionId, { itemId, customFields }) => {
+    const { data } = await $authHost.patch("api/collection/" + collectionId + "/custom-fields-values", {
+        customFields,
+        itemId,
+    });
     return data;
 };
 
