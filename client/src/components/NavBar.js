@@ -264,7 +264,7 @@ const NavBar = observer(() => {
                                             }}>
                                             Login
                                         </button>
-                                        /
+                                        <span className="md:px-3">/</span>
                                         <button
                                             className="text-sm text-blue-600 dark:text-blue-500 hover:underline py-2 px-3 md:p-0"
                                             onClick={() => {

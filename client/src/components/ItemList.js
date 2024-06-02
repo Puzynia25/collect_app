@@ -7,7 +7,7 @@ import EditItem from "./modals/EditItem";
 import { Context } from "..";
 
 const ItemList = ({ fields, setFields }) => {
-    const { item } = useContext(Context);
+    const { user, item } = useContext(Context);
     const navigate = useNavigate();
     const [onShowEditModal, setOnShowEditModal] = useState(false);
     const [currentItemId, setCurrentItemId] = useState(null);
@@ -192,34 +192,39 @@ const ItemList = ({ fields, setFields }) => {
                                                     ));
                                             }
                                         })}
-                                        <td className="px-6 py-4 text-right">
-                                            <button
-                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                onClick={() => onShowEdit(el.id)}>
-                                                Edit
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 text-right content-center">
-                                            <button onClick={() => onDeleteItem(el.id)}>
-                                                <span className="sr-only">Delete</span>
-                                                <svg
-                                                    className="w-6 h-6 text-gray-800 dark:text-white"
-                                                    aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24">
-                                                    <path
-                                                        stroke="currentColor"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth="1.3"
-                                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </td>
+
+                                        {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
+                                            <>
+                                                <td className="px-6 py-4 text-right">
+                                                    <button
+                                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                        onClick={() => onShowEdit(el.id)}>
+                                                        Edit
+                                                    </button>
+                                                </td>
+                                                <td className="px-6 py-4 text-right content-center">
+                                                    <button onClick={() => onDeleteItem(el.id)}>
+                                                        <span className="sr-only">Delete</span>
+                                                        <svg
+                                                            className="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="24"
+                                                            height="24"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24">
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth="1.3"
+                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                            </>
+                                        ) : null}
                                     </tr>
                                 );
                             })
