@@ -11,6 +11,7 @@ import Spinner from "../components/Spinner";
 import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
 import Badge from "../components/Badge";
 import { useNavigate } from "react-router-dom";
+import CollectionList from "../components/CollectionList";
 
 const MainPage = observer(() => {
     const { collection, item } = useContext(Context);
@@ -18,6 +19,7 @@ const MainPage = observer(() => {
     const [biggestCollections, setBiggestCollections] = useState([]);
     const [itemsByCategory, setItemsByCategory] = useState(item.items);
     const [tags, setTags] = useState([]);
+    const [toggleTable, setToggleTable] = useState(false);
 
     const navigate = useNavigate();
 
@@ -37,19 +39,15 @@ const MainPage = observer(() => {
     }, [collection.selectedCategory]);
 
     if (loading) {
-        return (
-            <div className="mt-5">
-                <Spinner />
-            </div>
-        );
+        return <Spinner />;
     }
 
     return (
-        <div className="w-full flex flex-col gap-5 md:flex-row mt-9 bg-white dark:bg-gray-900 dark:text-white">
+        <div className="w-full flex flex-col gap-5 md:flex-row mt-4 md:mt-9 bg-white dark:bg-gray-900 dark:text-white">
             <CategoryBar />
             <ContentWrapper>
                 <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">Recently Added</h1>
-
+                {/* the latest items */}
                 <div className="px-2">
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-12">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -161,7 +159,20 @@ const MainPage = observer(() => {
                 </div>
 
                 {/* 5 the biggest collections */}
-                <CollectionCards collections={biggestCollections} />
+                <div className="flex justify-between mt-24 mb-4 md:mb-9">
+                    <h2 className="font-bold text-xl md:text-2xl">The biggest collections</h2>
+                    <button
+                        type="submit"
+                        className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        onClick={() => setToggleTable(!toggleTable)}>
+                        Table view
+                    </button>
+                </div>
+                {toggleTable ? (
+                    <CollectionList collections={biggestCollections} />
+                ) : (
+                    <CollectionCards collections={biggestCollections} />
+                )}
                 <Tags tags={tags} />
             </ContentWrapper>
         </div>

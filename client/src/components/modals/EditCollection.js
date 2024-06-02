@@ -68,7 +68,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                 tabIndex="-1"
                 aria-hidden="true"
                 className={`transition-opacity overflow-y-auto overflow-x-hidden fixed flex top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0  max-h-full  ${
-                    show ? "block bg-black bg-opacity-50 duration-300" : "hidden"
+                    show ? "block bg-black bg-opacity-50 duration-300 min-h-screen" : "hidden"
                 }`}>
                 <div className="relative p-5 w-full max-w-md max-h-full">
                     {/* <!-- Modal content --> */}

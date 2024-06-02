@@ -111,7 +111,7 @@ const Admin = observer(() => {
     return (
         <div className="w-full mt-9 bg-white dark:bg-gray-900 dark:text-white">
             <main className="w-full min-h-screen">
-                <div className="p-4 md:p-7 md:rounded-3xl md:shadow-lg border border-gray-200 dark:border-gray-600 w-full">
+                <div className="p-4 md:p-7 rounded-3xl shadow-lg mx-4 md:mx-0 border border-gray-200 dark:border-gray-600 md:w-full ">
                     <div className="ms-2">
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">Users</h2>
                     </div>
@@ -141,7 +141,7 @@ const Admin = observer(() => {
                         </div>
                     </div>
                     {/* Table */}
-                    <div className="mb-4 ms-4 md:mt-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div className="m-4 relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>

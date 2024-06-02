@@ -16,7 +16,7 @@ const CommentsContainer = observer(({ item }) => {
     };
 
     return (
-        <div className="mt-9 mb-8 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-900 dark:border-gray-700">
+        <div className="mt-9 mb-8 md:w-full mx-4 md:mx-0 max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-900 dark:border-gray-700">
             <div className="flex items-center justify-between mb-4">
                 <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">Comments</h5>
             </div>

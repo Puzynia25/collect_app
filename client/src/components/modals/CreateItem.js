@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Badge from "../Badge";
 import { createItem, fetchAllItems } from "../../http/itemAPI";
 import { useParams } from "react-router-dom";
 import CustomFieldTypes from "../CustomFieldTypes";
-import { fetchAllCustomFields, updateCustomFieldsValues } from "../../http/customFieldAPI";
-import ErrorMessage from "./ErrorMessage";
+import { fetchAllCustomFields } from "../../http/customFieldAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "../..";
 
@@ -13,15 +12,7 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
     const [name, setName] = useState("");
     const [tags, setTags] = useState([]);
     const [fieldValues, setFieldValues] = useState([]);
-    // const [customFields, setCustomFields] = useState([]);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-
     const { id } = useParams();
-
-    const onHideError = () => {
-        setError(false);
-    };
 
     const addItem = (e) => {
         e.preventDefault();
@@ -52,14 +43,12 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
         }));
     };
 
-    const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
-
     return (
         <div
             tabIndex="-1"
             aria-hidden="true"
             className={`transition-opacity overflow-y-auto overflow-x-hidden fixed flex top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0  max-h-full  ${
-                show ? "block bg-black bg-opacity-50 duration-300" : "hidden"
+                show ? "block bg-black bg-opacity-50 duration-300 min-h-screen" : "hidden"
             }`}>
             <div className="relative p-5 w-full max-w-md max-h-full">
                 {/* <!-- Modal content --> */}
@@ -165,7 +154,6 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
                     </form>
                 </div>
             </div>
-            {errorModal}
         </div>
     );
 });

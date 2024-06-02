@@ -50,7 +50,7 @@ const UserPage = observer(() => {
                                 </>
                             ) : null}
                         </p>
-                        <p className="mt-9 text-sm max-w-md text-gray-900 dark:text-gray-400">
+                        <p className="hidden md:block mt-9 text-sm max-w-md text-gray-900 dark:text-gray-400">
                             A list of all the collections in your account including their name, category and
                             description.
                         </p>
@@ -58,7 +58,7 @@ const UserPage = observer(() => {
                     {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
                         <button
                             type="button"
-                            className="flex justify-between place-items-center place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm ps-4 pr-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="flex justify-between place-items-center place-self-end text-white text-nowrap bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm ps-4 pr-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             onClick={onShow}>
                             <svg
                                 className="me-1 -ms-1 w-5 h-5 "

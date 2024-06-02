@@ -6,8 +6,8 @@ const ItemBar = ({ item, userId }) => {
     const navigate = useNavigate();
 
     return (
-        <aside className="hidden md:w-1/3 lg:w-1/4 md:block">
-            <div className="sticky top-0 flex flex-col gap-2 p-5 border md:rounded-3xl md:shadow-lg dark:border-gray-600 dark:bg-gray-900 dark:text-white">
+        <aside className="md:w-1/3 lg:w-1/4">
+            <div className="sticky top-0 flex flex-col gap-2 p-5 mx-4 md:mx-0 border rounded-3xl shadow-lg dark:border-gray-600 dark:bg-gray-900 dark:text-white">
                 <div className="m-2">
                     <div>
                         <button onClick={() => navigate(COLLECTION_ROUTE + "/" + item.collectionId)}>

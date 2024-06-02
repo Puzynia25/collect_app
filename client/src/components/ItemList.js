@@ -34,8 +34,8 @@ const ItemList = ({ fields, setFields }) => {
     };
 
     return (
-        <div className="px-2">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-12">
+        <div className="md:px-2">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-4 md:mb-12">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

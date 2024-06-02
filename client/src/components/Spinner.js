@@ -1,6 +1,6 @@
 const Spinner = () => {
     return (
-        <div role="status">
+        <div role="status" className="p-4 text-center">
             <svg
                 aria-hidden="true"
                 className="mx-auto w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

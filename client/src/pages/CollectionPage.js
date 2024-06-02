@@ -63,20 +63,20 @@ const CollectionPage = observer(() => {
             <CollectionBar oneCollection={oneCollection} />
             <ContentWrapper>
                 <Badge category={oneCollection.category?.name} />
-                <div className="flex w-full mt-5 justify-between">
+                <div className="md:flex w-full mt-5 justify-between">
                     <div className="ms-2">
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">Items</h2>
 
-                        <p className="mt-9 text-sm max-w-sm text-gray-900 dark:text-gray-400">
+                        <p className="hidden md:block mt-9 text-sm max-w-sm text-gray-900 dark:text-gray-400">
                             A list of all the items in this collection including its name, category and description.
                         </p>
                     </div>
                     {user.userData.id == oneCollection.userId || user.userData.role === "ADMIN" ? (
-                        <div className="flex gap-3">
+                        <div className="flex justify-between gap-3 text-nowrap mt-4 md:mt-0">
                             <button
-                                className="flex justify-between place-items-center place-self-end p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+                                className="flex justify-between place-items-center place-self-end p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                 onClick={onShowEditFields}>
-                                <span className="flex text-sm ps-4 pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                <span className="flex text-sm px-3 md:ps-4 md:pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     <svg
                                         className="me-1 -ms-1 -mt-0.5 w-5 h-5 text-black dark:text-white"
                                         aria-hidden="true"
@@ -100,11 +100,11 @@ const CollectionPage = observer(() => {
                                 </span>
                             </button>
                             <button
-                                className="flex justify-between place-items-center place-self-end p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+                                className="flex justify-between place-items-center place-self-end p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                 onClick={onShowFields}>
-                                <span className="flex text-sm ps-4 pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                <span className="flex text-sm px-3 md:ps-4 md:pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     <svg
-                                        className="me-1 -ms-1 w-5 h-5 "
+                                        className="me-1 -ms-1 w-5 h-5"
                                         fill="currentColor"
                                         viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -113,29 +113,22 @@ const CollectionPage = observer(() => {
                                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                             clipRule="evenodd"></path>
                                     </svg>
-                                    Add new fields
+                                    Add fields
                                 </span>
                             </button>
-
                             <button
                                 type="button"
-                                className="mr-2 ml-auto flex justify-between place-items-center gap-2 place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                className="md:mr-2 md:ml-auto flex justify-between overflow-hidden place-items-center place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 md:px-4 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 onClick={() => onShow()}>
                                 <svg
-                                    className="w-[15px] h-[15px] text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    fill="none"
-                                    viewBox="0 0 24 24">
+                                    className="me-1 -ms-1 w-5 h-5"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="3"
-                                        d="M5 12h14m-7 7V5"
-                                    />
+                                        fillRule="evenodd"
+                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                        clipRule="evenodd"></path>
                                 </svg>
                                 Add item
                             </button>

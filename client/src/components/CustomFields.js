@@ -13,7 +13,7 @@ const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldVa
             <ul className="my-7">
                 {fields.map((field) => {
                     return (
-                        <li key={field.id} className="mt-4 w-1/3">
+                        <li key={field.id} className="mt-4 md:w-1/3">
                             <CustomFieldTypes
                                 type={field.type}
                                 name={field.name}

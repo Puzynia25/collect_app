@@ -41,7 +41,7 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
 
     return (
         <>
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-12 md:mt-4">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-12 mt-4">
                 <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -90,7 +90,7 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan="5" className="p-4 text-center">
+                                <td colSpan="5">
                                     <Spinner />
                                 </td>
                             </tr>
@@ -123,7 +123,13 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                                         </td>
                                         <td className="px-6 py-4 max-w-sm markdownContent">
                                             {el.description.length > 0 ? (
-                                                <div dangerouslySetInnerHTML={renderMarkdown(el.description)} />
+                                                <div
+                                                    dangerouslySetInnerHTML={renderMarkdown(
+                                                        el.description.length > 55
+                                                            ? el.description.slice(0, 55) + "..."
+                                                            : el.description
+                                                    )}
+                                                />
                                             ) : (
                                                 "There is no description..."
                                             )}

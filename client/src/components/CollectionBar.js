@@ -5,8 +5,8 @@ import { renderMarkdown } from "../utils/renderMarkdown";
 const CollectionBar = ({ oneCollection }) => {
     const navigate = useNavigate();
     return (
-        <aside className="hidden md:w-1/3 lg:w-1/4 md:block">
-            <div className="sticky top-0 flex flex-col gap-2 p-5 border dark:border-gray-600 md:rounded-3xl md:shadow-lg">
+        <aside className="md:w-1/3 lg:w-1/4">
+            <div className="sticky top-0 flex flex-col gap-2 p-5 border dark:border-gray-600 rounded-3xl shadow-lg mx-4 md:mx-0">
                 <div className="mt-2 px-2">
                     <img className="h-64 object-cover mx-auto" src={oneCollection.img} alt="collection-img" />
                     <div className="py-4 max-w-lg place-content-center">

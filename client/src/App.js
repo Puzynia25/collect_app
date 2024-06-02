@@ -32,11 +32,7 @@ const App = observer(() => {
     }, []);
 
     if (loading) {
-        return (
-            <div className="mt-5">
-                <Spinner />
-            </div>
-        );
+        return <Spinner />;
     }
 
     const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
