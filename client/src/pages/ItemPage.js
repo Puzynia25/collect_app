@@ -57,7 +57,8 @@ const ItemPage = observer(() => {
             id: parseInt(id, 10),
             value: fieldValues[id],
         }));
-        updateCustomFieldsValues(item.collectionId, formattedValues)
+
+        updateCustomFieldsValues(item.collectionId, { itemId: id, customFields: formattedValues })
             .then(() => (setErrorMessage("Сhanges successfully saved"), setError(true)))
             .catch((e) => console.log(e.response.data.message));
     };
@@ -82,11 +83,7 @@ const ItemPage = observer(() => {
                 <div className="p-4 md:p-7 rounded-3xl mx-4 md:mx-0 shadow-lg border md:w-full dark:border-gray-600">
                     <div className="m-4">
                         <Badge category={item.collection?.category.name} />
-                        <div key={comment.id} className="mt-9">
-                            <p className="flex items-center text-sm text-gray-600">
-                                There are no additional fields yet...
-                            </p>
-                        </div>
+
                         {fields.length > 0 ? (
                             <CustomFields
                                 fields={fields}
@@ -95,8 +92,15 @@ const ItemPage = observer(() => {
                                 isButton={true}
                                 fieldValues={fieldValues}
                                 setFieldValues={setFieldValues}
+                                userId={item.collection?.userId}
                             />
-                        ) : null}
+                        ) : (
+                            <div key={comment.id} className="mt-9">
+                                <p className="flex items-center text-sm text-gray-600">
+                                    There are no additional fields yet...
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <CommentsContainer item={item} />

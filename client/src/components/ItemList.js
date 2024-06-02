@@ -6,7 +6,7 @@ import { removeOne } from "../http/itemAPI";
 import EditItem from "./modals/EditItem";
 import { Context } from "..";
 
-const ItemList = ({ fields, setFields }) => {
+const ItemList = ({ fields, setFields, userId }) => {
     const { user, item } = useContext(Context);
     const navigate = useNavigate();
     const [onShowEditModal, setOnShowEditModal] = useState(false);
@@ -124,12 +124,16 @@ const ItemList = ({ fields, setFields }) => {
                                     );
                                 }
                             })}
-                            <th scope="col" className="px-6 py-3">
-                                <span className="sr-only">Edit</span>
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                <span className="sr-only">Delete</span>
-                            </th>
+                            {user.userData.id === userId || user.userData.role === "ADMIN" ? (
+                                <>
+                                    <th scope="col" className="px-6 py-3">
+                                        <span className="sr-only">Edit</span>
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        <span className="sr-only">Delete</span>
+                                    </th>
+                                </>
+                            ) : null}
                         </tr>
                     </thead>
                     <tbody>
@@ -143,7 +147,7 @@ const ItemList = ({ fields, setFields }) => {
                                             <button
                                                 className="hover:underline text-left"
                                                 onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
-                                                {el.name.length > 25 ? el.name.slice(0, 25) + "..." : el.name}
+                                                {el.name.length > 15 ? el.name.slice(0, 15) + "..." : el.name}
                                             </button>
                                         </th>
                                         <td className="text-balance max-w-[140px] px-6 py-4 ">
@@ -186,14 +190,18 @@ const ItemList = ({ fields, setFields }) => {
                                                     .map((item) => (
                                                         <td key={item.id} className="text-wrap px-6 py-4 max-w-36">
                                                             {field.type === "date"
-                                                                ? formatDate(item.value)
-                                                                : item.value}
+                                                                ? item.value
+                                                                    ? formatDate(item.value)
+                                                                    : "No value"
+                                                                : item.value === ""
+                                                                ? "No value"
+                                                                : null}
                                                         </td>
                                                     ));
                                             }
                                         })}
 
-                                        {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
+                                        {user.userData.id === userId || user.userData.role === "ADMIN" ? (
                                             <>
                                                 <td className="px-6 py-4 text-right">
                                                     <button

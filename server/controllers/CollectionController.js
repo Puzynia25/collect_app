@@ -9,6 +9,11 @@ class CollectionController {
         try {
             const { name, description, userId, categoryId } = req.body;
             const { img } = req.files;
+
+            if (!req.files || !req.files.img) {
+                return next(ApiError.badRequest("File not uploaded"));
+            }
+
             let fileName = uuid.v4() + ".jpg";
             const resultFile = await cloudinary.uploader.upload(img.tempFilePath, {
                 public_id: fileName,

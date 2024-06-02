@@ -36,6 +36,10 @@ const CreateCollection = observer(({ show, onHide, loading, setLoading }) => {
         formData.append("categoryId", categoryId);
         // formData.append('info', JSON.stringify(info))
 
+        if (description.length > 255) {
+            return setErrorMessage("Description must not exceed 255 characters"), setError(true);
+        }
+
         createCollection(formData)
             .then(
                 (data) => (
@@ -46,7 +50,13 @@ const CreateCollection = observer(({ show, onHide, loading, setLoading }) => {
                     onHide()
                 )
             )
-            .catch((e) => (setErrorMessage("The collection has not been created, please try again"), setError(true)))
+            .catch(
+                (e) => (
+                    setErrorMessage("The collection has not been created, please try again"),
+                    setError(true),
+                    console.log(e)
+                )
+            )
             .finally(() => setLoading(false));
     };
 

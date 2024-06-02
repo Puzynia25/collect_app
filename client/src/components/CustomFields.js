@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import CustomFieldTypes from "./CustomFieldTypes";
+import { Context } from "..";
 
-const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldValues, isReadOnly }) => {
+const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldValues, isReadOnly, userId }) => {
+    const { user } = useContext(Context);
+
     const onChangeValue = (id, value) => {
         setFieldValues((prev) => ({
             ...prev,
@@ -25,7 +29,7 @@ const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldVa
                     );
                 })}
             </ul>
-            {isButton ? (
+            {isButton && (user.userData.id === userId || user.userData.role === "ADMIN") ? (
                 <button
                     onClick={() => onUpdateValue(fieldValues)}
                     className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
