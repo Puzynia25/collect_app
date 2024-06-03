@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { Context } from "..";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 
 const Pages = observer(() => {
+    const { t } = useTranslation();
     const { page } = useContext(Context);
     const pageCount = Math.ceil(page.totalCount / page.limit);
     const pages = [];
@@ -28,15 +30,15 @@ const Pages = observer(() => {
             className="ms-4 flex items-center flex-column flex-wrap md:flex-row justify-between pt-4 md:mb-2"
             aria-label="Table navigation">
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-                Showing <span className="font-semibold text-gray-900 dark:text-white">1-{page.limit}</span> of{" "}
-                <span className="font-semibold text-gray-900 dark:text-white">{page.totalCount}</span>
+                {t("Showing")} <span className="font-semibold text-gray-900 dark:text-white">1-{page.limit}</span>{" "}
+                {t("of")} <span className="font-semibold text-gray-900 dark:text-white">{page.totalCount}</span>
             </span>
             <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                 <li>
                     <button
                         className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         onClick={onPrev}>
-                        Previous
+                        {t("Previous")}
                     </button>
                 </li>
                 {pages.map((el) => (
@@ -55,7 +57,7 @@ const Pages = observer(() => {
                     <button
                         className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         onClick={onNext}>
-                        Next
+                        {t("Next")}
                     </button>
                 </li>
             </ul>

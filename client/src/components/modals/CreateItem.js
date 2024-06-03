@@ -6,8 +6,10 @@ import CustomFieldTypes from "../CustomFieldTypes";
 import { fetchAllCustomFields } from "../../http/customFieldAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "../..";
+import { useTranslation } from "react-i18next";
 
 const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields }) => {
+    const { t } = useTranslation();
     const { item } = useContext(Context);
     const [name, setName] = useState("");
     const [tags, setTags] = useState([]);
@@ -55,7 +57,9 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
                 <div className="relative bg-white rounded-3xl shadow dark:bg-gray-800">
                     {/* <!-- Modal header --> */}
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">Create New Item</h3>
+                        <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">
+                            {t("Create New Item")}
+                        </h3>
                         <button
                             type="button"
                             className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -88,14 +92,14 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
                                     <label
                                         htmlFor="name"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Name
+                                        {t("Name")}
                                     </label>
                                     <input
                                         type="text"
                                         name="name"
                                         id="name"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Type item name"
+                                        placeholder={t("Type item name")}
                                         required=""
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
@@ -106,13 +110,13 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
                                     <label
                                         htmlFor="description"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Tags
+                                        {t("Tags")}
                                     </label>
                                     <textarea
                                         id="description"
                                         rows="4"
                                         className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Write, your, tags, here"
+                                        placeholder={t("Write, your, tags, here")}
                                         value={tags}
                                         onChange={(e) => setTags([e.target.value])}
                                     />
@@ -148,7 +152,7 @@ const CreateItem = observer(({ show, onHide, oneCollection, fields, setFields })
                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                         clipRule="evenodd"></path>
                                 </svg>
-                                Add new item
+                                {t("Add new item")}
                             </button>
                         </div>
                     </form>

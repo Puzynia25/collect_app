@@ -2,8 +2,10 @@ import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
 import { Context } from "..";
 import { createComment } from "../http/commentAPI";
+import { useTranslation } from "react-i18next";
 
 const CommentsContainer = observer(({ item }) => {
+    const { t } = useTranslation();
     const { comment, user } = useContext(Context);
     const [content, setContent] = useState("");
 
@@ -18,7 +20,9 @@ const CommentsContainer = observer(({ item }) => {
     return (
         <div className="mt-9 mb-8 md:w-full mx-4 md:mx-0 max-w-lg p-4 bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-900 dark:border-gray-700">
             <div className="flex items-center justify-between mb-4">
-                <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">Comments</h5>
+                <h5 className="pt-2 pl-2 text-xl font-bold leading-none text-gray-900 dark:text-white">
+                    {t("Comments")}
+                </h5>
             </div>
             <div className="px-2 flow-root overflow-auto ">
                 <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -44,7 +48,7 @@ const CommentsContainer = observer(({ item }) => {
                         })
                     ) : (
                         <li key={comment.id} className="py-3 sm:py-4">
-                            <div className="flex items-center text-sm">"Be the first to leave a comment..."</div>
+                            <div className="flex items-center text-sm">{t("Be the first to leave a comment")}...</div>
                         </li>
                     )}
                 </ul>
@@ -59,7 +63,7 @@ const CommentsContainer = observer(({ item }) => {
                         id="chat"
                         rows="1"
                         className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Your message..."
+                        placeholder={`${t("Your message")}...`}
                         value={content}
                         onChange={(e) => setContent(e.target.value)}></textarea>
                     <button

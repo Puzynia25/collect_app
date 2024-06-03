@@ -6,8 +6,10 @@ import { login, registration } from "../http/userAPI";
 import { observer } from "mobx-react-lite";
 import { Button } from "flowbite-react";
 import ErrorMessage from "../components/modals/ErrorMessage";
+import { useTranslation } from "react-i18next";
 
 const Auth = observer(() => {
+    const { t } = useTranslation();
     const { user } = useContext(Context);
     const location = useLocation();
     const navigate = useNavigate();
@@ -52,7 +54,7 @@ const Auth = observer(() => {
             user.setIsAuth(true);
             navigate(USER_ROUTE + "/" + user.userData.id);
         } catch (e) {
-            return setErrorMessage(e.response.data.message), setError(true);
+            return setErrorMessage(t(e.response.data.message)), setError(true);
         } finally {
             setLoading(false);
         }
@@ -76,7 +78,7 @@ const Auth = observer(() => {
         setName(value);
 
         if (value.length === 0) {
-            setNameError("Name cannot be empty");
+            setNameError(t("Name cannot be empty"));
         } else setNameError("");
     };
 
@@ -85,7 +87,7 @@ const Auth = observer(() => {
         const re =
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!re.test(String(value).toLowerCase())) {
-            setEmailError("Invalid email");
+            setEmailError(t("Invalid email"));
         } else setEmailError("");
     };
 
@@ -93,7 +95,7 @@ const Auth = observer(() => {
         setPassword(value);
 
         if (value.length < 3) {
-            setPasswordError("At least 3 characters");
+            setPasswordError(t("At least 3 characters"));
         } else setPasswordError("");
     };
 
@@ -108,7 +110,7 @@ const Auth = observer(() => {
                             <label
                                 htmlFor="email-address-icon"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Your Email
+                                Email
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -131,7 +133,7 @@ const Auth = observer(() => {
                                             ? "bg-red-50 border border-red-500 text-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-red-500 dark:placeholder-red-500 dark:text-red-500 dark:focus:ring-red-500 dark:focus:border-red-500"
                                             : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     }
-                                    placeholder="name@gmail.com"
+                                    placeholder={`${t("name")}@gmail.com`}
                                     value={email}
                                     onChange={(e) => onChangeEmail(e.target.value)}
                                     onBlur={(e) => onBlur(e)}
@@ -146,7 +148,7 @@ const Auth = observer(() => {
                             <label
                                 htmlFor="password"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Your password
+                                {t("Password")}
                             </label>
 
                             <input
@@ -168,18 +170,18 @@ const Auth = observer(() => {
                             ) : null}
                         </div>
                         <div className="my-4" style={{ fontSize: "small" }}>
-                            <p className="inline-block dark:text-gray-400">Don't have an account? </p>
+                            <p className="inline-block dark:text-gray-400">{t("Don't have an account?")} </p>
 
                             <button
                                 type="submit"
                                 onClick={() => navigate(REGISTARTION_ROUTE)}
                                 className="ms-2 text-sm text-blue-600 dark:text-blue-500 hover:underline">
-                                sign up
+                                {t("Sign up")}
                             </button>
                         </div>
                         {!loading ? (
                             <Button color="blue" onClick={click} disabled={!formValid}>
-                                Log in
+                                {t("Log in")}
                             </Button>
                         ) : (
                             <button
@@ -212,7 +214,7 @@ const Auth = observer(() => {
                             <label
                                 htmlFor="name"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Your name
+                                {t("Name")}
                             </label>
                             <input
                                 type="text"
@@ -236,7 +238,7 @@ const Auth = observer(() => {
                             <label
                                 htmlFor="email-address-icon"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Your Email
+                                Email
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -258,7 +260,7 @@ const Auth = observer(() => {
                                             ? "bg-red-50 border border-red-500 text-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-red-500 dark:placeholder-red-500 dark:text-red-500 dark:focus:ring-red-500 dark:focus:border-red-500"
                                             : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     }
-                                    placeholder="name@gmail.com"
+                                    placeholder={`${t("name")}@gmail.com`}
                                     value={email}
                                     onChange={(e) => onChangeEmail(e.target.value)}
                                     onBlur={(e) => onBlur(e)}
@@ -273,7 +275,7 @@ const Auth = observer(() => {
                             <label
                                 htmlFor="password"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Your password
+                                {t("Password")}
                             </label>
                             <input
                                 type="password"
@@ -295,7 +297,7 @@ const Auth = observer(() => {
                         </div>
                         {!loading ? (
                             <Button color="blue" onClick={click} disabled={!formValid}>
-                                Sign up
+                                {t("Sign up")}
                             </Button>
                         ) : (
                             <button
@@ -318,7 +320,7 @@ const Auth = observer(() => {
                                         fill="currentColor"
                                     />
                                 </svg>
-                                Loading...
+                                {t("Loading")}...
                             </button>
                         )}
                     </>

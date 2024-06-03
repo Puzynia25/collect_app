@@ -7,6 +7,8 @@ import { Context } from ".";
 import { check } from "./http/userAPI";
 import { observer } from "mobx-react-lite";
 import ErrorMessage from "./components/modals/ErrorMessage";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
 
 const App = observer(() => {
     const { user } = useContext(Context);
@@ -38,13 +40,15 @@ const App = observer(() => {
     const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
 
     return (
-        <BrowserRouter>
-            <div className="container mx-auto my-9">
-                <NavBar />
-                <AppRouter />
-                {errorModal}
-            </div>
-        </BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+            <BrowserRouter>
+                <div className="container mx-auto my-9">
+                    <NavBar />
+                    <AppRouter />
+                    {errorModal}
+                </div>
+            </BrowserRouter>
+        </I18nextProvider>
     );
 });
 

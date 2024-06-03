@@ -13,8 +13,10 @@ import CreateItem from "../components/modals/CreateItem";
 import Spinner from "../components/Spinner";
 import CreateCustomFields from "../components/modals/CreateCustomFields";
 import EditCustomFields from "../components/modals/EditCustomFields";
+import { useTranslation } from "react-i18next";
 
 const CollectionPage = observer(() => {
+    const { t } = useTranslation();
     const { item, collection, user, page } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [onShowModal, setOnShowModal] = useState(false);
@@ -71,10 +73,14 @@ const CollectionPage = observer(() => {
                 <Badge category={oneCollection.category?.name} />
                 <div className="md:flex w-full mt-5 justify-between">
                     <div className="ms-2">
-                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">Items</h2>
+                        <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
+                            {t("Items")}
+                        </h2>
 
                         <p className="hidden md:block mt-9 text-sm max-w-sm text-gray-900 dark:text-gray-400">
-                            A list of all the items in this collection including its name, category and description.
+                            {t(
+                                "A list of all the items in this collection including its name, category and description"
+                            )}
                         </p>
                     </div>
                     {user.userData.id == oneCollection.userId || user.userData.role === "ADMIN" ? (
@@ -102,7 +108,7 @@ const CollectionPage = observer(() => {
                                             clipRule="evenodd"
                                         />
                                     </svg>
-                                    Edit fields
+                                    {t("Edit")} {t("fields")}
                                 </span>
                             </button>
                             <button
@@ -119,7 +125,8 @@ const CollectionPage = observer(() => {
                                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                             clipRule="evenodd"></path>
                                     </svg>
-                                    <span className="hidden md:block">Add</span> fields
+                                    <span className="hidden md:block pr-1">{t("Add")}</span>
+                                    {t("fields")}
                                 </span>
                             </button>
                             <button
@@ -136,7 +143,7 @@ const CollectionPage = observer(() => {
                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                         clipRule="evenodd"></path>
                                 </svg>
-                                <span className="hidden md:block">Add</span> item
+                                <span className="hidden md:block pr-1">{t("Add")}</span> {t("item")}
                             </button>
                         </div>
                     ) : null}

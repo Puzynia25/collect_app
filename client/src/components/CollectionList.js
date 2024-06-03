@@ -9,8 +9,10 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EditCollection from "./modals/EditCollection";
 import { renderMarkdown } from "../utils/renderMarkdown";
 import Pages from "./Pages";
+import { useTranslation } from "react-i18next";
 
 const CollectionList = observer(({ collections, loading, setIsEdit }) => {
+    const { t } = useTranslation();
     const { collection, user, page } = useContext(Context);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -47,12 +49,12 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                                name
+                                {t("name")}
                             </th>
 
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Category
+                                    {t("Category")}
                                     <svg
                                         className="w-3 h-3 ms-1.5"
                                         aria-hidden="true"
@@ -65,7 +67,7 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    description
+                                    {t("Description")}
                                     <svg
                                         className="w-3 h-3 ms-1.5"
                                         aria-hidden="true"
@@ -141,7 +143,7 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
                                                     <button
                                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                         onClick={() => onShowEdit(el.id)}>
-                                                        Edit
+                                                        {t("Edit")}
                                                     </button>
                                                 </td>
                                                 <td className="px-6 py-4 text-right content-center">

@@ -6,8 +6,10 @@ import ErrorMessage from "./ErrorMessage";
 import { fetchAllItems, fetchOneItem, updateItem } from "../../http/itemAPI";
 import CustomFieldTypes from "../CustomFieldTypes";
 import { fetchAllCustomFields, updateCustomFieldsValues } from "../../http/customFieldAPI";
+import { useTranslation } from "react-i18next";
 
 const EditItem = observer(({ show, onHide, itemId, fields, setFields, collectionId }) => {
+    const { t } = useTranslation();
     const { item } = useContext(Context);
     const [name, setName] = useState("");
     const [tags, setTags] = useState([]);
@@ -65,12 +67,14 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
 
         Promise.all([
             updateItem({ name, tags: formattedTags, itemId }).catch(
-                (e) => (setErrorMessage("The item has not been edited, please try again"), setError(true))
+                (e) => (setErrorMessage(t("The item has not been edited, please try again")), setError(true))
             ),
 
             updateCustomFieldsValues(collectionId, { itemId, customFields: formattedValues }).catch(
                 (e) => (
-                    setErrorMessage("Failed to update the item"), setError(true), console.log(e.response.data.message)
+                    setErrorMessage(t("Failed to update the item")),
+                    setError(true),
+                    console.log(e.response.data.message)
                 )
             ),
         ]).then(
@@ -98,7 +102,9 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
                     <div className="relative bg-white rounded-3xl shadow dark:bg-gray-800">
                         {/* <!-- Modal header --> */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">Edit Item</h3>
+                            <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">
+                                {t("Edit item")}
+                            </h3>
                             <button
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -129,7 +135,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
                                             <label
                                                 htmlFor="name"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Name
+                                                {t("Name")}
                                             </label>
                                             <input
                                                 type="text"
@@ -146,7 +152,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
                                             <label
                                                 htmlFor="description"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Tags
+                                                {t("Tags")}
                                             </label>
 
                                             <textarea
@@ -199,7 +205,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <p>Edit item</p>
+                                            <p> {t("Edit item")}</p>
                                         </button>
                                     ) : (
                                         <button
@@ -222,7 +228,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
                                                     fill="currentColor"
                                                 />
                                             </svg>
-                                            Loading...
+                                            {t("Loading")}...
                                         </button>
                                     )}
                                 </>

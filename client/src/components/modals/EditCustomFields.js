@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import { removeCustomField, updateCustomFieldsNames } from "../../http/customFieldAPI";
+import { useTranslation } from "react-i18next";
 
 const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => {
+    const { t } = useTranslation();
     const initialCustomFields = (fields) => {
         return fields.reduce((obj, field) => {
             obj[field.id] = field.name;
@@ -40,12 +42,12 @@ const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => 
         updateCustomFieldsNames(collectionId, formattedNames)
             .then(() => (setFields(fields.map((field) => ({ ...field, name: fieldNames[field.id] }))), onHide()))
             .catch((e) => (setErrorMessage(e.response.data.message), setError(true)))
-            .finally(() => setLoading(false), (setErrorMessage("Fields successfully updated"), setError(true)));
+            .finally(() => setLoading(false), (setErrorMessage(t("Fields successfully updated")), setError(true)));
 
         if (fieldsId.length > 0) {
             removeCustomField(fieldsId)
                 .then(() => setFields(fields.filter((field) => !fieldsId.includes(field.id))))
-                .catch((e) => (setErrorMessage("The field hasn't been deleted"), setError(true), console.log(e)));
+                .catch((e) => (setErrorMessage(t("The field hasn't been deleted")), setError(true), console.log(e)));
         }
     };
 
@@ -70,7 +72,7 @@ const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => 
                         {/* <!-- Modal header --> */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                Edit Custom Fields
+                                {t("Edit Custom Fields")}
                             </h3>
                             <button
                                 type="button"
@@ -145,7 +147,7 @@ const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => 
                                 className="relative text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm ps-4 pr-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 onClick={updateFieldNames}
                                 disabled={loading}>
-                                <p>Save</p>
+                                <p>{t("Save")}</p>
                             </button>
                         </div>
                     </div>

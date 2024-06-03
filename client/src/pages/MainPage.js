@@ -13,8 +13,10 @@ import Badge from "../components/Badge";
 import { useNavigate } from "react-router-dom";
 import CollectionList from "../components/CollectionList";
 import Pages from "../components/Pages";
+import { useTranslation } from "react-i18next";
 
 const MainPage = observer(() => {
+    const { t } = useTranslation();
     const { collection, item, page } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [biggestCollections, setBiggestCollections] = useState([]);
@@ -59,7 +61,7 @@ const MainPage = observer(() => {
         <div className="w-full flex flex-col gap-5 md:flex-row mt-4 md:mt-9 bg-white dark:bg-gray-900 dark:text-white">
             <CategoryBar />
             <ContentWrapper>
-                <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">Recently Added</h1>
+                <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">{t("Recently Added")}</h1>
                 {/* the latest items */}
                 <div className="px-2">
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-4">
@@ -67,12 +69,12 @@ const MainPage = observer(() => {
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
-                                        Name
+                                        {t("Name")}
                                     </th>
 
                                     <th scope="col" className="px-6 py-3">
                                         <div className="flex items-center">
-                                            Category
+                                            {t("Category")}
                                             <a href="#">
                                                 <svg
                                                     className="w-3 h-3 ms-1.5"
@@ -87,7 +89,7 @@ const MainPage = observer(() => {
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         <div className="flex items-center">
-                                            Collection
+                                            {t("Collection")}
                                             <a href="#">
                                                 <svg
                                                     className="w-3 h-3 ms-1.5"
@@ -102,7 +104,7 @@ const MainPage = observer(() => {
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         <div className="flex items-center">
-                                            Creator
+                                            {t("Creator")}
                                             <a href="#">
                                                 <svg
                                                     className="w-3 h-3 ms-1.5"
@@ -162,7 +164,7 @@ const MainPage = observer(() => {
                                 ) : (
                                     <tr className="w-full">
                                         <td className="p-5" colSpan={7}>
-                                            There is no any items in this category...
+                                            {t("There is no any items in this category")}...
                                         </td>
                                     </tr>
                                 )}
@@ -174,12 +176,12 @@ const MainPage = observer(() => {
 
                 {/* 5 the biggest collections */}
                 <div className="flex justify-between mt-24 mb-4 md:mb-9">
-                    <h2 className="font-bold text-xl md:text-2xl">The biggest collections</h2>
+                    <h2 className="font-bold text-xl md:text-2xl">{t("The biggest collections")}</h2>
                     <button
                         type="submit"
                         className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         onClick={() => setToggleTable(!toggleTable)}>
-                        Table view
+                        {t("Table view")}
                     </button>
                 </div>
                 {toggleTable ? (

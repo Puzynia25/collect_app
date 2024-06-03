@@ -13,8 +13,10 @@ import { fetchItemComments } from "../http/commentAPI";
 import CustomFields from "../components/CustomFields";
 import Spinner from "../components/Spinner";
 import ErrorMessage from "../components/modals/ErrorMessage";
+import { useTranslation } from "react-i18next";
 
 const ItemPage = observer(() => {
+    const { t } = useTranslation();
     const { collection, comment, user } = useContext(Context);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -59,7 +61,7 @@ const ItemPage = observer(() => {
         }));
 
         updateCustomFieldsValues(item.collectionId, { itemId: id, customFields: formattedValues })
-            .then(() => (setErrorMessage("Сhanges successfully saved"), setError(true)))
+            .then(() => (setErrorMessage(t("Сhanges successfully saved")), setError(true)))
             .catch((e) => console.log(e.response.data.message));
     };
 
@@ -97,7 +99,7 @@ const ItemPage = observer(() => {
                         ) : (
                             <div key={comment.id} className="mt-9">
                                 <p className="flex items-center text-sm text-gray-600">
-                                    There are no additional fields yet...
+                                    {t("There are no additional fields yet")}...
                                 </p>
                             </div>
                         )}

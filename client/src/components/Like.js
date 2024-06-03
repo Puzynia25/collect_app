@@ -7,12 +7,6 @@ const Like = ({ userId, like }) => {
     const [likes, setLikes] = useState(like);
     const [isLiked, setIsLiked] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-
-    const onHideError = () => {
-        setError(false);
-    };
 
     const { id } = useParams();
 
@@ -43,15 +37,11 @@ const Like = ({ userId, like }) => {
             }
             setLikes(data);
         } catch (e) {
-            setErrorMessage(e.response.data.message);
-            setError(true);
-            // console.log(e.response.data.message);
+            console.log(e.response.data.message);
         } finally {
             setLoading(false);
         }
     };
-
-    const errorModal = error ? <ErrorMessage message={errorMessage} show={error} onHide={() => onHideError()} /> : null;
 
     return (
         <>
@@ -79,7 +69,6 @@ const Like = ({ userId, like }) => {
                     <p className="text-sm font-medium pr-2">{likes}</p>
                 </span>
             </button>
-            {errorModal}
         </>
     );
 };

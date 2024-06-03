@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { USER_ROUTE } from "../utils/consts";
 import { renderMarkdown } from "../utils/renderMarkdown";
+import { useTranslation } from "react-i18next";
 
 const CollectionBar = ({ oneCollection }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     return (
         <aside className="md:w-1/3 lg:w-1/4">
@@ -11,7 +13,7 @@ const CollectionBar = ({ oneCollection }) => {
                     <img className="h-64 object-cover mx-auto" src={oneCollection.img} alt="collection-img" />
                     <div className="py-4 max-w-lg place-content-center">
                         <p className=" text-sm font-medium text-gray-900 dark:text-gray-300">
-                            Creator:{" "}
+                            {t("Creator")}:{" "}
                             <button
                                 className="text-sm text-gray-500 dark:text-gray-400 hover:underline"
                                 onClick={() => navigate(USER_ROUTE + "/" + oneCollection?.userId)}>
@@ -19,7 +21,7 @@ const CollectionBar = ({ oneCollection }) => {
                             </button>
                         </p>
                         <p className="mt-4 text-sm font-medium content-end text-gray-500 dark:text-gray-400">
-                            Collection:
+                            {t("Collection")}:
                         </p>
 
                         <h2 className="font-bold text-xl uppercase tracking-wide md:text-2xl text-center mt-2 ">

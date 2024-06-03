@@ -5,8 +5,10 @@ import { observer } from "mobx-react-lite";
 import { fetchAllCollections, fetchOneCollection, updateCollection } from "../../http/collectionAPI";
 import Spinner from "../Spinner";
 import ErrorMessage from "./ErrorMessage";
+import { useTranslation } from "react-i18next";
 
 const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
+    const { t } = useTranslation();
     const { collection } = useContext(Context);
     const [name, setName] = useState("");
     const [file, setFile] = useState(null);
@@ -56,7 +58,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
         updateCollection(formData)
             .then((data) => onHide())
             .then(() => fetchAllCollections(null, id, null, 10).then((data) => collection.setAllCollections(data.rows)))
-            .catch((e) => (setErrorMessage("The collection has not been edited, please try again"), setError(true)))
+            .catch((e) => (setErrorMessage(t("The collection has not been edited, please try again")), setError(true)))
             .finally(() => setLoading(false), setIsEdit(true));
     };
 
@@ -76,7 +78,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                         {/* <!-- Modal header --> */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 className="ps-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                Edit Collection
+                                {t("Edit collection")}
                             </h3>
                             <button
                                 type="button"
@@ -108,7 +110,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                             <label
                                                 htmlFor="name"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Name
+                                                {t("Name")}
                                             </label>
                                             <input
                                                 type="text"
@@ -126,7 +128,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                             <label
                                                 htmlFor="category"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Category
+                                                {t("Category")}
                                             </label>
                                             <select
                                                 id="category"
@@ -151,7 +153,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                             <label
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                                 htmlFor="file_input">
-                                                Upload cover
+                                                {t("Upload cover")}
                                             </label>
                                             <input
                                                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -164,7 +166,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                             <label
                                                 htmlFor="description"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                Description
+                                                {t("Description")}
                                             </label>
                                             <textarea
                                                 id="description"
@@ -199,7 +201,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <p>Edit collection</p>
+                                            <p>{t("Edit collection")}</p>
                                         </button>
                                     ) : (
                                         <button
@@ -222,7 +224,7 @@ const EditCollection = observer(({ show, onHide, collectionId, setIsEdit }) => {
                                                     fill="currentColor"
                                                 />
                                             </svg>
-                                            Loading...
+                                            {t("Loading")}...
                                         </button>
                                     )}
                                 </>

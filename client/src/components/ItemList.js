@@ -6,8 +6,10 @@ import { removeOne } from "../http/itemAPI";
 import EditItem from "./modals/EditItem";
 import { Context } from "..";
 import Pages from "./Pages";
+import { useTranslation } from "react-i18next";
 
 const ItemList = ({ fields, setFields, userId }) => {
+    const { t } = useTranslation();
     const { user, item } = useContext(Context);
     const navigate = useNavigate();
     const [onShowEditModal, setOnShowEditModal] = useState(false);
@@ -41,12 +43,12 @@ const ItemList = ({ fields, setFields, userId }) => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                                Name
+                                {t("Name")}
                             </th>
 
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Collection
+                                    {t("Collection")}
                                     <a href="#">
                                         <svg
                                             className="w-3 h-3 ms-1.5"
@@ -61,7 +63,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Creator
+                                    {t("Creator")}
                                     <a href="#">
                                         <svg
                                             className="w-3 h-3 ms-1.5"
@@ -76,7 +78,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Category
+                                    {t("Category")}
                                     <a href="#">
                                         <svg
                                             className="w-3 h-3 ms-1.5"
@@ -91,7 +93,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
-                                    Tags
+                                    {t("Tags")}
                                     <a href="#">
                                         <svg
                                             className="w-3 h-3 ms-1.5"
@@ -208,7 +210,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                                                     <button
                                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                         onClick={() => onShowEdit(el.id)}>
-                                                        Edit
+                                                        {t("Edit")}
                                                     </button>
                                                 </td>
                                                 <td className="px-6 py-4 text-right content-center">

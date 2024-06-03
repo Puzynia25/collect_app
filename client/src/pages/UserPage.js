@@ -7,8 +7,10 @@ import ContentWrapper from "../components/ContentWrapper";
 import CategoryBar from "../components/CategoryBar";
 import CreateCollection from "../components/modals/CreateCollection";
 import CollectionList from "../components/CollectionList";
+import { useTranslation } from "react-i18next";
 
 const UserPage = observer(() => {
+    const { t } = useTranslation();
     const { collection, user, page } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -37,13 +39,12 @@ const UserPage = observer(() => {
                 <div className="flex justify-between">
                     <div>
                         <h2 className="text-lg font-semibold content-end text-gray-900 dark:text-gray-400">
-                            Collections
+                            {t("Collections")}
                         </h2>
                         <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                             {collection.allCollections.length > 0 ? (
                                 <>
-                                    {" "}
-                                    Creator:{" "}
+                                    {t("Creator")}:{" "}
                                     <span className="text-sm text-gray-500 dark:text-gray-400">
                                         {collection.allCollections[0]?.user?.name}
                                     </span>
@@ -51,8 +52,9 @@ const UserPage = observer(() => {
                             ) : null}
                         </p>
                         <p className="hidden md:block mt-9 text-sm max-w-md text-gray-900 dark:text-gray-400">
-                            A list of all the collections in your account including their name, category and
-                            description.
+                            {t(
+                                "A list of all the collections in your account including their name, category and description"
+                            )}
                         </p>
                     </div>
                     {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
@@ -70,7 +72,7 @@ const UserPage = observer(() => {
                                     d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                     clipRule="evenodd"></path>
                             </svg>
-                            Add collection
+                            {t("Add")} {t("collection")}
                         </button>
                     ) : null}
                 </div>

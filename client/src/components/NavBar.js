@@ -4,8 +4,11 @@ import { Context } from "..";
 import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import ErrorMessage from "./modals/ErrorMessage";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const NavBar = observer(() => {
+    const { t } = useTranslation();
     const { user } = useContext(Context);
     const [colorTheme, setColorTheme] = useState(localStorage.getItem("color-theme") || "light");
     const [error, setError] = useState(false);
@@ -39,7 +42,7 @@ const NavBar = observer(() => {
 
     const onCheckLogIn = () => {
         if (!user.isAuth) {
-            setErrorMessage("You need to log in");
+            setErrorMessage(t("You need to log in"));
             setError(true);
             setToggleMainMenu(false);
             navigate(LOGIN_ROUTE);
@@ -71,7 +74,7 @@ const NavBar = observer(() => {
                         </svg>
 
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                            Collections
+                            {t("Collections")}
                         </span>
                     </button>
 
@@ -122,6 +125,7 @@ const NavBar = observer(() => {
                                 placeholder="Search..."
                             />
                         </div> */}
+
                         <button
                             id="theme-toggle"
                             data-tooltip-target="tooltip-toggle"
@@ -212,7 +216,7 @@ const NavBar = observer(() => {
                                                 ? "text-blue-600 dark:text-blue-500"
                                                 : "text-gray-900 hover:text-blue-600 dark:text-white"
                                         }`}>
-                                        Home
+                                        {t("Home")}
                                     </button>
                                 </li>
                                 <li>
@@ -223,7 +227,7 @@ const NavBar = observer(() => {
                                                 : "text-gray-900 hover:text-blue-600 dark:text-white"
                                         }`}
                                         onClick={() => onCheckLogIn()}>
-                                        Account
+                                        {t("Account")}
                                     </button>
                                 </li>
                             </ul>
@@ -239,7 +243,7 @@ const NavBar = observer(() => {
                                                     onClick={() => {
                                                         return setToggleMainMenu(false), navigate(ADMIN_ROUTE);
                                                     }}>
-                                                    Admin panel
+                                                    {t("Admin panel")}
                                                 </button>
                                             ) : null}
                                         </li>
@@ -251,7 +255,7 @@ const NavBar = observer(() => {
                                             <button
                                                 className="text-sm text-blue-600 dark:text-blue-500 hover:underline py-2 px-3 md:p-0"
                                                 onClick={() => logOut()}>
-                                                Log out
+                                                {t("Log out")}
                                             </button>
                                         </li>
                                     </>
@@ -262,7 +266,7 @@ const NavBar = observer(() => {
                                             onClick={() => {
                                                 return setToggleMainMenu(false), navigate(LOGIN_ROUTE);
                                             }}>
-                                            Login
+                                            {t("Log in")}
                                         </button>
                                         <span className="md:px-3">/</span>
                                         <button
@@ -270,10 +274,13 @@ const NavBar = observer(() => {
                                             onClick={() => {
                                                 return setToggleMainMenu(false), navigate(REGISTARTION_ROUTE);
                                             }}>
-                                            Sign up
+                                            {t("Sign up")}
                                         </button>
                                     </li>
                                 )}
+                                <li>
+                                    <LanguageSwitcher />
+                                </li>
                             </ul>
                         </div>
                     </div>

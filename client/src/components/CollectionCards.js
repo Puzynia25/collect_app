@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { COLLECTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import Badge from "./Badge";
-import CollectionList from "./CollectionList";
 import { useNavigate } from "react-router-dom";
 import { renderMarkdown } from "../utils/renderMarkdown";
+import { useTranslation } from "react-i18next";
 
 const CollectionCards = ({ collections }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -34,7 +34,7 @@ const CollectionCards = ({ collections }) => {
                                           {col.name.length > 60 ? col.name.slice(0, 20) + "..." : col.name}
                                       </h5>
                                       <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                          Creator:{" "}
+                                          {t("Creator")}:{" "}
                                           <button onClick={() => navigate(USER_ROUTE + "/" + col.user.id)}>
                                               <span className="text-sm text-gray-500 dark:text-gray-400 hover:underline">
                                                   {col.user.name}
@@ -61,7 +61,7 @@ const CollectionCards = ({ collections }) => {
                                           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                           onClick={() => navigate(COLLECTION_ROUTE + "/" + col.id)}>
                                           {" "}
-                                          Read more
+                                          {t("Read more")}
                                           <svg
                                               className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
                                               aria-hidden="true"

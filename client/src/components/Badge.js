@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 const Badge = ({ category }) => {
+    const { t } = useTranslation();
     return (
         <p className="bg-red-100 text-red-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-red-400">
             <svg
@@ -16,7 +19,7 @@ const Badge = ({ category }) => {
                 />
             </svg>
 
-            {category}
+            {t(category)}
         </p>
     );
 };

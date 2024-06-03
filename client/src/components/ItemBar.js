@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { COLLECTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import Like from "./Like";
+import { useTranslation } from "react-i18next";
 
 const ItemBar = ({ item, userId }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -17,7 +19,7 @@ const ItemBar = ({ item, userId }) => {
                         </button>
 
                         <h5 className="mt-4 text-sm font-semibold tracking-tight text-gray-900 dark:text-white ">
-                            Creator:{" "}
+                            {t("Creator")}:{" "}
                             <button
                                 onClick={() => navigate(USER_ROUTE + "/" + userId)}
                                 className="text-sm text-gray-500 dark:text-gray-400 hover:underline">
@@ -26,7 +28,7 @@ const ItemBar = ({ item, userId }) => {
                         </h5>
 
                         <h5 className="mt-4 text-sm font-semibold tracking-tight text-gray-900 dark:text-white ">
-                            Collection:{" "}
+                            {t("Collection")}:{" "}
                             <button
                                 onClick={() => navigate(COLLECTION_ROUTE + "/" + item.collectionId)}
                                 className="text-sm text-gray-500 dark:text-gray-400 hover:underline">
@@ -43,7 +45,7 @@ const ItemBar = ({ item, userId }) => {
                         </div>
                     </div>
                     <div className="mt-9">
-                        <h2 className="font-bold text-xl md:text-2xl mb-4">Tags</h2>
+                        <h2 className="font-bold text-xl md:text-2xl mb-4">{t("Tags")}</h2>
                         <div className="flex flex-wrap gap-2 max-w-sm mx-auto my-4 text-sm">
                             {item.tags?.map((el, i) => {
                                 return (
