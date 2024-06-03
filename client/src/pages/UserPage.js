@@ -9,7 +9,7 @@ import CreateCollection from "../components/modals/CreateCollection";
 import CollectionList from "../components/CollectionList";
 
 const UserPage = observer(() => {
-    const { collection, user } = useContext(Context);
+    const { collection, user, page } = useContext(Context);
     const [onShowModal, setOnShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -19,9 +19,9 @@ const UserPage = observer(() => {
     useEffect(() => {
         setLoading(true);
         fetchAllCollections(null, id, null, 10)
-            .then((data) => collection.setAllCollections(data.rows))
+            .then((data) => (collection.setAllCollections(data.rows), page.setTotalCount(data.count)))
             .finally(() => setLoading(false));
-    }, [isEdit, id]);
+    }, [isEdit, id, page.page]);
 
     const onShow = () => {
         setOnShowModal(true);
@@ -74,7 +74,7 @@ const UserPage = observer(() => {
                         </button>
                     ) : null}
                 </div>
-                <CollectionList loading={loading} setIsEdit={setIsEdit} />
+                <CollectionList loading={loading} setIsEdit={setIsEdit} collections={collection.allCollections} />
             </ContentWrapper>
             <CreateCollection show={onShowModal} onHide={() => onHide()} loading={loading} setLoading={setLoading} />
         </div>

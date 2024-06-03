@@ -5,6 +5,7 @@ import Badge from "./Badge";
 import { removeOne } from "../http/itemAPI";
 import EditItem from "./modals/EditItem";
 import { Context } from "..";
+import Pages from "./Pages";
 
 const ItemList = ({ fields, setFields, userId }) => {
     const { user, item } = useContext(Context);
@@ -35,7 +36,7 @@ const ItemList = ({ fields, setFields, userId }) => {
 
     return (
         <div className="md:px-2">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-4 md:mb-12">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-4 md:mb-4">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -246,6 +247,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                     </tbody>
                 </table>
             </div>
+            <Pages />
             <EditItem
                 show={onShowEditModal}
                 onHide={() => onHideEdit()}

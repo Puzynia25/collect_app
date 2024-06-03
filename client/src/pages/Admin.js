@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Pages from "../components/Pages";
 
 const Admin = observer(() => {
-    const { user } = useContext(Context);
+    const { user, page } = useContext(Context);
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectedAll, setSelectedAll] = useState(false);
     const [status, setStatus] = useState("");
@@ -16,10 +16,10 @@ const Admin = observer(() => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchAllUsers(user.page, user.limit)
-            .then((data) => (user.setUsers(data.rows), user.setTotalCount(data.count)))
+        fetchAllUsers(page.page, page.limit)
+            .then((data) => (user.setUsers(data.rows), page.setTotalCount(data.count)))
             .catch((e) => console.log(e));
-    }, []);
+    }, [page.page]);
 
     useEffect(() => {
         if (user.users.length !== 0) {

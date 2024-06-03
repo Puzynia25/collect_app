@@ -15,7 +15,7 @@ import CreateCustomFields from "../components/modals/CreateCustomFields";
 import EditCustomFields from "../components/modals/EditCustomFields";
 
 const CollectionPage = observer(() => {
-    const { item, collection, user } = useContext(Context);
+    const { item, collection, user, page } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [onShowModal, setOnShowModal] = useState(false);
     const [onShowFieldsModal, setOnShowFieldsModal] = useState(false);
@@ -28,10 +28,16 @@ const CollectionPage = observer(() => {
         Promise.race([
             fetchOneCollection(id).then((data) => setOneCollection(data)),
             fetchAllCategories().then((data) => collection.setAllCategories(data)),
-            fetchAllItems(id).then((data) => item.setItems(data.rows)),
+            fetchAllItems(id).then((data) => (item.setItems(data.rows), page.setTotalCount(data.count))),
             fetchAllCustomFields(id).then((data) => setFields(data)),
         ]).finally(() => setLoading(false));
     }, [id]);
+
+    useEffect(() => {
+        fetchAllItems(id, page.page, page.limit).then(
+            (data) => (item.setItems(data.rows), page.setTotalCount(data.count))
+        );
+    }, [page.page]);
 
     const onShow = () => {
         setOnShowModal(true);

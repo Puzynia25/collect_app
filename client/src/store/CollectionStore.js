@@ -5,7 +5,6 @@ export default class CollectionStore {
         this._allCategories = [];
         this._selectedCategory = {};
         this._allCollections = [];
-        this._totalCollectionsCount = 0;
         makeAutoObservable(this);
     }
 
@@ -21,10 +20,6 @@ export default class CollectionStore {
         this._allCollections = collections;
     }
 
-    setTotalCollectionsCount(count) {
-        this._totalCollectionsCount = count;
-    }
-
     get allCategories() {
         return this._allCategories;
     }
@@ -35,9 +30,5 @@ export default class CollectionStore {
 
     get allCollections() {
         return this._allCollections;
-    }
-
-    get totalCollectionsCount() {
-        return this._totalCollectionsCount;
     }
 }

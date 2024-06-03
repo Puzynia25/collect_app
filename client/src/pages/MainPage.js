@@ -12,9 +12,10 @@ import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
 import Badge from "../components/Badge";
 import { useNavigate } from "react-router-dom";
 import CollectionList from "../components/CollectionList";
+import Pages from "../components/Pages";
 
 const MainPage = observer(() => {
-    const { collection, item } = useContext(Context);
+    const { collection, item, page } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [biggestCollections, setBiggestCollections] = useState([]);
     const [itemsByCategory, setItemsByCategory] = useState(item.items);
@@ -24,18 +25,30 @@ const MainPage = observer(() => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        fetchAllItems(null, page.page, page.limit)
+            .then((data) => (item.setItems(data.rows), page.setTotalCount(data.count)))
+            .then(() => setByCategory());
+    }, [page.page]);
+
+    useEffect(() => {
         Promise.race([
             fetchAllCollections().then((data) => collection.setAllCollections(data.rows)),
-            fetchAllItems().then((data) => item.setItems(data.rows)),
             fetchPopularTags().then((data) => setTags(data)),
+            fetchAllItems(null, page.page, page.limit).then(
+                (data) => (item.setItems(data.rows), page.setTotalCount(data.count))
+            ),
             fetchBiggest().then((data) => setBiggestCollections(data)),
         ]).finally(() => setLoading(false));
     }, []);
 
-    useEffect(() => {
+    const setByCategory = () => {
         collection.selectedCategory.name !== "All"
             ? setItemsByCategory(item.items.filter((el) => el.collection.categoryId === collection.selectedCategory.id))
             : setItemsByCategory(item.items);
+    };
+
+    useEffect(() => {
+        setByCategory();
     }, [collection.selectedCategory]);
 
     if (loading) {
@@ -49,7 +62,7 @@ const MainPage = observer(() => {
                 <h1 className="font-bold text-xl md:text-2xl mt-4 mb-7">Recently Added</h1>
                 {/* the latest items */}
                 <div className="px-2">
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-12">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:my-4 md:mb-4">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -157,6 +170,7 @@ const MainPage = observer(() => {
                         </table>
                     </div>
                 </div>
+                <Pages />
 
                 {/* 5 the biggest collections */}
                 <div className="flex justify-between mt-24 mb-4 md:mb-9">

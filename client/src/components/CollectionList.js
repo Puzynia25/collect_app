@@ -1,33 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "..";
-import { COLLECTION_ROUTE } from "../utils/consts";
+import { COLLECTION_ROUTE, MAIN_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
-import { removeOneCollection } from "../http/collectionAPI";
+import { fetchAllCollections, removeOneCollection } from "../http/collectionAPI";
 import Spinner from "./Spinner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EditCollection from "./modals/EditCollection";
 import { renderMarkdown } from "../utils/renderMarkdown";
+import Pages from "./Pages";
 
-const CollectionList = observer(({ loading, setIsEdit }) => {
-    const { collection, user } = useContext(Context);
+const CollectionList = observer(({ collections, loading, setIsEdit }) => {
+    const { collection, user, page } = useContext(Context);
     const { id } = useParams();
     const navigate = useNavigate();
-    const [collectionsByCategory, setCollectionsByCategory] = useState(collection.allCollections);
+    const location = useLocation();
     const [onShowEditModal, setOnShowEditModal] = useState(false);
     const [currentCollectionId, setCurrentCollectionId] = useState(null);
 
+    console.log(collections);
+
     useEffect(() => {
-        if (collection.selectedCategory.name !== "All") {
-            setCollectionsByCategory(
-                collection.allCollections.filter((el) => el.categoryId === collection.selectedCategory.id)
-            );
-        } else setCollectionsByCategory(collection.allCollections);
-    }, [collection.selectedCategory, collection.allCollections]);
+        fetchAllCollections(null, id, page.page, page.limit)
+            .then((data) => (collection.setAllCollections(data.rows), page.setTotalCount(data.count)))
+            .catch((e) => console.log(e));
+    }, [page.page]);
 
     const onDelete = (id) => {
         removeOneCollection(id)
-            .then(() => setCollectionsByCategory(collectionsByCategory.filter((el) => el.id !== id)))
+            .then(() => collection.setAllCollections(collection.allCollections.filter((el) => el.id !== id)))
             .catch((err) => console.log(err));
     };
 
@@ -41,8 +42,8 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
 
     return (
         <>
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-12 mt-4">
-                <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-2 md:mb-4 mt-4">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
@@ -94,8 +95,8 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                                     <Spinner />
                                 </td>
                             </tr>
-                        ) : collectionsByCategory.length > 0 ? (
-                            collectionsByCategory.map((el) => {
+                        ) : collections.length > 0 ? (
+                            collections.map((el) => {
                                 return (
                                     <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td className="px-4 py-4">
@@ -178,6 +179,7 @@ const CollectionList = observer(({ loading, setIsEdit }) => {
                     </tbody>
                 </table>
             </div>
+            {location.pathname !== MAIN_ROUTE ? <Pages /> : null}
 
             <EditCollection
                 show={onShowEditModal}
