@@ -3,12 +3,13 @@ import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
 import Spinner from "./components/Spinner";
-import { Context } from ".";
 import { check } from "./http/userAPI";
 import { observer } from "mobx-react-lite";
 import ErrorMessage from "./components/modals/ErrorMessage";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
+import { Context } from "./utils/context";
+import Help from "./components/Help";
 
 const App = observer(() => {
     const { user } = useContext(Context);
@@ -45,6 +46,7 @@ const App = observer(() => {
                 <div className="container mx-auto my-9">
                     <NavBar />
                     <AppRouter />
+                    <Help />
                     {errorModal}
                 </div>
             </BrowserRouter>

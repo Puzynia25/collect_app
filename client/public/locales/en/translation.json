@@ -86,6 +86,17 @@
     "Edit item": "Edit item",
     "Edit Custom Fields": "Edit Custom Fields",
 
+    "Create New Ticket": "Create New Ticket",
+    "Add new ticket": "Add new ticket",
+    "Add ticket": "Add ticket",
+    "Tickets": "Tickets",
+    "A list of all your tickets": "A list of all your tickets",
+    "Priority": "Priority",
+    "Low": "Low",
+    "Medium": "Medium",
+    "High": "High",
+    "Write a description of your ticket here": "Write a description of your ticket here",
+
     "Please choose a type": "Please choose a type",
     "Fields successfully added!": "Fields successfully added!",
     "You need to log in": "You need to log in",

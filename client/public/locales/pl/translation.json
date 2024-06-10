@@ -86,6 +86,17 @@
     "Edit item": "Edytuj element",
     "Edit Custom Fields": "Edycja pól własnych",
 
+    "Create New Ticket": "Utwórz nowe zgłoszenie",
+    "Add new ticket": "Dodaj nowe zgłoszenie",
+    "Add ticket": "Dodaj zgłoszenie",
+    "Tickets": "Zgłoszenia",
+    "A list of all your tickets": "Lista wszystkich zgłoszeń",
+    "Priority": "Priorytet",
+    "Low": "Niski",
+    "Medium": "Średni",
+    "High": "Wysoki",
+    "Write a description of your ticket here": "Wpisz tutaj opis swojego zgłoszenia",
+
     "Please choose a type": "Wybierz typ",
     "Fields successfully added!": "Pola zostały pomyślnie dodane!",
     "You need to log in": "Musisz się zalogować",

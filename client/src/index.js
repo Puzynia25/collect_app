@@ -18,6 +18,7 @@ root.render(
             item: new ItemStore(),
             comment: new CommentStore(),
             page: new PagesStore(),
+            ticketPage: new PagesStore(),
         }}>
         <App />
     </Context.Provider>
