@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { Context } from "..";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { fetchAllCollections } from "../http/collectionAPI";
@@ -8,10 +7,12 @@ import CategoryBar from "../components/CategoryBar";
 import CreateCollection from "../components/modals/CreateCollection";
 import CollectionList from "../components/CollectionList";
 import { useTranslation } from "react-i18next";
+import { Context } from "../utils/context";
 
 const UserPage = observer(() => {
     const { t } = useTranslation();
     const { collection, user, page } = useContext(Context);
+    const [collectionsByCategory, setCollectionsByCategory] = useState(collection.allCollections);
     const [onShowModal, setOnShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -24,6 +25,18 @@ const UserPage = observer(() => {
             .then((data) => (collection.setAllCollections(data.rows), page.setTotalCount(data.count)))
             .finally(() => setLoading(false));
     }, [isEdit, id, page.page]);
+
+    const setByCategory = () => {
+        collection.selectedCategory.name !== "All"
+            ? setCollectionsByCategory(
+                  collection.allCollections.filter((el) => el.categoryId === collection.selectedCategory.id)
+              )
+            : setCollectionsByCategory(collection.allCollections);
+    };
+
+    useEffect(() => {
+        setByCategory();
+    }, [collection.selectedCategory]);
 
     const onShow = () => {
         setOnShowModal(true);
@@ -76,7 +89,7 @@ const UserPage = observer(() => {
                         </button>
                     ) : null}
                 </div>
-                <CollectionList loading={loading} setIsEdit={setIsEdit} collections={collection.allCollections} />
+                <CollectionList loading={loading} setIsEdit={setIsEdit} collections={collectionsByCategory} />
             </ContentWrapper>
             <CreateCollection show={onShowModal} onHide={() => onHide()} loading={loading} setLoading={setLoading} />
         </div>

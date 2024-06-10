@@ -7,7 +7,7 @@ import CollectionStore from "./store/CollectionStore";
 import ItemStore from "./store/ItemStore";
 import CommentStore from "./store/CommentStore";
 import PagesStore from "./store/PagesStore";
-import { Context } from "./utils/context";
+import { Context as Context } from "./utils/context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
