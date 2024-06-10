@@ -1,13 +1,12 @@
 const Router = require("express");
 
 const ItemRouter = require("./ItemRouter");
-const checkRole = require("../middleware/checkRoleMiddleware");
 const CollectionController = require("../controllers/CollectionController");
 const authMiddleware = require("../middleware/authMiddleware");
 const CustomFieldController = require("../controllers/CustomFieldController");
 const router = new Router();
 
-router.use("/item", ItemRouter);
+// router.use("/item", ItemRouter);
 router.post("/", authMiddleware, CollectionController.create);
 router.patch("/", authMiddleware, CollectionController.update);
 router.get("/biggest", CollectionController.getBiggest);
@@ -20,6 +19,5 @@ router.get("/:id/custom-fields", CustomFieldController.getAll);
 router.patch("/:id/custom-fields-values", authMiddleware, CustomFieldController.updateValues);
 router.patch("/:id/custom-fields-names", authMiddleware, CustomFieldController.updateNames);
 
-// router.patch("/:id", checkRole("ADMIN"), CollectionController.update);
-
+router.use("/:collectionId/item", ItemRouter);
 module.exports = router;

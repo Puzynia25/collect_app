@@ -28,7 +28,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
     useEffect(() => {
         setLoading(true);
         if (itemId) {
-            fetchOneItem(itemId)
+            fetchOneItem(collectionId, itemId)
                 .then((data) => initialValues(data))
                 .finally(() => setLoading(false));
         }
@@ -67,7 +67,7 @@ const EditItem = observer(({ show, onHide, itemId, fields, setFields, collection
         }));
 
         Promise.all([
-            updateItem({ name, tags: formattedTags, itemId }).catch(
+            updateItem({ name, tags: formattedTags, collectionId, itemId }).catch(
                 (e) => (setErrorMessage(t("The item has not been edited, please try again")), setError(true))
             ),
 

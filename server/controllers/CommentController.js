@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const { Item, User, Collection, Category, Comment } = require("../models/models");
+const { User, Comment } = require("../models/models");
 
 class CommentController {
     async create(req, res, next) {
@@ -36,12 +36,6 @@ class CommentController {
 
         return res.json(comments);
     }
-
-    // async update(req, res, next) {
-    //     const { ids, status } = req.body;
-    //     await Item.update({ status }, { where: { id: ids } });
-    //     return res.status(204).send();
-    // }
 }
 
 module.exports = new CommentController();

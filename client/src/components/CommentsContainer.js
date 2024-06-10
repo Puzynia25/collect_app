@@ -3,15 +3,18 @@ import { useContext, useState } from "react";
 import { createComment } from "../http/commentAPI";
 import { useTranslation } from "react-i18next";
 import { Context } from "../utils/context";
+import { useParams } from "react-router-dom";
 
-const CommentsContainer = observer(({ item }) => {
+const CommentsContainer = observer(() => {
     const { t } = useTranslation();
     const { comment, user } = useContext(Context);
     const [content, setContent] = useState("");
 
+    const { collectionId, itemId } = useParams();
+
     const addComment = (e) => {
         e.preventDefault();
-        createComment({ itemId: item.id, userId: user.userData.id, content })
+        createComment({ collectionId, itemId, userId: user.userData.id, content })
             .then((data) => comment.setComments([...comment.comments, data]))
             .catch((e) => console.log(e));
         setContent("");

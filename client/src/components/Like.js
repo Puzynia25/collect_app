@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { addLike, checkLike, removeLike } from "../http/itemAPI";
 import { useParams } from "react-router-dom";
-import ErrorMessage from "./modals/ErrorMessage";
 
 const Like = ({ userId, like }) => {
     const [likes, setLikes] = useState(like);
     const [isLiked, setIsLiked] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const { id } = useParams();
+    const { collectionId, itemId } = useParams();
 
     useEffect(() => {
         setLikes(like);
@@ -17,7 +16,7 @@ const Like = ({ userId, like }) => {
     useEffect(() => {
         if (userId) {
             try {
-                checkLike(id, userId).then((data) => setIsLiked(data));
+                checkLike(collectionId, itemId, userId).then((data) => setIsLiked(data));
             } catch (e) {
                 console.log(e.response.data.message);
             }
@@ -29,10 +28,10 @@ const Like = ({ userId, like }) => {
         try {
             let data;
             if (!isLiked) {
-                data = await addLike(id, userId);
+                data = await addLike(collectionId, itemId, userId);
                 setIsLiked(true);
             } else {
-                data = await removeLike(id, userId);
+                data = await removeLike(collectionId, itemId, userId);
                 setIsLiked(false);
             }
             setLikes(data);

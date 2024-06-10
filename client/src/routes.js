@@ -43,7 +43,7 @@ export const publicRoutes = [
         Component: <CollectionPage />,
     },
     {
-        path: ITEM_ROUTE + "/:id",
+        path: ITEM_ROUTE + "/:itemId",
         Component: <ItemPage />,
     },
 ];

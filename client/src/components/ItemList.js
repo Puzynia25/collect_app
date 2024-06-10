@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
+import { COLLECTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { useNavigate, useParams } from "react-router-dom";
 import Badge from "./Badge";
 import { removeOne } from "../http/itemAPI";
@@ -17,10 +17,10 @@ const ItemList = ({ fields, setFields, userId }) => {
     const [onShowEditModal, setOnShowEditModal] = useState(false);
     const [currentItemId, setCurrentItemId] = useState(null);
 
-    const { id } = useParams();
+    const { collectionId, itemId } = useParams();
 
     const onDeleteItem = (itemId) => {
-        removeOne(itemId)
+        removeOne(collectionId, itemId)
             .then(() => item.setItems(item.items.filter((el) => el.id !== itemId)))
             .catch((e) => console.log(e));
     };
@@ -114,7 +114,9 @@ const ItemList = ({ fields, setFields, userId }) => {
                                             className="text-balance max-w-[140px] px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <button
                                                 className="hover:underline text-left"
-                                                onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
+                                                onClick={() =>
+                                                    navigate(`${COLLECTION_ROUTE}/${el.collectionId}/item/` + el.id)
+                                                }>
                                                 {el.name.length > 15 ? el.name.slice(0, 15) + "..." : el.name}
                                             </button>
                                         </td>
@@ -197,7 +199,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                 itemId={currentItemId}
                 fields={fields}
                 setFields={setFields}
-                collectionId={id}
+                collectionId={collectionId}
             />
         </div>
     );

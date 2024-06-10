@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 const ItemPage = observer(() => {
     const { t } = useTranslation();
     const { collection, comment, user } = useContext(Context);
-    const { id } = useParams();
+    const { collectionId, itemId } = useParams();
     const [loading, setLoading] = useState(true);
     const [item, setItem] = useState({});
     const [fields, setFields] = useState([]);
@@ -33,20 +33,20 @@ const ItemPage = observer(() => {
     useEffect(() => {
         setLoading(true);
 
-        fetchOneItem(id)
+        fetchOneItem(collectionId, itemId)
             .then((data) => {
                 setItem(data);
                 Promise.all([
                     fetchAllCategories().then((data) => collection.setAllCategories(data)),
-                    fetchItemComments(id).then((data) => comment.setComments(data.rows)),
-                    fetchAllCustomFields(data.collectionId, id).then((data) => setFields(data)),
+                    fetchItemComments(collectionId, itemId).then((data) => comment.setComments(data.rows)),
+                    fetchAllCustomFields(data.collectionId, itemId).then((data) => setFields(data)),
                 ]).finally(() => setLoading(false));
             })
             .catch((e) => {
                 setLoading(false);
                 console.log(e);
             });
-    }, [id]);
+    }, [itemId]);
 
     useEffect(() => {
         if (fields.length > 0) {
@@ -60,7 +60,7 @@ const ItemPage = observer(() => {
             value: fieldValues[id],
         }));
 
-        updateCustomFieldsValues(item.collectionId, { itemId: id, customFields: formattedValues })
+        updateCustomFieldsValues(item.collectionId, { itemId, customFields: formattedValues })
             .then(() => (setErrorMessage(t("Сhanges successfully saved")), setError(true)))
             .catch((e) => console.log(e.response.data.message));
     };
@@ -105,7 +105,7 @@ const ItemPage = observer(() => {
                         )}
                     </div>
                 </div>
-                <CommentsContainer item={item} />
+                <CommentsContainer />
             </div>
             <CreateItem />
             {errorModal}
