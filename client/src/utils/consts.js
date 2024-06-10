@@ -4,4 +4,4 @@ export const USER_ROUTE = "/user";
 export const REGISTARTION_ROUTE = "/registration";
 export const LOGIN_ROUTE = "/login";
 export const COLLECTION_ROUTE = "/collection";
-export const ITEM_ROUTE = "/item";
+export const ITEM_ROUTE = COLLECTION_ROUTE + "/:collectionId/item";

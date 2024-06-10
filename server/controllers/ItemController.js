@@ -31,9 +31,9 @@ class ItemController {
     }
 
     async getOne(req, res) {
-        const { id } = req.params;
+        const { itemId } = req.params;
         const item = await Item.findOne({
-            where: { id },
+            where: { id: itemId },
             include: [
                 {
                     model: Collection,
@@ -163,18 +163,18 @@ class ItemController {
 
     async addLike(req, res, next) {
         const { userId } = req.body;
-        const { id } = req.params;
+        const { itemId } = req.params;
         try {
             const existLike = await Like.findOne({
-                where: { id, userId },
+                where: { id: itemId, userId },
             });
 
             if (existLike) {
                 return next(ApiError.badRequest("User already liked it"));
             }
 
-            await Like.create({ itemId: id, userId, like: 1 });
-            const item = await Item.findByPk(id);
+            await Like.create({ itemId, userId, like: 1 });
+            const item = await Item.findByPk(itemId);
             item.like += 1;
             await item.save();
 
@@ -187,11 +187,11 @@ class ItemController {
 
     async removeLike(req, res, next) {
         const { userId } = req.body;
-        const { id } = req.params;
+        const { itemId } = req.params;
 
         try {
             const existLike = await Like.findOne({
-                where: { itemId: id, userId },
+                where: { itemId, userId },
             });
 
             if (!existLike) {
@@ -199,7 +199,7 @@ class ItemController {
             }
             await existLike.destroy();
 
-            const item = await Item.findByPk(id);
+            const item = await Item.findByPk(itemId);
             item.like -= 1;
             await item.save();
 
@@ -212,9 +212,9 @@ class ItemController {
 
     async checkLike(req, res, next) {
         const { userId } = req.query;
-        const { id } = req.params;
+        const { itemId } = req.params;
         try {
-            const existLike = await Like.findOne({ where: { userId, itemId: id } });
+            const existLike = await Like.findOne({ where: { userId, itemId } });
             return res.json(!!existLike);
         } catch (e) {
             next(ApiError.badRequest(e.message));

@@ -8,9 +8,9 @@ import { observer } from "mobx-react-lite";
 import CollectionCards from "../components/CollectionCards";
 import { fetchAllItems, fetchPopularTags } from "../http/itemAPI";
 import Spinner from "../components/Spinner";
-import { COLLECTION_ROUTE, ITEM_ROUTE, USER_ROUTE } from "../utils/consts";
+import { COLLECTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import Badge from "../components/Badge";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CollectionList from "../components/CollectionList";
 import Pages from "../components/Pages";
 import { useTranslation } from "react-i18next";
@@ -131,7 +131,11 @@ const MainPage = observer(() => {
                                                     className="text-balance px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     <button
                                                         className="hover:underline text-left"
-                                                        onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `${COLLECTION_ROUTE}/${el.collectionId}/item/` + el.id
+                                                            )
+                                                        }>
                                                         {el.name.length > 35 ? el.name.slice(0, 35) + "..." : el.name}
                                                     </button>
                                                 </th>
