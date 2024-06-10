@@ -14,6 +14,7 @@ const Help = () => {
     const onHideTicket = () => {
         setShowModal(false);
     };
+
     return (
         <>
             <button className="fixed bottom-0 right-2 m-4" onClick={onShowTicket} title="Create support ticket">

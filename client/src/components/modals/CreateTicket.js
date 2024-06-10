@@ -23,6 +23,10 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }
         setError(false);
     };
 
+    const onCreateTicket = (newTicket) => {
+        user.setTicketList((prev) => [newTicket, ...prev]);
+    };
+
     const extractCollectionIdFromUrl = (url) => {
         const match = url.match(/collection\/(\d+)(\/|$)/);
         return match ? match[1] : null;
@@ -61,7 +65,8 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }
                         </span>
                     ),
                     setError(true),
-                    onHide()
+                    onHide(),
+                    onCreateTicket()
                 );
             })
             .catch((e) => (setMessage("Failed to create a ticket"), setError(true), console.log(e)))

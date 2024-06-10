@@ -5,6 +5,7 @@ export default class UserStore {
         this._isAuth = false;
         this._userData = {};
         this._users = [];
+        this._ticketList = [];
 
         makeAutoObservable(this);
     }
@@ -18,6 +19,9 @@ export default class UserStore {
     setUsers(users) {
         this._users = users;
     }
+    setTicketList(ticketList) {
+        this._ticketList = ticketList;
+    }
 
     get isAuth() {
         return this._isAuth;
@@ -27,5 +31,8 @@ export default class UserStore {
     }
     get users() {
         return this._users;
+    }
+    get ticketList() {
+        return this._ticketList;
     }
 }

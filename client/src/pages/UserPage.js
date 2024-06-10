@@ -22,7 +22,6 @@ const UserPage = observer(() => {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [ticketList, setTicketList] = useState([]);
 
     const { id } = useParams();
 
@@ -37,9 +36,9 @@ const UserPage = observer(() => {
         setLoading(true);
         const startAt = (ticketPage.page - 1) * ticketPage.limit;
         fetchTicketsByEmail(user.userData.email, startAt, ticketPage.limit)
-            .then((data) => (setTicketList(data.issues), ticketPage.setTotalCount(data.total)))
+            .then((data) => (user.setTicketList(data.issues), ticketPage.setTotalCount(data.total)))
             .finally(() => setLoading(false));
-    }, [ticketPage.page]);
+    }, [ticketPage.page, user.ticketList]);
 
     const setByCategory = () => {
         collection.selectedCategory.name !== "All"
@@ -60,7 +59,7 @@ const UserPage = observer(() => {
         setShowModal(false);
     };
 
-    const tickets = loading ? <Spinner /> : <TicketList ticketList={ticketList} />;
+    const tickets = loading ? <Spinner /> : <TicketList ticketList={user.ticketList} />;
 
     return (
         <div className="w-full flex flex-col gap-5 md:flex-row my-2 md:my-9 bg-white border-gray-200 dark:bg-gray-900 dark:text-white">

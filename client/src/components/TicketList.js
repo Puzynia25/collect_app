@@ -11,6 +11,7 @@ const TicketList = ({ ticketList }) => {
                 <Table.Head>
                     <Table.HeadCell>Issue Id</Table.HeadCell>
                     <Table.HeadCell>Issue Key</Table.HeadCell>
+                    <Table.HeadCell>Status</Table.HeadCell>
                     <Table.HeadCell>Collection</Table.HeadCell>
                     <Table.HeadCell>Link</Table.HeadCell>
                     <Table.HeadCell>Priority</Table.HeadCell>
@@ -25,7 +26,12 @@ const TicketList = ({ ticketList }) => {
                                         {issue.id}
                                     </Table.Cell>
                                     <Table.Cell>{issue.key}</Table.Cell>
-
+                                    <Table.Cell>
+                                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                                            {" "}
+                                            {issue.fields.status.statusCategory.name}
+                                        </span>
+                                    </Table.Cell>
                                     <Table.Cell>{issue.fields.customfield_10035}</Table.Cell>
                                     <Table.Cell>
                                         <a

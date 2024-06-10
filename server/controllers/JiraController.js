@@ -7,6 +7,10 @@ class JiraController {
     async create(req, res, next) {
         const { user, collectionId, link, priority, description } = req.body;
 
+        console.log("JIRA_DOMAIN:", process.env.JIRA_DOMAIN);
+        console.log("JIRA_EMAIL:", process.env.JIRA_EMAIL);
+        console.log(user, "USER");
+
         let accountId;
         try {
             accountId = await getJiraAccountId(user.email);
@@ -84,9 +88,10 @@ class JiraController {
                 return next(ApiError.badRequest("Failed to create issue"));
             }
 
+            console.log(response, "RESPONSE");
             res.json(response.data);
         } catch (e) {
-            console.error("Error creating issue:", e);
+            console.error("Error creating issue:", e.response.data?.errorMessages, e.response.data?.errors);
             next(ApiError.badRequest(e.message));
         }
     }
