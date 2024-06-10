@@ -1,10 +1,11 @@
 const ApiError = require("../error/ApiError");
 const axios = require("axios");
 const { getJiraAccountId, createJiraUser, getJiraTicketsByAccountId } = require("../services/jiraService");
+const { Collection } = require("../models/models");
 
 class JiraController {
     async create(req, res, next) {
-        const { user, collection, link, priority, description } = req.body;
+        const { user, collectionId, link, priority, description } = req.body;
 
         let accountId;
         try {
@@ -20,6 +21,14 @@ class JiraController {
 
         if (!accountId) {
             return next(ApiError.badRequest("not possible to make an issue: accountId undefined"));
+        }
+
+        let collection;
+        if (collectionId) {
+            collection = await Collection.findByPk(collectionId);
+            if (!collection) {
+                return next(ApiError.badRequest("Collection not found"));
+            }
         }
 
         const adfDescription = {
@@ -54,7 +63,7 @@ class JiraController {
                 reporter: {
                     id: String(accountId),
                 },
-                customfield_10035: collection.name,
+                customfield_10035: collection?.name || "",
                 customfield_10034: link,
             },
         };

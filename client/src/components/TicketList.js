@@ -17,7 +17,7 @@ const TicketList = ({ ticketList }) => {
                     <Table.HeadCell>Description</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
-                    {ticketList.length > 0 ? (
+                    {ticketList?.length > 0 ? (
                         ticketList.map((issue, i) => {
                             return (
                                 <Table.Row key={i} className="bg-white dark:border-gray-700 dark:bg-gray-800">

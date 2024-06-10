@@ -6,9 +6,13 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { Spinner } from "flowbite-react";
 import { createTicket } from "../../http/jiraAPI";
+import { useLocation, useParams } from "react-router-dom";
 
-const CreateTicket = observer(({ show, onHide, loading, setLoading, user, collection, link }) => {
+const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }) => {
     const { t } = useTranslation();
+
+    const url = useLocation();
+    console.log(useParams());
 
     const [priority, setPriority] = useState("Low");
     const [description, setDescription] = useState("");
@@ -19,13 +23,21 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, collec
         setError(false);
     };
 
+    const extractCollectionIdFromUrl = (url) => {
+        const match = url.match(/collection\/(\d+)(\/|$)/);
+        return match ? match[1] : null;
+    };
+
     const addTicket = (e) => {
         e.preventDefault();
         setLoading(true);
 
+        const collectionId = extractCollectionIdFromUrl(url.pathname);
+        console.log(collectionId);
+
         const ticket = {
             user,
-            collection: { name: "" },
+            collectionId,
             link,
             priority,
             description,

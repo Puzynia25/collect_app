@@ -4,7 +4,7 @@ import { Context } from "../utils/context";
 import { QuestionMarkCircleIcon } from "@heroicons/react/16/solid";
 
 const Help = () => {
-    const { user, collection } = useContext(Context);
+    const { user } = useContext(Context);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -25,7 +25,6 @@ const Help = () => {
                 loading={loading}
                 setLoading={setLoading}
                 user={user.userData}
-                collection={collection}
                 link={window.location.href}
             />
         </>
