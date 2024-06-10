@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
-import { Context } from "..";
 import { createComment } from "../http/commentAPI";
 import { useTranslation } from "react-i18next";
+import { Context } from "../utils/context";
 
 const CommentsContainer = observer(({ item }) => {
     const { t } = useTranslation();

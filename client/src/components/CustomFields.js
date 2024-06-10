@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import CustomFieldTypes from "./CustomFieldTypes";
-import { Context } from "..";
 import { useTranslation } from "react-i18next";
+import { Context } from "../utils/context";
 
 const CustomFields = ({ fields, onUpdateValue, isButton, fieldValues, setFieldValues, isReadOnly, userId }) => {
     const { t } = useTranslation();

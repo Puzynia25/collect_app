@@ -1,11 +1,8 @@
-import { useContext } from "react";
-import { Context } from "..";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 
-const Pages = observer(() => {
+const Pages = observer(({ page }) => {
     const { t } = useTranslation();
-    const { page } = useContext(Context);
     const pageCount = Math.ceil(page.totalCount / page.limit);
     const pages = [];
 

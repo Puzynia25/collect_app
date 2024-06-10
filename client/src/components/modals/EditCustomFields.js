@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import { removeCustomField, updateCustomFieldsNames } from "../../http/customFieldAPI";
 import { useTranslation } from "react-i18next";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => {
     const { t } = useTranslation();
@@ -78,20 +79,7 @@ const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => 
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                 onClick={onHide}>
-                                <svg
-                                    className="w-3 h-3"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                    />
-                                </svg>
+                                <XMarkIcon className="h-6 w-6" />
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
@@ -117,22 +105,9 @@ const EditCustomFields = ({ show, onHide, collectionId, fields, setFields }) => 
                                                 <div className="grow flex justify-end">
                                                     <button
                                                         type="button"
-                                                        className="px-2 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                                         onClick={() => removeField(field.id)}>
-                                                        <svg
-                                                            className="w-3 h-3"
-                                                            aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 14 14">
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth="2"
-                                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                                            />
-                                                        </svg>
+                                                        <XMarkIcon className="w-5 h-5" />
                                                         <span className="sr-only">Close modal</span>
                                                     </button>
                                                 </div>

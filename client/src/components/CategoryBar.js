@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import { Context } from "..";
 import { observer } from "mobx-react-lite";
 import { fetchAllCategories } from "../http/collectionAPI";
 import { useTranslation } from "react-i18next";
+import { Context } from "../utils/context";
 
 const CategoryBar = observer(() => {
     const { t } = useTranslation();

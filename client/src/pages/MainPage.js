@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Tags from "../components/Tags";
-import { Context } from "..";
+import { Context } from "../utils/context";
 import CategoryBar from "../components/CategoryBar";
 import ContentWrapper from "../components/ContentWrapper";
 import { fetchAllCollections, fetchBiggest } from "../http/collectionAPI";
@@ -172,7 +172,7 @@ const MainPage = observer(() => {
                         </table>
                     </div>
                 </div>
-                <Pages />
+                <Pages page={page} />
 
                 {/* 5 the biggest collections */}
                 <div className="flex justify-between mt-24 mb-4 md:mb-9">

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Context } from "..";
+import { Context } from "../utils/context";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { login, registration } from "../http/userAPI";

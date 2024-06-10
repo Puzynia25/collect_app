@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { Context } from "..";
 import { COLLECTION_ROUTE, MAIN_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import Badge from "./Badge";
@@ -10,6 +9,9 @@ import EditCollection from "./modals/EditCollection";
 import { renderMarkdown } from "../utils/renderMarkdown";
 import Pages from "./Pages";
 import { useTranslation } from "react-i18next";
+import { Context } from "../utils/context";
+import { SortIcon } from "../assets/svg/SortIcon";
+import { Trash } from "../assets/svg/Trash";
 
 const CollectionList = observer(({ collections, loading, setIsEdit }) => {
     const { t } = useTranslation();
@@ -19,8 +21,6 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
     const location = useLocation();
     const [onShowEditModal, setOnShowEditModal] = useState(false);
     const [currentCollectionId, setCurrentCollectionId] = useState(null);
-
-    console.log(collections);
 
     useEffect(() => {
         fetchAllCollections(null, id, page.page, page.limit)
@@ -55,27 +55,13 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
                                     {t("Category")}
-                                    <svg
-                                        className="w-3 h-3 ms-1.5"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                    </svg>
+                                    <SortIcon />
                                 </div>
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
                                     {t("Description")}
-                                    <svg
-                                        className="w-3 h-3 ms-1.5"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                    </svg>
+                                    <SortIcon />
                                 </div>
                             </th>
                             {user.userData.id === Number(id) || user.userData.role === "ADMIN" ? (
@@ -148,22 +134,7 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
                                                 </td>
                                                 <td className="px-6 py-4 text-right content-center">
                                                     <button onClick={() => onDelete(el.id)}>
-                                                        <svg
-                                                            className="w-6 h-6 text-gray-800 dark:text-white"
-                                                            aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth="1.3"
-                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                                                            />
-                                                        </svg>
+                                                        <Trash />
                                                     </button>
                                                 </td>
                                             </>
@@ -181,7 +152,7 @@ const CollectionList = observer(({ collections, loading, setIsEdit }) => {
                     </tbody>
                 </table>
             </div>
-            {location.pathname !== MAIN_ROUTE ? <Pages /> : null}
+            {location.pathname !== MAIN_ROUTE ? <Pages page={page} /> : null}
 
             <EditCollection
                 show={onShowEditModal}

@@ -3,6 +3,8 @@ import { createCustomFields, fetchAllCustomFields } from "../../http/customField
 import CustomFieldTypes from "../CustomFieldTypes";
 import ErrorMessage from "./ErrorMessage";
 import { useTranslation } from "react-i18next";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/16/solid";
 
 const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
     const { t } = useTranslation();
@@ -74,20 +76,7 @@ const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                 onClick={onHide}>
-                                <svg
-                                    className="w-3 h-3"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                    />
-                                </svg>
+                                <XMarkIcon className="h-6 w-6" />
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
@@ -137,16 +126,7 @@ const CreateCustomFields = ({ show, onHide, collectionId, setFields }) => {
                                     return e.preventDefault(), addField();
                                 }}>
                                 <span className="flex text-sm ps-4 pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                    <svg
-                                        className="me-1 -ms-1 w-5 h-5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                            clipRule="evenodd"></path>
-                                    </svg>
+                                    <PlusIcon className="me-1 -ms-1 w-4 h-4" />
                                     {t("Add field")}
                                 </span>
                             </button>

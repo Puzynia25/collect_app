@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import { authRoutes, publicRoutes } from "../routes";
 import { useContext } from "react";
-import { Context } from "..";
 import MainPage from "../pages/MainPage";
 import { observer } from "mobx-react-lite";
+import { Context } from "../utils/context";
 
 const AppRouter = observer(() => {
     const { user } = useContext(Context);

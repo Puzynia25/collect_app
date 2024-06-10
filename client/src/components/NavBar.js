@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "..";
 import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTARTION_ROUTE, USER_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import ErrorMessage from "./modals/ErrorMessage";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { Context } from "../utils/context";
 
 const NavBar = observer(() => {
     const { t } = useTranslation();

@@ -4,13 +4,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import Badge from "./Badge";
 import { removeOne } from "../http/itemAPI";
 import EditItem from "./modals/EditItem";
-import { Context } from "..";
 import Pages from "./Pages";
 import { useTranslation } from "react-i18next";
+import { Context } from "../utils/context";
+import { SortIcon } from "../assets/svg/SortIcon";
+import { Trash } from "../assets/svg/Trash";
 
 const ItemList = ({ fields, setFields, userId }) => {
     const { t } = useTranslation();
-    const { user, item } = useContext(Context);
+    const { user, item, page } = useContext(Context);
     const navigate = useNavigate();
     const [onShowEditModal, setOnShowEditModal] = useState(false);
     const [currentItemId, setCurrentItemId] = useState(null);
@@ -45,34 +47,11 @@ const ItemList = ({ fields, setFields, userId }) => {
                             <th scope="col" className="px-6 py-3">
                                 {t("Name")}
                             </th>
-
-                            <th scope="col" className="px-6 py-3">
-                                <div className="flex items-center">
-                                    {t("Collection")}
-                                    <a href="#">
-                                        <svg
-                                            className="w-3 h-3 ms-1.5"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </th>
                             <th scope="col" className="px-6 py-3">
                                 <div className="flex items-center">
                                     {t("Creator")}
                                     <a href="#">
-                                        <svg
-                                            className="w-3 h-3 ms-1.5"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                        </svg>
+                                        <SortIcon />
                                     </a>
                                 </div>
                             </th>
@@ -80,14 +59,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                                 <div className="flex items-center">
                                     {t("Category")}
                                     <a href="#">
-                                        <svg
-                                            className="w-3 h-3 ms-1.5"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                        </svg>
+                                        <SortIcon />
                                     </a>
                                 </div>
                             </th>
@@ -95,14 +67,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                                 <div className="flex items-center">
                                     {t("Tags")}
                                     <a href="#">
-                                        <svg
-                                            className="w-3 h-3 ms-1.5"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                        </svg>
+                                        <SortIcon />
                                     </a>
                                 </div>
                             </th>
@@ -144,22 +109,13 @@ const ItemList = ({ fields, setFields, userId }) => {
                             item.items.map((el) => {
                                 return (
                                     <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th
+                                        <td
                                             scope="row"
                                             className="text-balance max-w-[140px] px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <button
                                                 className="hover:underline text-left"
                                                 onClick={() => navigate(ITEM_ROUTE + "/" + el.id)}>
                                                 {el.name.length > 15 ? el.name.slice(0, 15) + "..." : el.name}
-                                            </button>
-                                        </th>
-                                        <td className="text-balance max-w-[140px] px-6 py-4 ">
-                                            <button
-                                                className="hover:underline"
-                                                onClick={() => navigate(COLLECTION_ROUTE + "/" + el.collection?.id)}>
-                                                {el.collection?.name.length > 20
-                                                    ? el.collection?.name.slice(0, 20) + "..."
-                                                    : el.collection?.name}
                                             </button>
                                         </td>
                                         <td className="px-6 py-4 text-balance max-w-[140px]">
@@ -216,22 +172,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                                                 <td className="px-6 py-4 text-right content-center">
                                                     <button onClick={() => onDeleteItem(el.id)}>
                                                         <span className="sr-only">Delete</span>
-                                                        <svg
-                                                            className="w-6 h-6 text-gray-800 dark:text-white"
-                                                            aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth="1.3"
-                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                                                            />
-                                                        </svg>
+                                                        <Trash />
                                                     </button>
                                                 </td>
                                             </>
@@ -249,7 +190,7 @@ const ItemList = ({ fields, setFields, userId }) => {
                     </tbody>
                 </table>
             </div>
-            <Pages />
+            <Pages page={page} />
             <EditItem
                 show={onShowEditModal}
                 onHide={() => onHideEdit()}

@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -7,8 +7,7 @@ import CollectionStore from "./store/CollectionStore";
 import ItemStore from "./store/ItemStore";
 import CommentStore from "./store/CommentStore";
 import PagesStore from "./store/PagesStore";
-
-export const Context = createContext(null);
+import { Context } from "./utils/context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

@@ -1,15 +1,5 @@
-import { useContext } from "react";
 import { $authHost, $host } from ".";
 import { jwtDecode } from "jwt-decode";
-import { Context } from "..";
-
-const getCurrentUserId = () => {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-
-    const decodedToken = jwtDecode(token);
-    return decodedToken.id;
-};
 
 export const registration = async (name, email, password) => {
     const { data } = await $host.post("api/user/registration", {

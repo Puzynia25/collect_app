@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ContentWrapper from "../components/ContentWrapper";
-import { Context } from "..";
+import { Context } from "../utils/context";
 import Badge from "../components/Badge";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
@@ -14,6 +14,8 @@ import Spinner from "../components/Spinner";
 import CreateCustomFields from "../components/modals/CreateCustomFields";
 import EditCustomFields from "../components/modals/EditCustomFields";
 import { useTranslation } from "react-i18next";
+import { PlusIcon } from "@heroicons/react/16/solid";
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
 const CollectionPage = observer(() => {
     const { t } = useTranslation();
@@ -88,43 +90,16 @@ const CollectionPage = observer(() => {
                             <button
                                 className="flex justify-between place-items-center place-self-end p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                 onClick={onShowEditFields}>
-                                <span className="flex text-sm px-3 md:ps-4 md:pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                    <svg
-                                        className="me-1 -ms-1 -mt-0.5 w-5 h-5 text-black dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                                            clipRule="evenodd"
-                                        />
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
+                                <span className="flex text-sm px-3 md:ps-4 md:pr-5 py-2 transition-all ease-in duration-75 place-items-center bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    <PencilSquareIcon className="me-1 -ms-1 -mt-0.5 w-4 h-4 text-black dark:text-white" />
                                     {t("Edit")} {t("fields")}
                                 </span>
                             </button>
                             <button
                                 className="flex justify-between place-items-center place-self-end p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                 onClick={onShowFields}>
-                                <span className="flex text-sm px-3 md:ps-4 md:pr-5 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                    <svg
-                                        className="me-1 -ms-1 w-5 h-5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                            clipRule="evenodd"></path>
-                                    </svg>
+                                <span className="flex text-sm px-3 md:ps-4 md:pr-5 py-2 place-items-center transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    <PlusIcon className="me-1 -ms-1 w-4 h-4" />
                                     <span className="hidden md:block pr-1">{t("Add")}</span>
                                     {t("fields")}
                                 </span>
@@ -133,16 +108,7 @@ const CollectionPage = observer(() => {
                                 type="button"
                                 className="md:mr-2 md:ml-auto flex justify-between overflow-hidden place-items-center place-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 md:px-4 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 onClick={() => onShow()}>
-                                <svg
-                                    className="me-1 -ms-1 w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                        clipRule="evenodd"></path>
-                                </svg>
+                                <PlusIcon className="me-1 -ms-2 w-4 h-4" />
                                 <span className="hidden md:block pr-1">{t("Add")}</span> {t("item")}
                             </button>
                         </div>
