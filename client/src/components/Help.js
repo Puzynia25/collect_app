@@ -4,7 +4,7 @@ import { Context } from "../utils/context";
 import { QuestionMarkCircleIcon } from "@heroicons/react/16/solid";
 
 const Help = () => {
-    const { user } = useContext(Context);
+    const { user, ticketPage } = useContext(Context);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -25,8 +25,9 @@ const Help = () => {
                 onHide={() => onHideTicket()}
                 loading={loading}
                 setLoading={setLoading}
-                user={user.userData}
+                user={user}
                 link={window.location.href}
+                ticketPage={ticketPage}
             />
         </>
     );

@@ -22,6 +22,9 @@ export default class UserStore {
     setTicketList(ticketList) {
         this._ticketList = ticketList;
     }
+    addNewTicket(newTicket) {
+        this._ticketList.unshift(newTicket);
+    }
 
     get isAuth() {
         return this._isAuth;

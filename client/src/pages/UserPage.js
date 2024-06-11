@@ -38,7 +38,7 @@ const UserPage = observer(() => {
         fetchTicketsByEmail(user.userData.email, startAt, ticketPage.limit)
             .then((data) => (user.setTicketList(data.issues), ticketPage.setTotalCount(data.total)))
             .finally(() => setLoading(false));
-    }, [ticketPage.page, user.ticketList]);
+    }, [ticketPage.page]);
 
     const setByCategory = () => {
         collection.selectedCategory.name !== "All"

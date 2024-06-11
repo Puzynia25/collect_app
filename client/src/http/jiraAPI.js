@@ -6,7 +6,6 @@ export const createTicket = async (ticket) => {
 };
 
 export const fetchTicketsByEmail = async (email, startAt, maxResults) => {
-    console.log("Sending request to server with email:", email);
     const { data } = await $authHost.get("api/create-ticket", {
         params: {
             email,

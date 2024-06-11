@@ -5,3 +5,5 @@ export const REGISTARTION_ROUTE = "/registration";
 export const LOGIN_ROUTE = "/login";
 export const COLLECTION_ROUTE = "/collection";
 export const ITEM_ROUTE = COLLECTION_ROUTE + "/:collectionId/item";
+
+export const JIRA_DOMAIN = "https://vitalinapuzynia.atlassian.net";

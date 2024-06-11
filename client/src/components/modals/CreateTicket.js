@@ -5,14 +5,12 @@ import { useTranslation } from "react-i18next";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { Spinner } from "flowbite-react";
-import { createTicket } from "../../http/jiraAPI";
-import { useLocation, useParams } from "react-router-dom";
+import { createTicket, fetchTicketsByEmail } from "../../http/jiraAPI";
+import { useLocation } from "react-router-dom";
 
-const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }) => {
+const CreateTicket = observer(({ show, onHide, loading, setLoading, user, ticketPage, link }) => {
     const { t } = useTranslation();
-
     const url = useLocation();
-    console.log(useParams());
 
     const [priority, setPriority] = useState("Low");
     const [description, setDescription] = useState("");
@@ -23,13 +21,15 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }
         setError(false);
     };
 
-    const onCreateTicket = (newTicket) => {
-        user.setTicketList((prev) => [newTicket, ...prev]);
-    };
-
     const extractCollectionIdFromUrl = (url) => {
         const match = url.match(/collection\/(\d+)(\/|$)/);
         return match ? match[1] : null;
+    };
+
+    const fetchNewTicketList = () => {
+        fetchTicketsByEmail(user.userData.email, 0, 10)
+            .then((data) => (user.setTicketList(data.issues), ticketPage.setTotalCount(data.total)))
+            .finally(() => setLoading(false));
     };
 
     const addTicket = (e) => {
@@ -37,10 +37,9 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }
         setLoading(true);
 
         const collectionId = extractCollectionIdFromUrl(url.pathname);
-        console.log(collectionId);
 
         const ticket = {
-            user,
+            user: user.userData,
             collectionId,
             link,
             priority,
@@ -50,7 +49,6 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }
         createTicket(ticket)
             .then((data) => {
                 const issueUrl = `https://vitalinapuzynia.atlassian.net/browse/${data.key}`;
-                console.log(issueUrl, "issueUrl");
                 return (
                     setMessage(
                         <span className="flex flex-col gap-3 text-md">
@@ -65,12 +63,12 @@ const CreateTicket = observer(({ show, onHide, loading, setLoading, user, link }
                         </span>
                     ),
                     setError(true),
-                    onHide(),
-                    onCreateTicket()
+                    fetchNewTicketList(),
+                    onHide()
                 );
             })
             .catch((e) => (setMessage("Failed to create a ticket"), setError(true), console.log(e)))
-            .finally(() => setLoading(false));
+            .finally(() => (setLoading(false), setDescription(""), setPriority("Low")));
     };
 
     const errorModal = error ? <ErrorMessage message={message} show={error} onHide={() => onHideError()} /> : null;

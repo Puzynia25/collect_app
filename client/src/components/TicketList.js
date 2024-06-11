@@ -2,9 +2,16 @@ import { Table } from "flowbite-react";
 import Pages from "./Pages";
 import { useContext } from "react";
 import { Context } from "../utils/context";
+import { JIRA_DOMAIN } from "../utils/consts";
 
 const TicketList = ({ ticketList }) => {
     const { ticketPage } = useContext(Context);
+    console.log(ticketList);
+
+    const issueUrl = (key) => {
+        return `${JIRA_DOMAIN}/browse/${key}`;
+    };
+
     return (
         <div className="overflow-x-auto">
             <Table className="rounded-3xl shadow text-nowrap">
@@ -19,9 +26,9 @@ const TicketList = ({ ticketList }) => {
                 </Table.Head>
                 <Table.Body className="divide-y">
                     {ticketList?.length > 0 ? (
-                        ticketList.map((issue, i) => {
+                        ticketList.map((issue) => {
                             return (
-                                <Table.Row key={i} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                <Table.Row key={issue.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                         {issue.id}
                                     </Table.Cell>
@@ -36,8 +43,9 @@ const TicketList = ({ ticketList }) => {
                                     <Table.Cell>
                                         <a
                                             className="text-blue-600 hover:underline"
-                                            href={issue.fields.customfield_10034}>
-                                            {issue.fields.customfield_10034}
+                                            href={issueUrl(issue.key)}
+                                            target="_blank">
+                                            {issueUrl(issue.key)}
                                         </a>
                                     </Table.Cell>
                                     <Table.Cell>{issue.fields.priority.name}</Table.Cell>
